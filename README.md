@@ -25,3 +25,4 @@ The initial version of the repository contains the following structure:
     \__ sd-store
         \__ README.md
 
+Rui: SD não tem pastas definidas :\
