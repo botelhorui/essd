@@ -1,0 +1,114 @@
+package pt.tecnico.bubbledocs.domain;
+
+class BubbleDocs{
+
+}
+
+class User{
+	String username;
+	String password;
+	String name;
+}
+
+class Root extends User{
+
+}
+
+class SheetAccess{
+	boolean canWrite;
+}
+
+class SheetData{
+	int id;
+	String name;
+	DateTime creationDate;	
+	int lines;
+	int columns;	 
+}
+
+class Cell{
+	int line;
+	int column;
+	boolean isProtected;
+}
+
+class LiteralCell extends Cell{
+	int literal;
+}
+
+class ReferenceCell extends Cell{
+	int refLine;
+	int refColumn;
+}
+
+class FunctionCell extends Cell{
+}
+
+class AddCell extends FunctionCell{
+}
+class SubCell extends FunctionCell{
+}
+class MulCell extends FunctionCell{
+}
+class DivCell extends FunctionCell{
+}
+
+class FunctionArgument{
+
+}
+
+class LiteralArgument extends FunctionArgument{
+	int literal;
+}
+class ReferenceArgument extends FunctionArgument{
+	int refLine;
+	int refColumn;
+}
+
+
+relation DomainRootHasBubbleDocs{
+	.pt.ist.fenixframework.DomainRoot playsRole root{multiplicity 0..1;}
+	BubbleDocs playsRole bubbleDocs {multiplicity 0..1;}
+}
+
+relation BubbleDocsContainsUsers{
+	BubbleDocs playsRole bubbleDocs{multiplicity 1;}
+	User playsRole user{multiplicity 0..*;}
+}
+relation BubbleDocsContainsSheetData{
+	BubbleDocs playsRole bubbleDocs{multiplicity 1;}
+	SheetData playsRole sheetData{multiplicity 0..*;}
+}
+
+relation UserContainsSheetAccess{
+	User playsRole user{multiplicity 1;}
+	SheetAccess playsRole sheetAccess{multiplicity 0..*;}
+}
+
+relation SheetAccessHasSheetData{
+	SheetAccess playsRole sheetAccess{multiplicity 1..*;}
+	SheetData playsRole sheetData{multiplicity 1;}
+}
+
+relation SheetDataHasCreator{
+	User playsRole creator{multiplicity 1;}
+	SheetData playsRole createdSheet{multiplicity 0..*;}
+}
+
+relation SheetDataContainsCell{
+	SheetData playsRole sheetData{multiplicity 1;}
+	Cell playsRole cell{multiplicity 0..*;}
+}
+
+relation FunctionCellHasLeftArgument{
+	FunctionCell playsRole functionCell{multiplicity 1;}
+	FunctionArgument playsRole leftArgument{multiplicity 1;}
+}
+
+relation FunctionCellHasTwoArguments{
+	FunctionCell playsRole functionCellRepeated{multiplicity 1;}
+	FunctionArgument playsRole rightArgument{multiplicity 1;}
+}
+
+
+
