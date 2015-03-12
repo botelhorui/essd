@@ -17,7 +17,23 @@ public class User extends User_Base {
     	for(SheetAccess sa: getSheetAccessSet())
     		sa.delete();
     	setBubbleDocs(null);
+    	//todo
     	deleteDomainObject();
+    }
+    
+    @Override
+    public void setUsername(String username) {
+    	// TODO Auto-generated method stub
+    	super.setUsername(username);
+    }
+    
+    public SheetAccess getSheetAccessByName(String name){
+    	for(SheetAccess x: getSheetAccessSet()){
+    		if(x.getSheetData().getName().equals(name)){
+    			return x;
+    		}
+    	}
+    	return null;
     }
     
     public SheetAccess createSheet(String name,int lines,int columns){
@@ -25,6 +41,8 @@ public class User extends User_Base {
     	sheetData.init(this, name, lines, columns);
     	SheetAccess sheetAccess = new SheetAccess();
     	sheetAccess.init(this,sheetData,true);
+    	addSheetAccess(sheetAccess);
+    	addCreatedSheet(sheetData);
     	return sheetAccess;
     }
 }

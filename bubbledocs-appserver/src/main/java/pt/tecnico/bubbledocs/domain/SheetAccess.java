@@ -1,19 +1,60 @@
 package pt.tecnico.bubbledocs.domain;
 
-public class SheetAccess extends SheetAccess_Base {
+import org.jdom2.Document;
+
+import pt.tecnico.bubbledocs.exception.CellProtectedException;
+import pt.tecnico.bubbledocs.exception.PositionOutOfBoundsException;
+import pt.tecnico.bubbledocs.exception.UserHasNotWriteAccessException;
+
+public class SheetAccess extends SheetAccess_Base implements Sheet{
     
     public SheetAccess() {
         super();
     }
 
 	public void delete() {
-		// TODO Auto-generated method stub
-		
+		getSheetData().delete();
+		setUser(null);
+		setSheetData(null);		
+		deleteDomainObject();		
 	}
 
-	public void init(User user, SheetData sheetData, boolean b) {
-		// TODO Auto-generated method stub
-		
+	public void init(User user, SheetData sheetData, boolean canWrite) {
+		setUser(user);
+		setSheetData(sheetData);
+		setCanWrite(canWrite);		
+	}
+
+	@Override
+	public String getValue(int line, int column)
+			throws PositionOutOfBoundsException {
+		return getSheetData().getValue(line, column);
+	}
+
+	@Override
+	public void setCell(int line, int column, String text)
+			throws PositionOutOfBoundsException, CellProtectedException,
+			UserHasNotWriteAccessException {
+		if(!getCanWrite())
+			throw new UserHasNotWriteAccessException();
+		getSheetData().setCell(line, column, text);
+	}
+
+	@Override
+	public String getCellText(int line, int column)
+			throws PositionOutOfBoundsException {
+		return getSheetData().getCellText(line, column);
+	}
+
+	@Override
+	public void setUserAccess(User user, boolean canWrite)
+			throws UserHasNotWriteAccessException {
+		getSheetData().setUserAccess(user,canWrite);
+	}
+
+	@Override
+	public Document export() {
+		return getSheetData().export();
 	}
     
 }
