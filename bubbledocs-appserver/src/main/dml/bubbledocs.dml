@@ -31,41 +31,8 @@ class Cell{
 	int line;
 	int column;
 	boolean isProtected;
+	String text;
 }
-
-class LiteralCell extends Cell{
-	int literal;
-}
-
-class ReferenceCell extends Cell{
-	int refLine;
-	int refColumn;
-}
-
-class FunctionCell extends Cell{
-}
-
-class AddCell extends FunctionCell{
-}
-class SubCell extends FunctionCell{
-}
-class MulCell extends FunctionCell{
-}
-class DivCell extends FunctionCell{
-}
-
-class FunctionArgument{
-
-}
-
-class LiteralArgument extends FunctionArgument{
-	int literal;
-}
-class ReferenceArgument extends FunctionArgument{
-	int refLine;
-	int refColumn;
-}
-
 
 relation DomainRootHasBubbleDocs{
 	.pt.ist.fenixframework.DomainRoot playsRole root{multiplicity 0..1;}
@@ -101,15 +68,6 @@ relation SheetDataContainsCell{
 	Cell playsRole cell{multiplicity 0..*;}
 }
 
-relation FunctionCellHasLeftArgument{
-	FunctionCell playsRole functionCell{multiplicity 1;}
-	FunctionArgument playsRole leftArgument{multiplicity 1;}
-}
-
-relation FunctionCellHasTwoArguments{
-	FunctionCell playsRole functionCellRepeated{multiplicity 1;}
-	FunctionArgument playsRole rightArgument{multiplicity 1;}
-}
 
 
 
