@@ -21,11 +21,10 @@ public class User extends User_Base {
     }
     
     public SheetAccess createSheet(String name,int lines,int columns){
-    	//SheetData sheetData = new SheetData();
-    	//sheetData.init(this, name, lines, columns);
-    	//SheetAccess sheetAccess = new SheetAccess();
-    	//sheetAccess.init(this,sheetData,true);
-    	//return sheetAccess;
-    	return null;
+    	SheetData sheetData = new SheetData();
+    	sheetData.init(this, name, lines, columns);
+    	SheetAccess sheetAccess = new SheetAccess();
+    	sheetAccess.init(this,sheetData,true);
+    	return sheetAccess;
     }
 }

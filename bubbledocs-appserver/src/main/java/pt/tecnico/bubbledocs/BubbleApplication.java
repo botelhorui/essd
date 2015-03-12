@@ -11,14 +11,7 @@ public class BubbleApplication {
 	//private static final Logger logger = LoggerFactory.getLogger(BubbleApplication.class);
 
 	public static void main(String[] args){
-		//test2();
-		//test1();
-		test1();
-		
-	}
-	@Atomic
-	public static void t(){
-		BubbleDocs bd = BubbleDocs.getInstance();
+		test1();	
 	}
 
 	@Atomic
