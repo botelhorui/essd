@@ -21,13 +21,10 @@ import pt.tecnico.bubbledocs.domain.SheetAccess;
 import pt.tecnico.bubbledocs.domain.SheetData;
 import pt.tecnico.bubbledocs.domain.User;
 
+@SuppressWarnings("unused")
 public class BubbleApplication {
-	
-
 	public static void main(String[] args){
-		System.out.println("Welcome to the BubbleDocs application!");		
-		
-		
+		System.out.println("Welcome to the BubbleDocs application!");	
 		TransactionManager tm = FenixFramework.getTransactionManager();
 		boolean committed = false;
 		try {
@@ -40,7 +37,7 @@ public class BubbleApplication {
 			printUsersSheets();
 			//
 			Document doc = exportPfSheet();
-			
+			//
 			deleteSheet();
 			//
 			printUsersSheets();
@@ -72,7 +69,6 @@ public class BubbleApplication {
 			}
 		}		
 	}
-	
 	
 	@Atomic
 	private static void importSheet(Document doc) {
@@ -142,6 +138,4 @@ public class BubbleApplication {
 				}
 		}
 	}
-
-
 }

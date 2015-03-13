@@ -22,13 +22,13 @@ public class SheetData extends SheetData_Base{
 		setColumns(columns);
 		setCreationDate(new DateTime());
 		setId(BubbleDocs.getInstance().generateId());
-		//bubbleDocs relation
+
 		BubbleDocs.getInstance().addSheetData(this);
 		setBubbleDocs(BubbleDocs.getInstance());
-		//creator relation
+
 		setCreator(creator);
 		creator.addCreatedSheet(this);
-		//sheetAccess relation
+
 		SheetAccess sa = new SheetAccess();
 		sa.init(creator,this,true);
 		getSheetAccessSet().add(sa);
@@ -68,8 +68,7 @@ public class SheetData extends SheetData_Base{
 			throws PositionOutOfBoundsException, UserHasNotAccessException {
 		checkReadAccess(username);
 		Cell c = getCell(line,column);
-		if(c==null){
-			//if the cell is empty is not in the CellSet yet
+		if(c==null){			
 			return "";
 		}
 		return c.getValue();

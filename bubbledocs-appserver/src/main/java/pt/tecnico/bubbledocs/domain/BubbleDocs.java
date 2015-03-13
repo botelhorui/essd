@@ -76,7 +76,7 @@ public class BubbleDocs extends BubbleDocs_Base {
     @Atomic
     public void importSheet(Document doc,String username){
     	try{
-    		//Every get we use in the xml might return null if the xml is invalid
+    		//Every element/attribute get we use in the xml doc might be null if the xml is invalid
 	    	Element root = doc.getRootElement();
 	    	Element creatorEl = root.getChild("Creator");
 	    	String importUsername = creatorEl.getAttributeValue("username");
@@ -91,9 +91,8 @@ public class BubbleDocs extends BubbleDocs_Base {
 	    			Integer.parseInt(root.getAttributeValue("lines")),
 	    			Integer.parseInt(root.getAttributeValue("columns")));
 	    	DateTimeFormatter dtf = ISODateTimeFormat.dateTime();
-	    	sd.setCreationDate(dtf.parseDateTime(root.getAttributeValue("creation-date")));
-  	
-	    	// import all cells in any
+	    	sd.setCreationDate(dtf.parseDateTime(root.getAttributeValue("creation-date")));  	
+	    	// import all cells if any
 	    	Element cells = root.getChild("Cells");
 	    	for(Element celle: cells.getChildren()){
 	    		Cell cell = new Cell();
@@ -107,8 +106,6 @@ public class BubbleDocs extends BubbleDocs_Base {
     		System.out.println("Exception while importing a sheet:");
     		System.out.println(e);
     		throw e;
-    	}
-    	
-    }
-	
+    	}    	
+    }	
 }
