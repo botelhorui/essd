@@ -17,7 +17,6 @@ public class User extends User_Base {
     	for(SheetAccess sa: getSheetAccessSet())
     		sa.delete();
     	setBubbleDocs(null);
-    	//todo
     	deleteDomainObject();
     }
     

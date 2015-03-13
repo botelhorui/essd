@@ -13,16 +13,19 @@ public class SheetAccess extends SheetAccess_Base implements Sheet{
     }
 
 	public void delete() {
-		getSheetData().delete();
-		setUser(null);
-		setSheetData(null);		
+		SheetData s = getSheetData();
+		setSheetData(null);	
+		s.delete();		
+		setUser(null);			
 		deleteDomainObject();		
 	}
 
 	public void init(User user, SheetData sheetData, boolean canWrite) {
 		setUser(user);
 		setSheetData(sheetData);
-		setCanWrite(canWrite);		
+		setCanWrite(canWrite);	
+		user.addSheetAccess(this);
+		sheetData.addSheetAccess(this);
 	}
 
 	@Override

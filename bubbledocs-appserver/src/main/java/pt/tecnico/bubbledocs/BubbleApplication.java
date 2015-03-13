@@ -31,7 +31,7 @@ public class BubbleApplication {
 		try {
 			tm.begin();
 
-			test4();	
+			test6();	
 			
 			tm.commit();
 			committed = true;
@@ -111,6 +111,32 @@ public class BubbleApplication {
 		XMLOutputter xml = new XMLOutputter();
 		xml.setFormat(Format.getPrettyFormat());
 		System.out.println(xml.outputString(doc));
+		
+	}
+	
+	@Atomic
+	public static void test5(){
+		BubbleDocs bd = BubbleDocs.getInstance();
+		User pf = bd.getUserByUsername("pf");
+		pf.getSheetAccessByName("Notas ES").delete();
+	}
+	
+	@Atomic
+	public static void test6(){
+		BubbleDocs bd = BubbleDocs.getInstance();
+		User pf = new User();
+		pf.init("pf","sub","Paul Door");
+		bd.addUser(pf);
+		Sheet s1 = pf.createSheet("Notas ES",300,20);
+		s1.setCell(3,4,"5");
+		s1.setCell(1,1,"5;6");
+		s1.setCell(5,6,"=ADD(2,3;4)");
+		s1.setCell(2,2,"=DIV(1;1,3;4)");
+		Document doc = s1.export();
+		XMLOutputter xml = new XMLOutputter();
+		xml.setFormat(Format.getPrettyFormat());
+		System.out.println(xml.outputString(doc));
+		bd.importSheet(doc,"pf");
 	}
 	
 

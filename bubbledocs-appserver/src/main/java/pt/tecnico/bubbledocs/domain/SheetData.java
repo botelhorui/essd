@@ -3,6 +3,8 @@ package pt.tecnico.bubbledocs.domain;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.ISODateTimeFormat;
 
 import pt.tecnico.bubbledocs.exception.CellProtectedException;
 import pt.tecnico.bubbledocs.exception.PositionOutOfBoundsException;
@@ -20,7 +22,9 @@ public class SheetData extends SheetData_Base implements Sheet{
 		setLines(lines);
 		setColumns(columns);
 		setCreationDate(new DateTime());
-		setId(BubbleDocs.getInstance().generateId());	
+		setId(BubbleDocs.getInstance().generateId());
+		BubbleDocs.getInstance().addSheetData(this);
+		creator.addCreatedSheet(this);
 	}
     
     private void checkBounds(int line,int column) throws PositionOutOfBoundsException{
@@ -87,8 +91,8 @@ public class SheetData extends SheetData_Base implements Sheet{
 		Element root = new Element("SheetData");
 		doc.setRootElement(root);
 		
-		root.setAttribute("name", getName());
-		root.setAttribute("creation-date", getCreationDate().toString());
+		root.setAttribute("name", getName());		
+		root.setAttribute("creation-date",getCreationDate().toString(ISODateTimeFormat.dateTime()));
 		root.setAttribute("lines", ""+getLines());
 		root.setAttribute("columns", ""+getColumns());
 		
@@ -111,6 +115,7 @@ public class SheetData extends SheetData_Base implements Sheet{
 		for(Cell c: getCellSet())
 			c.delete();
 		setCreator(null);
+		setBubbleDocs(null);
 		deleteDomainObject();		
 	}
     
