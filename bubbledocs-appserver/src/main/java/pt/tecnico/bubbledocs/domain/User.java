@@ -29,9 +29,9 @@ public class User extends User_Base {
     	super.setUsername(username);
     }
     
-    public List<SheetAccess> getSheetAccessByName(String name){
-    	return getSheetAccessSet().stream()
-    			.filter(as -> as.getSheetData().getName().equals(name))
+    public List<SheetData> getSheetDataByName(String name){
+    	return getSheetDataSet().stream()
+    			.filter(as -> as.getName().equals(name))
     			.collect(Collectors.toList());    	
     }
     

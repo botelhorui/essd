@@ -64,7 +64,7 @@ relation UserContainsCreatedSheets{
 }
 
 relation SheetAccessHasUser{
-	SheetAccess playsRole sheetAccess{multiplicity 1..*;}
+	SheetAccess playsRole sheetAccess{multiplicity 0..*;}
 	User playsRole user{multiplicity 1;}
 }
 

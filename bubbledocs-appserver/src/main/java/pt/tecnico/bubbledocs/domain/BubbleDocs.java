@@ -63,6 +63,16 @@ public class BubbleDocs extends BubbleDocs_Base {
     	super.removeUser(u);
     }
     
+    public User createUser(String username,String password,String name)throws UsernameAlreadyExistsException{
+        if(hasUser(username)){
+        	throw new UsernameAlreadyExistsException();
+        }
+        User u = new User();
+		u.init(username,password,name);
+		addUser(u);
+		return u;
+    }
+    
     @Atomic
     public void importSheet(Document doc,String username){
     	try{

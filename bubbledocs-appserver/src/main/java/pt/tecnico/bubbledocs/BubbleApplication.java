@@ -1,5 +1,8 @@
 package pt.tecnico.bubbledocs;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -22,15 +25,33 @@ public class BubbleApplication {
 	
 
 	public static void main(String[] args){
-		System.out.println("Welcome to the BubbleDocs application!");
-
+		System.out.println("Welcome to the BubbleDocs application!");		
+		
+		
 		TransactionManager tm = FenixFramework.getTransactionManager();
 		boolean committed = false;
 		try {
 			tm.begin();
-
-			test();	
+			//
+			populateDomain();
+			//
+			printUsers();
+			//
+			printUsersSheets();
+			//
+			Document doc = exportPfSheet();
 			
+			deleteSheet();
+			//
+			printUsersSheets();
+			//
+			importSheet(doc);
+			//
+			printUsersSheets();
+			//
+			exportPfSheet();
+			//
+			System.out.println("Finished ");			
 			tm.commit();
 			committed = true;
 		}catch (SystemException|
@@ -38,40 +59,88 @@ public class BubbleApplication {
 				RollbackException|
 				HeuristicMixedException |
 				HeuristicRollbackException ex) {
-			System.err.println("Error in execution of transaction: " + ex);
+			System.err.println("Error in execution of transaction: ");
+			ex.printStackTrace();
 		} finally {
-			if (!committed) 
+			if (!committed){
+				System.out.println("Rolling back");
 				try {
 					tm.rollback();
 				} catch (SystemException ex) {
 					System.err.println("Error in roll back of transaction: " + ex);
 				}
+			}
 		}		
 	}
-
+	
 	
 	@Atomic
-	public static void test6(){
+	private static void importSheet(Document doc) {
+		System.out.println("Importing 1 sheet. \"Notas ES\"");
+		BubbleDocs.getInstance().importSheet(doc, "pf");
+	}
+
+	@Atomic
+	private static void deleteSheet() {
+		User pf = BubbleDocs.getInstance().getUserByUsername("pf");
+		System.out.println("Deleting sheet \"Notas ES\"");
+		SheetData sd = pf.getSheetDataByName("Notas ES").get(0);
+		sd.delete();
+		sd=null;
+	}
+
+	@Atomic
+	private static Document exportPfSheet() {
+		User pf = BubbleDocs.getInstance().getUserByUsername("pf");
+		System.out.println("Exporting "+ pf.getSheetDataSet().size()+" sheets:");			
+		XMLOutputter xml = new XMLOutputter();
+		xml.setFormat(Format.getPrettyFormat());
+		Document doc=null;
+		for(SheetData x: pf.getSheetDataSet()){
+			doc = x.export();				
+			System.out.println(xml.outputString(doc));
+			break;
+		}
+		return doc;
+	}
+
+	@Atomic
+	public static boolean isInitialized(){
 		BubbleDocs bd = BubbleDocs.getInstance();
-		User pf = new User();
-		pf.init("pf","sub","Paul Door");
-		bd.addUser(pf);
+		return !bd.getUserSet().isEmpty();
+	}
+	
+	@Atomic
+	private static void populateDomain() {
+		if(isInitialized())
+			return;		
+		BubbleDocs bd = BubbleDocs.getInstance();
+		User pf = bd.createUser("pf","sub","Paul Door");
+		bd.createUser("ra","cor","Step Rabbit");
 		SheetData s1 = pf.createSheet("Notas ES",300,20);
 		s1.setCellText("pf",3,4,"5");
 		s1.setCellText("pf",1,1,"5;6");
 		s1.setCellText("pf",5,6,"=ADD(2,3;4)");
-		s1.setCellText("pf",2,2,"=DIV(1;1,3;4)");
-		Document doc = s1.export();
-		XMLOutputter xml = new XMLOutputter();
-		xml.setFormat(Format.getPrettyFormat());
-		System.out.println(xml.outputString(doc));
-		bd.importSheet(doc,"pf");
+		s1.setCellText("pf",2,2,"=DIV(1;1,3;4)");			
 	}
-	
+
 	@Atomic
-	public static void test(){
-		BubbleDocs bd = BubbleDocs.getInstance();
-		bd.getUserByUsername("pf").delete();
+	private static void printUsers() {
+		System.out.println("Registered users are:");
+		for(User u: BubbleDocs.getInstance().getUserSet()){
+			System.out.println("\tusername:"+u.getUsername()+" name:"+u.getName()+" password:"+u.getPassword());
+		}
+	}
+
+	@Atomic
+	private static void printUsersSheets() {
+		System.out.println("Registered users and their sheets names:");
+		for(User u: BubbleDocs.getInstance().getUserSet()){
+			System.out.println("\tusername:"+u.getUsername()+" has "+u.getSheetDataSet().size()+" sheets:");
+				for(SheetData x: u.getSheetDataSet()){
+					System.out.println("\t\tSheet, name:\""+x.getName()+"\" id:"+x.getId());
+				}
+		}
 	}
 
 
