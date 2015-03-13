@@ -2,10 +2,7 @@ package pt.tecnico.bubbledocs.domain;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.DateTimeParser;
 import org.joda.time.format.ISODateTimeFormat;
 
 import pt.ist.fenixframework.Atomic;
@@ -71,24 +68,21 @@ public class BubbleDocs extends BubbleDocs_Base {
     	try{
     		//Every get we use in the xml might return null if the xml is invalid
 	    	Element root = doc.getRootElement();
-	    	Element creator = root.getChild("Creator");
-	    	String importUsername = creator.getAttributeValue("username");
+	    	Element creatorEl = root.getChild("Creator");
+	    	String importUsername = creatorEl.getAttributeValue("username");
 	    	if(!importUsername.equals(username))
 	    		throw new DifferentUserImportException();
-	    	User u = getUserByUsername(username);
-	    	if(u == null)
+	    	User creator = getUserByUsername(username);
+	    	if(creator == null)
 	    		throw new UserDoesNotExistException();
 	    	// import SheetData
 	    	SheetData sd = new SheetData();
-	    	sd.init(u, root.getAttributeValue("name"),
+	    	sd.init(creator, root.getAttributeValue("name"),
 	    			Integer.parseInt(root.getAttributeValue("lines")),
 	    			Integer.parseInt(root.getAttributeValue("columns")));
 	    	DateTimeFormatter dtf = ISODateTimeFormat.dateTime();
 	    	sd.setCreationDate(dtf.parseDateTime(root.getAttributeValue("creation-date")));
-	    	// create a new SheetAccess for permissions related to the creator
-	    	SheetAccess sa = new SheetAccess();
-	    	sa.init(u,sd,true);
-	   	
+  	
 	    	// import all cells in any
 	    	Element cells = root.getChild("Cells");
 	    	for(Element celle: cells.getChildren()){

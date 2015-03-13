@@ -1,5 +1,8 @@
 package pt.tecnico.bubbledocs.domain;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class User extends User_Base {
     
     public User() {
@@ -14,8 +17,8 @@ public class User extends User_Base {
     }   
     
     public void delete(){
-    	for(SheetAccess sa: getSheetAccessSet())
-    		sa.delete();
+    	for(SheetData sd: getSheetDataSet())
+    		sd.delete();
     	setBubbleDocs(null);
     	deleteDomainObject();
     }
@@ -26,22 +29,21 @@ public class User extends User_Base {
     	super.setUsername(username);
     }
     
-    public SheetAccess getSheetAccessByName(String name){
-    	for(SheetAccess x: getSheetAccessSet()){
-    		if(x.getSheetData().getName().equals(name)){
-    			return x;
-    		}
-    	}
-    	return null;
+    public List<SheetAccess> getSheetAccessByName(String name){
+    	return getSheetAccessSet().stream()
+    			.filter(as -> as.getSheetData().getName().equals(name))
+    			.collect(Collectors.toList());    	
     }
     
-    public SheetAccess createSheet(String name,int lines,int columns){
+    public List<SheetData> getCreatedSheetDataByName(String name){
+    	return getCreatedSheetSet().stream()
+    			.filter(ds -> ds.getName().equals(name))
+    			.collect(Collectors.toList()); 
+    }
+    
+    public SheetData createSheet(String name,int lines,int columns){
     	SheetData sheetData = new SheetData();
     	sheetData.init(this, name, lines, columns);
-    	SheetAccess sheetAccess = new SheetAccess();
-    	sheetAccess.init(this,sheetData,true);
-    	addSheetAccess(sheetAccess);
-    	addCreatedSheet(sheetData);
-    	return sheetAccess;
+    	return sheetData;
     }
 }

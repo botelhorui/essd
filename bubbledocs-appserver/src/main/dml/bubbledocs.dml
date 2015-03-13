@@ -48,19 +48,24 @@ relation BubbleDocsContainsSheetData{
 	SheetData playsRole sheetData{multiplicity 0..*;}
 }
 
-relation UserContainsSheetAccess{
-	User playsRole user{multiplicity 1;}
-	SheetAccess playsRole sheetAccess{multiplicity 0..*;}
+relation UserContainsSheetData{
+	User playsRole user{multiplicity 1..*;}
+	SheetData playsRole sheetData{multiplicity 0..*;}
 }
 
-relation SheetAccessHasSheetData{
-	SheetAccess playsRole sheetAccess{multiplicity 1..*;}
+relation SheetDataHasSheetAccess{
 	SheetData playsRole sheetData{multiplicity 1;}
+	SheetAccess playsRole sheetAccess{multiplicity 1..*;}	
 }
 
-relation SheetDataHasCreator{
+relation UserContainsCreatedSheets{
 	User playsRole creator{multiplicity 1;}
 	SheetData playsRole createdSheet{multiplicity 0..*;}
+}
+
+relation SheetAccessHasUser{
+	SheetAccess playsRole sheetAccess{multiplicity 1..*;}
+	User playsRole user{multiplicity 1;}
 }
 
 relation SheetDataContainsCell{

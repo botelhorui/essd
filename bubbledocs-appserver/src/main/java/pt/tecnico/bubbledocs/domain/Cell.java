@@ -1,8 +1,5 @@
 package pt.tecnico.bubbledocs.domain;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.jdom2.Element;
 
 import pt.tecnico.bubbledocs.exception.CellProtectedException;
