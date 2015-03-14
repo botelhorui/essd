@@ -86,7 +86,7 @@ public class BubbleDocs extends BubbleDocs_Base {
 	    	if(creator == null)
 	    		throw new UserDoesNotExistException();
 	    	// import SheetData
-	    	SheetData sd = new SheetData();
+	    	SpreadSheet sd = new SpreadSheet();
 	    	sd.init(creator, root.getAttributeValue("name"),
 	    			Integer.parseInt(root.getAttributeValue("lines")),
 	    			Integer.parseInt(root.getAttributeValue("columns")));

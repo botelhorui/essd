@@ -17,7 +17,7 @@ public class User extends User_Base {
     }   
     
     public void delete(){
-    	for(SheetData sd: getSheetDataSet())
+    	for(SpreadSheet sd: getSpreadSheetSet())
     		sd.delete();
     	setBubbleDocs(null);
     	deleteDomainObject();
@@ -29,21 +29,21 @@ public class User extends User_Base {
     	super.setUsername(username);
     }
     
-    public List<SheetData> getSheetDataByName(String name){
-    	return getSheetDataSet().stream()
+    public List<SpreadSheet> getSpreadSheetByName(String name){
+    	return getSpreadSheetSet().stream()
     			.filter(as -> as.getName().equals(name))
     			.collect(Collectors.toList());    	
     }
     
-    public List<SheetData> getCreatedSheetDataByName(String name){
+    public List<SpreadSheet> getCreatedSpreadSheetByName(String name){
     	return getCreatedSheetSet().stream()
     			.filter(ds -> ds.getName().equals(name))
     			.collect(Collectors.toList()); 
     }
     
-    public SheetData createSheet(String name,int lines,int columns){
-    	SheetData sheetData = new SheetData();
-    	sheetData.init(this, name, lines, columns);
-    	return sheetData;
+    public SpreadSheet createSheet(String name,int lines,int columns){
+    	SpreadSheet SpreadSheet = new SpreadSheet();
+    	SpreadSheet.init(this, name, lines, columns);
+    	return SpreadSheet;
     }
 }

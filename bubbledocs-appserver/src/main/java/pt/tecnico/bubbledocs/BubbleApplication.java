@@ -18,7 +18,7 @@ import pt.ist.fenixframework.FenixFramework;
 import pt.ist.fenixframework.TransactionManager;
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.SheetAccess;
-import pt.tecnico.bubbledocs.domain.SheetData;
+import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
 
 @SuppressWarnings("unused")
@@ -80,7 +80,7 @@ public class BubbleApplication {
 	private static void deleteSheet() {
 		User pf = BubbleDocs.getInstance().getUserByUsername("pf");
 		System.out.println("Deleting sheet \"Notas ES\"");
-		SheetData sd = pf.getSheetDataByName("Notas ES").get(0);
+		SpreadSheet sd = pf.getSpreadSheetByName("Notas ES").get(0);
 		sd.delete();
 		sd=null;
 	}
@@ -88,11 +88,11 @@ public class BubbleApplication {
 	@Atomic
 	private static Document exportPfSheet() {
 		User pf = BubbleDocs.getInstance().getUserByUsername("pf");
-		System.out.println("Exporting "+ pf.getSheetDataSet().size()+" sheets:");			
+		System.out.println("Exporting "+ pf.getSpreadSheetSet().size()+" sheets:");			
 		XMLOutputter xml = new XMLOutputter();
 		xml.setFormat(Format.getPrettyFormat());
 		Document doc=null;
-		for(SheetData x: pf.getSheetDataSet()){
+		for(SpreadSheet x: pf.getSpreadSheetSet()){
 			doc = x.export();				
 			System.out.println(xml.outputString(doc));
 			break;
@@ -113,7 +113,7 @@ public class BubbleApplication {
 		BubbleDocs bd = BubbleDocs.getInstance();
 		User pf = bd.createUser("pf","sub","Paul Door");
 		bd.createUser("ra","cor","Step Rabbit");
-		SheetData s1 = pf.createSheet("Notas ES",300,20);
+		SpreadSheet s1 = pf.createSheet("Notas ES",300,20);
 		s1.setCellText("pf",3,4,"5");
 		s1.setCellText("pf",1,1,"5;6");
 		s1.setCellText("pf",5,6,"=ADD(2,3;4)");
@@ -132,8 +132,8 @@ public class BubbleApplication {
 	private static void printUsersSheets() {
 		System.out.println("Registered users and their sheets names:");
 		for(User u: BubbleDocs.getInstance().getUserSet()){
-			System.out.println("\tusername:"+u.getUsername()+" has "+u.getSheetDataSet().size()+" sheets:");
-				for(SheetData x: u.getSheetDataSet()){
+			System.out.println("\tusername:"+u.getUsername()+" has "+u.getSpreadSheetSet().size()+" sheets:");
+				for(SpreadSheet x: u.getSpreadSheetSet()){
 					System.out.println("\t\tSheet, name:\""+x.getName()+"\" id:"+x.getId());
 				}
 		}

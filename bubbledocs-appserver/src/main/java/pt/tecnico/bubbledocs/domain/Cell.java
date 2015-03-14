@@ -10,8 +10,8 @@ public class Cell extends Cell_Base {
         super();
     }
 
-	public void init(SheetData sheetData,int line, int column,String text) {
-		setSheetData(sheetData);
+	public void init(SpreadSheet SpreadSheet,int line, int column,String text) {
+		setSpreadSheet(SpreadSheet);
 		setLine(line);
 		setColumn(column);	
 		setText(text);
@@ -31,7 +31,7 @@ public class Cell extends Cell_Base {
 	}
 
 	public void delete() {
-		setSheetData(null);
+		setSpreadSheet(null);
 		deleteDomainObject();
 	}
 

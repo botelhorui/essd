@@ -10,9 +10,9 @@ import pt.tecnico.bubbledocs.exception.PositionOutOfBoundsException;
 import pt.tecnico.bubbledocs.exception.UserHasNotAccessException;
 import pt.tecnico.bubbledocs.exception.UserHasNotWriteAccessException;
 
-public class SheetData extends SheetData_Base{
+public class SpreadSheet extends SpreadSheet_Base{
 
-	public SheetData() {
+	public SpreadSheet() {
 		super();
 	}
 
@@ -23,7 +23,7 @@ public class SheetData extends SheetData_Base{
 		setCreationDate(new DateTime());
 		setId(BubbleDocs.getInstance().generateId());
 
-		BubbleDocs.getInstance().addSheetData(this);
+		BubbleDocs.getInstance().addSpreadSheet(this);
 		setBubbleDocs(BubbleDocs.getInstance());
 
 		setCreator(creator);
@@ -33,7 +33,7 @@ public class SheetData extends SheetData_Base{
 		sa.init(creator,this,true);
 		getSheetAccessSet().add(sa);
 		creator.addSheetAccess(sa);
-		creator.addSheetData(this);
+		creator.addSpreadSheet(this);
 	}
 
 	private void checkBounds(int line,int column) throws PositionOutOfBoundsException{
@@ -111,7 +111,7 @@ public class SheetData extends SheetData_Base{
 
 	public Document export() {
 		Document doc = new Document();
-		Element root = new Element("SheetData");
+		Element root = new Element("SpreadSheet");
 		doc.setRootElement(root);
 
 		root.setAttribute("name", getName());		
