@@ -1,18 +1,27 @@
 package pt.tecnico.bubbledocs.domain;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.joda.time.Hours;
+import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.bubbledocs.exception.DifferentUserImportException;
-import pt.tecnico.bubbledocs.exception.UserDoesNotExistException;
-import pt.tecnico.bubbledocs.exception.UsernameAlreadyExistsException;
+import pt.tecnico.bubbledocs.exception.UnknownBubbleDocsUserException;
+import pt.tecnico.bubbledocs.exception.DuplicateUsernameException;
 
 public class BubbleDocs extends BubbleDocs_Base {
-    
+	private static final Logger logger = LoggerFactory.getLogger(FenixFramework.class);
+	private static final int LEASE_HOURS = 2;
+	
     private BubbleDocs() {        
         FenixFramework.getDomainRoot().setBubbleDocs(this);            
     }
@@ -25,8 +34,6 @@ public class BubbleDocs extends BubbleDocs_Base {
 	
 		return bd;
 	}
-	
-
 	
 	public int generateId(){
 		int genId = getGenId();
@@ -48,24 +55,24 @@ public class BubbleDocs extends BubbleDocs_Base {
 	}
 	
 	@Override
-    public void addUser(pt.tecnico.bubbledocs.domain.User user) throws UsernameAlreadyExistsException {
+    public void addUser(pt.tecnico.bubbledocs.domain.User user) throws DuplicateUsernameException {
         if(hasUser(user.getUsername())){
-        	throw new UsernameAlreadyExistsException();
+        	throw new DuplicateUsernameException();
         }
         super.addUser(user);
     }
 
-    public void removeUser(String username) throws UserDoesNotExistException {
+    public void removeUser(String username) throws UnknownBubbleDocsUserException {
     	User u = getUserByUsername(username);
     	if(u == null){
-    		throw new UserDoesNotExistException();
+    		throw new UnknownBubbleDocsUserException();
     	}
     	super.removeUser(u);
     }
     
-    public User createUser(String username,String password,String name)throws UsernameAlreadyExistsException{
+    public User createUser(String username,String password,String name)throws DuplicateUsernameException{
         if(hasUser(username)){
-        	throw new UsernameAlreadyExistsException();
+        	throw new DuplicateUsernameException();
         }
         User u = new User();
 		u.init(username,password,name);
@@ -80,11 +87,13 @@ public class BubbleDocs extends BubbleDocs_Base {
 	    	Element root = doc.getRootElement();
 	    	Element creatorEl = root.getChild("Creator");
 	    	String importUsername = creatorEl.getAttributeValue("username");
-	    	if(!importUsername.equals(username))
-	    		throw new DifferentUserImportException();
+	    	if(!hasUser(importUsername))
+	    		throw new UnknownBubbleDocsUserException();
 	    	User creator = getUserByUsername(username);
 	    	if(creator == null)
-	    		throw new UserDoesNotExistException();
+	    		throw new UnknownBubbleDocsUserException();	    	
+	    	if(!importUsername.equals(username))
+	    		throw new DifferentUserImportException();
 	    	// import SheetData
 	    	SpreadSheet sd = new SpreadSheet();
 	    	sd.init(creator, root.getAttributeValue("name"),
@@ -107,5 +116,52 @@ public class BubbleDocs extends BubbleDocs_Base {
     		System.out.println(e);
     		throw e;
     	}    	
-    }	
+    }
+
+	public User getUserByToken(String token){
+		for(User u:getUserSet()){			
+			if(u.getToken() != null && u.getToken().equals(token))
+				return u;
+		}
+		return null;
+	}
+
+	public void renewSessionDuration(User u) {
+		u.setLastAccess(new LocalTime());		
+	}
+
+	public void renewToken(User u) {
+		logger.info("renewing token for user:"+u.getUsername()+" token:"+u.getToken());
+		String token;
+		int rn;
+		if(u.getToken()==null){
+			rn = (int)(Math.random()*9);
+			token = u.getUsername()+"-"+rn;
+			u.setToken(token);
+			return;
+		}
+		Pattern p = Pattern.compile("(\\d)$");
+		Matcher m = p.matcher(u.getToken());
+		m.find();
+		int n = Integer.parseInt(m.group());		
+		while(true){
+			rn = (int)(Math.random()*9);
+			if(rn!=n){
+				token = u.getUsername()+"-"+rn;
+				u.setToken(token);
+				return;
+			}			
+		}
+	}
+	
+	public void cleanInvalidSessions(){
+		LocalTime now = new LocalTime();
+		for(User u: getUserSet()){
+			int dif = Hours.hoursBetween(now, u.getLastAccess()).getHours();
+			if(dif>=LEASE_HOURS){
+				u.setLastAccess(null);
+				u.setToken(null);
+			}
+		}		
+	}
 }

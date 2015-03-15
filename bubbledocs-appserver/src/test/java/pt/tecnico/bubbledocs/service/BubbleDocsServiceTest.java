@@ -8,6 +8,7 @@ import org.junit.Before;
 
 import pt.ist.fenixframework.FenixFramework;
 import pt.ist.fenixframework.core.WriteOnReadError;
+import pt.tecnico.bubbledocs.domain.*;
 
 // add needed import declarations
 
@@ -41,37 +42,42 @@ public class BubbleDocsServiceTest {
     // auxiliary methods that access the domain layer and are needed in the test classes
     // for defining the iniital state and checking that the service has the expected behavior
     User createUser(String username, String password, String name) {
-	// add code here
+    	BubbleDocs bd = BubbleDocs.getInstance();
+    	return bd.createUser(username, password, name);
     }
 
-    public SpreadSheet createSpreadSheet(User user, String name, int row,
-            int column) {
-	// add code here
+    public SpreadSheet createSpreadSheet(User user, String name, int row, int column) {
+    	// TODO add code here
+    	return null;
     }
 
     // returns a spreadsheet whose name is equal to name
     public SpreadSheet getSpreadSheet(String name) {
-	// add code here
+    	// TODO add code here
+    	return null;
     }
 
     // returns the user registered in the application whose username is equal to username
     User getUserFromUsername(String username) {
-	// add code here
+    	// TODO add code here
+    	return null;
     }
 
     // put a user into session and returns the token associated to it
     String addUserToSession(String username) {
-	// add code here
+    	// TODO add code here
+    	return null;
     }
 
     // remove a user from session given its token
     void removeUserFromSession(String token) {
-	// add code here
+    	// TODO add code here    	
     }
 
     // return the user registered in session whose token is equal to token
     User getUserFromSession(String token) {
-	// add code here
+    	BubbleDocs bd = BubbleDocs.getInstance();
+    	return bd.getUserByToken(token);
     }
 
 }

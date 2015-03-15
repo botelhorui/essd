@@ -8,16 +8,13 @@ class User{
 	String username;
 	String password;
 	String name;
-}
-
-class Root extends User{
-
+	LocalTime lastAccess;
+	String token;
 }
 
 class SheetAccess{
 	boolean canWrite;
 }
-
 
 class SpreadSheet{	
 	int id;

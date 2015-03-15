@@ -1,6 +1,6 @@
 package pt.tecnico.bubbledocs.exception;
 
-public class UserDoesNotExistException extends BubbleDocsException {
+public class UnknownBubbleDocsUserException extends BubbleDocsException {
 
 	/**
 	 * 

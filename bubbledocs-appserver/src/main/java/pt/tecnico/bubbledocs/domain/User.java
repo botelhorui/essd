@@ -12,8 +12,9 @@ public class User extends User_Base {
     public void init(String username,String password,String name){
     	setUsername(username);
     	setPassword(password);
-    	setName(name);    	
-    	
+    	setName(name);	
+    	setLastAccess(null);
+    	setToken(null);
     }   
     
     public void delete(){
