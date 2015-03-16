@@ -1,9 +1,11 @@
 package pt.tecnico.bubbledocs.domain;
 
-public class Argument extends Argument_Base {
+public abstract class Argument extends Argument_Base {
     
-    public Argument() {
+    protected Argument() {
         super();
     }
+    
+    // more Argument methods
     
 }
