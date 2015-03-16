@@ -46,15 +46,10 @@ public class User extends User_Base {
     	
     	if (spreadsheet != null)
     		return spreadsheet;
-    	else 
+    	else  
     		throw new UserIsNotOwnerException();
     }
     
-    public boolean hasCreatedSpreadsheet(String name){
-		return getCreatedSheetSet().stream()
-    			.filter(ds -> ds.getName().equals(name))
-    			.collect(Collectors.toList()) != null;
-	}
     
     public SpreadSheet createSheet(String name,int lines,int columns){
     	SpreadSheet SpreadSheet = new SpreadSheet();

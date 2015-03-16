@@ -144,7 +144,7 @@ public class BubbleApplication {
 	private static void printUsersSheets() {
 		
 		System.out.println("Registered users and their sheets names:");
-		
+		 
 		for(User u: BubbleDocs.getInstance().getUserSet()){
 			System.out.println("\tusername:"+u.getUsername()+" has "+u.getSpreadSheetSet().size()+" sheets:");
 			for(SpreadSheet x: u.getSpreadSheetSet()){
