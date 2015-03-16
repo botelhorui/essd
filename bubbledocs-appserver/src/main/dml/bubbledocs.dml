@@ -16,12 +16,12 @@ class SheetAccess{
 	boolean canWrite;
 }
 
-class SpreadSheet{	
+class SpreadSheet{
 	int id;
 	String name;
-	DateTime creationDate;	
+	DateTime creationDate;
 	int lines;
-	int columns;	 
+	int columns;
 }
 
 class Cell{
@@ -95,7 +95,7 @@ relation UserContainsSpreadSheet{
 
 relation SpreadSheetHasSheetAccess{
 	SpreadSheet playsRole spreadSheet{multiplicity 1;}
-	SheetAccess playsRole sheetAccess{multiplicity 1..*;}	
+	SheetAccess playsRole sheetAccess{multiplicity 1..*;}
 }
 
 relation UserContainsCreatedSheets{
@@ -118,8 +118,32 @@ relation CellContainsContent{
 	Content playsRole content{multiplicity 0..1;}
 }
 
-relation BinaryFunctionContainsArguments{
-	BinaryFunction playsRole binaryFunction{multiplicity 1;}
-	Argument playsRole arguments{multiplicity 2;}
+relation BinaryFunctionContainsLeftArgument{
+	BinaryFunction playsRole leftBinaryFunction{multiplicity 1;}
+	Argument playsRole leftArgument{multiplicity 1;}
 }
 
+relation BinaryFunctionContainsRightArgument{
+	BinaryFunction playsRole rightBinaryFunction{multiplicity 1;}
+	Argument playsRole rightArgument{multiplicity 1;}
+}
+
+relation ReferenceContentHasCell{
+	ReferenceContent playsRole referenceContent{multiplicity 1;}
+	Cell playsRole referenceCell{multiplicity 1;}
+}
+
+relation ReferenceArgumentHasCell{
+	ReferenceArgument playsRole referenceArgument{multiplicity 1;}
+	Cell playsRole referenceCell{multiplicity 1;}
+}
+
+relation UserCanReadSpreadSheet{
+	User playsRole readerUser{multiplicity 0..*;}
+	SpreadSheet playsRole readableSpreadSheet{multiplicity 0..*;}
+}
+
+relation UserCanWriteSpreadSheet{
+	User playsRole writerUser{multiplicity 0..*;}
+	SpreadSheet playsRole writableSpreadSheet{multiplicity 0..*;}
+}
