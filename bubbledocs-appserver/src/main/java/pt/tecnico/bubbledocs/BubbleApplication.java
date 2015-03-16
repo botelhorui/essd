@@ -32,19 +32,20 @@ public class BubbleApplication {
 			//
 			populateDomain();
 			//
-			printUsers();
+			printUsers(); 
 			//
-			printUsersSheets();
+			printAllUserSheets("pf"); 
+			printAllUserSheets("ra"); 
 			//
 			Document doc = exportPfSheet();
 			//
-			deleteSheet();
+			deleteSheet("pf","Notas ES");
 			//
-			printUsersSheets();
+			printAllUserSheets("pf"); 
 			//
 			importSheet(doc);
 			//
-			printUsersSheets();
+			printAllUserSheets("pf"); 
 			//
 			exportPfSheet();
 			//
@@ -69,7 +70,7 @@ public class BubbleApplication {
 			}
 		}		
 	}
-	
+
 	@Atomic
 	private static void importSheet(Document doc) {
 		System.out.println("Importing 1 sheet. \"Notas ES\"");
@@ -77,12 +78,16 @@ public class BubbleApplication {
 	}
 
 	@Atomic
-	private static void deleteSheet() {
-		User pf = BubbleDocs.getInstance().getUserByUsername("pf");
-		System.out.println("Deleting sheet \"Notas ES\"");
-		SpreadSheet sd = pf.getSpreadSheetByName("Notas ES").get(0);
-		sd.delete();
-		sd=null;
+	private static void deleteSheet(String username, String sheetname) {
+		
+		User user = BubbleDocs.getInstance().getUserByUsername(username);
+		
+		System.out.println("Deleting user \"" + username + "\"'s sheet \""+ sheetname +"\"");
+		
+		SpreadSheet sheet = user.getSpreadSheetByName(sheetname).get(0);
+		sheet.delete();
+		sheet = null;
+	
 	}
 
 	@Atomic
@@ -105,7 +110,7 @@ public class BubbleApplication {
 		BubbleDocs bd = BubbleDocs.getInstance();
 		return !bd.getUserSet().isEmpty();
 	}
-	
+
 	@Atomic
 	private static void populateDomain() {
 		if(isInitialized())
@@ -130,12 +135,28 @@ public class BubbleApplication {
 
 	@Atomic
 	private static void printUsersSheets() {
+		
 		System.out.println("Registered users and their sheets names:");
+		
 		for(User u: BubbleDocs.getInstance().getUserSet()){
 			System.out.println("\tusername:"+u.getUsername()+" has "+u.getSpreadSheetSet().size()+" sheets:");
-				for(SpreadSheet x: u.getSpreadSheetSet()){
-					System.out.println("\t\tSheet, name:\""+x.getName()+"\" id:"+x.getId());
-				}
+			for(SpreadSheet x: u.getSpreadSheetSet()){
+				System.out.println("\t\tSheet, name:\""+x.getName()+"\" id:"+x.getId());
+			}
+		}
+	}
+
+	@Atomic
+	private static void printAllUserSheets(String username) {
+
+		if(BubbleDocs.getInstance().hasUser(username)) {
+			User u = BubbleDocs.getInstance().getUserByUsername(username);
+
+			System.out.println(username + "'s Sheets (" + u.getSpreadSheetSet().size() + " sheets found):");
+			
+			for(SpreadSheet x: u.getSpreadSheetSet()){
+				System.out.println("\tSheet, name:\""+x.getName()+"\" id:"+x.getId());
+			}
 		}
 	}
 }
