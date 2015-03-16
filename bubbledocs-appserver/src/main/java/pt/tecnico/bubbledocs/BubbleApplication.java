@@ -84,7 +84,7 @@ public class BubbleApplication {
 		
 		System.out.println("Deleting user \"" + username + "\"'s sheet \""+ sheetname +"\"");
 		
-		SpreadSheet sheet = user.getSpreadSheetByName(sheetname).get(0);
+		SpreadSheet sheet = user.getCreatedSpreadSheetByName(sheetname).get(0);
 		sheet.delete();
 		sheet = null;
 	
