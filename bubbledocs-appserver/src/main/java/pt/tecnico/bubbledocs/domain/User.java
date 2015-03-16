@@ -3,6 +3,8 @@ package pt.tecnico.bubbledocs.domain;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import pt.tecnico.bubbledocs.exception.UserIsNotOwnerException;
+
 public class User extends User_Base {
     
     public User() {
@@ -35,12 +37,24 @@ public class User extends User_Base {
     			.filter(as -> as.getName().equals(name))
     			.collect(Collectors.toList());    	
     }
-    
-    public List<SpreadSheet> getCreatedSpreadSheetByName(String name){
-    	return getCreatedSheetSet().stream()
+   
+    public List<SpreadSheet> getCreatedSpreadSheetByName(String name) throws UserIsNotOwnerException {
+    	
+    	List<SpreadSheet> spreadsheet = getCreatedSheetSet().stream()
     			.filter(ds -> ds.getName().equals(name))
-    			.collect(Collectors.toList()); 
+    			.collect(Collectors.toList());
+    	
+    	if (spreadsheet != null)
+    		return spreadsheet;
+    	else 
+    		throw new UserIsNotOwnerException();
     }
+    
+    public boolean hasCreatedSpreadsheet(String name){
+		return getCreatedSheetSet().stream()
+    			.filter(ds -> ds.getName().equals(name))
+    			.collect(Collectors.toList()) != null;
+	}
     
     public SpreadSheet createSheet(String name,int lines,int columns){
     	SpreadSheet SpreadSheet = new SpreadSheet();

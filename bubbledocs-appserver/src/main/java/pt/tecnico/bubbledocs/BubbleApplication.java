@@ -21,6 +21,8 @@ import pt.tecnico.bubbledocs.domain.SheetAccess;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
 
+import pt.tecnico.bubbledocs.exception.UserIsNotOwnerException;
+
 @SuppressWarnings("unused")
 public class BubbleApplication {
 	public static void main(String[] args){
@@ -83,11 +85,16 @@ public class BubbleApplication {
 		User user = BubbleDocs.getInstance().getUserByUsername(username);
 		
 		System.out.println("Deleting user \"" + username + "\"'s sheet \""+ sheetname +"\"");
+		SpreadSheet sheet;
 		
-		SpreadSheet sheet = user.getSpreadSheetByName(sheetname).get(0);
-		sheet.delete();
-		sheet = null;
-	
+		try {
+			sheet = user.getCreatedSpreadSheetByName(sheetname).get(0);
+			sheet.delete();
+			sheet = null;
+		}
+		catch (UserIsNotOwnerException e) {
+			System.out.println("User \"" + username + "\" has not created sheet \"" + sheetname + "\".");
+		}
 	}
 
 	@Atomic
