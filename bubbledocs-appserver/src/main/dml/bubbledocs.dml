@@ -31,6 +31,48 @@ class Cell{
 	String text;
 }
 
+class Content{
+}
+
+class LiteralContent extends Content{
+	int value;
+}
+
+class ReferenceContent extends Content{
+	int r_row;
+	int r_column;
+}
+
+class FunctionContent extends Content{
+}
+
+class BinaryFunction extends FunctionContent{
+}
+
+class BFAdd extends BinaryFunction{
+}
+
+class BFSub extends BinaryFunction{
+}
+
+class BFMul extends BinaryFunction{
+}
+
+class BFDiv extends BinaryFunction{
+}
+
+class Argument{
+}
+
+class LiteralArgument extends Argument{
+	int value;
+}
+
+class ReferenceArgument extends Argument{
+	int r_row;
+	int r_column;
+}
+
 relation DomainRootHasBubbleDocs{
 	.pt.ist.fenixframework.DomainRoot playsRole root{multiplicity 0..1;}
 	BubbleDocs playsRole bubbleDocs {multiplicity 0..1;}
@@ -40,6 +82,7 @@ relation BubbleDocsContainsUsers{
 	BubbleDocs playsRole bubbleDocs{multiplicity 1;}
 	User playsRole user{multiplicity 0..*;}
 }
+
 relation BubbleDocsContainsSpreadSheet{
 	BubbleDocs playsRole bubbleDocs{multiplicity 1;}
 	SpreadSheet playsRole spreadSheet{multiplicity 0..*;}
@@ -70,6 +113,13 @@ relation SpreadSheetContainsCell{
 	Cell playsRole cell{multiplicity 0..*;}
 }
 
+relation CellContainsContent{
+	Cell playsRole cell{multiplicity 1;}
+	Content playsRole content{multiplicity 0..1;}
+}
 
-
+relation BinaryFunctionContainsArguments{
+	BinaryFunction playsRole binaryFunction{multiplicity 1;}
+	Argument playsRole arguments{multiplicity 2;}
+}
 
