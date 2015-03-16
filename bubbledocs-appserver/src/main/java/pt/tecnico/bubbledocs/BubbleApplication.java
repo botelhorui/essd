@@ -2,7 +2,7 @@ package pt.tecnico.bubbledocs;
 
 import java.util.ArrayList;
 import java.util.List;
-
+ 
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -95,6 +95,7 @@ public class BubbleApplication {
 		catch (UserIsNotOwnerException e) {
 			System.out.println("User \"" + username + "\" has not created sheet \"" + sheetname + "\".");
 		}
+	
 	}
 
 	@Atomic

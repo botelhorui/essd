@@ -1,3 +1,4 @@
+
 package pt.tecnico.bubbledocs.exception;
 
 public class UserHasNotAccessException extends BubbleDocsException {

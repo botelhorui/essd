@@ -39,8 +39,6 @@ class LiteralContent extends Content{
 }
 
 class ReferenceContent extends Content{
-	int r_row;
-	int r_column;
 }
 
 class FunctionContent extends Content{
@@ -69,9 +67,8 @@ class LiteralArgument extends Argument{
 }
 
 class ReferenceArgument extends Argument{
-	int r_row;
-	int r_column;
 }
+
 
 relation DomainRootHasBubbleDocs{
 	.pt.ist.fenixframework.DomainRoot playsRole root{multiplicity 0..1;}

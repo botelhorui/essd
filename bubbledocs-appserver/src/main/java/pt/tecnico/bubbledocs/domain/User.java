@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import pt.tecnico.bubbledocs.exception.UserIsNotOwnerException;
 
 public class User extends User_Base {
-    
+     
     public User() {
         super();
     }
