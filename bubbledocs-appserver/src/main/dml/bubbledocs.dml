@@ -85,7 +85,7 @@ relation BubbleDocsContainsSpreadSheet{
 
 relation SpreadSheetHasSheetAccess{
 	SpreadSheet playsRole spreadSheet{multiplicity 1;}
-	SheetAccess playsRole sheetAccess{multiplicity 1..*;}
+	SheetAccess playsRole sheetAccess{multiplicity 1;}
 }
 
 relation UserOwnedSheets{

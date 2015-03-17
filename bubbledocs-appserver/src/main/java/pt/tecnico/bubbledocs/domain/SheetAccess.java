@@ -6,10 +6,14 @@ public class SheetAccess extends SheetAccess_Base {
         super();
     }
     
-    public void init(User user, SpreadSheet SpreadSheet, boolean canWrite){
+    public SheetAccess(User user, SpreadSheet spread){
+    	super();
+    	init(user, spread);
+    }
+    
+    protected void init(User user, SpreadSheet spread){
     	setUser(user);
-    	setSpreadSheet(SpreadSheet);
-    	//setCanWrite(canWrite);
+    	setSpreadSheet(spread);
     }
 
 	public void delete() {

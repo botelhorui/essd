@@ -13,7 +13,12 @@ public class User extends User_Base {
         super();
     }
     
-    public void init(String username,String password,String name){
+    public User(String username, String password, String name){
+    	super();
+    	init(username, password, name);
+    }
+    
+    protected void init(String username, String password, String name){
     	setUsername(username);
     	setPassword(password);
     	setName(name);	
@@ -65,9 +70,8 @@ public class User extends User_Base {
     }
     
     
-    public SpreadSheet createSheet(String name,int lines,int columns){
-    	SpreadSheet SpreadSheet = new SpreadSheet();
-    	SpreadSheet.init(this, name, lines, columns);
-    	return SpreadSheet;
+    public SpreadSheet createSheet(String name, int lines, int columns){
+    	SpreadSheet s = new SpreadSheet(this, name, lines, columns);
+    	return s;
     }
 }

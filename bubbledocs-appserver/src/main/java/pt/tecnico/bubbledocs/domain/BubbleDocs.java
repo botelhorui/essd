@@ -95,8 +95,7 @@ public class BubbleDocs extends BubbleDocs_Base {
         	throw new DuplicateUsernameException();
         }
         
-        User u = new User();
-		u.init(username,password,name);
+        User u = new User(username, password, name);
 		addUser(u);
 		return u;
     }

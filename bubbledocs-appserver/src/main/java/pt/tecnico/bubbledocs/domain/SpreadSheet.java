@@ -28,6 +28,13 @@ public class SpreadSheet extends SpreadSheet_Base{
 		setLines(lines);
 		setColumns(columns);
 		
+		//Create all the spread's empty cells
+		for(int i=1; i <= lines ;i++){
+    		for(int j=1; j <= columns ;j++){
+    			Cell c = new Cell(this, i, j);
+    		}
+    	}
+		
 
 		BubbleDocs.getInstance().addSpreadSheet(this);
 		setBubbleDocs(BubbleDocs.getInstance());
@@ -39,9 +46,8 @@ public class SpreadSheet extends SpreadSheet_Base{
 		addWriterUser(owner);
 		owner.addWritableSpread(this);
 
-		SheetAccess sa = new SheetAccess();
-		sa.init(owner,this,true);
-		getSheetAccessSet().add(sa);
+		SheetAccess sa = new SheetAccess(owner, this);
+		setSheetAccess(sa);
 		owner.addSheetAccess(sa);
 		
 	}
@@ -80,33 +86,6 @@ public class SpreadSheet extends SpreadSheet_Base{
 			return "";
 		}
 		return c.getValue();
-	}*/
-
-	/*public void setCellText(String username,int line, int column, String text)
-			throws PositionOutOfBoundsException,
-			CellProtectedException,
-			UserHasNotWriteAccessException,
-			UserHasNotAccessException{
-		checkWriteAccess(username);
-		Cell c = getCell(line,column);		
-		if(c == null){
-			c = new Cell();
-			c.init(this,line,column,text);
-			addCell(c);			
-		}else{
-			c.setText(text);
-		}
-
-	}*/
-
-	/*public String getCellText(String username,int line, int column)
-			throws PositionOutOfBoundsException {
-		checkReadAccess(username);
-		Cell c = getCell(line,column);
-		if(c==null){
-			return "";
-		}
-		return c.getText();
 	}*/
 
 	/*public void setUserAccess(String settingUser, String userToSet, boolean canWrite)
@@ -158,9 +137,7 @@ public class SpreadSheet extends SpreadSheet_Base{
 
 	public void delete() {
 		//Delete Roles
-		for(SheetAccess sa: getSheetAccessSet()){
-			sa.delete();
-		}
+		getSheetAccess().delete();
 		
 		for(Cell c: getCellSet()){
 			c.delete();
