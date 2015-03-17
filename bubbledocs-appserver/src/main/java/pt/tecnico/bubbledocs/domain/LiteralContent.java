@@ -19,7 +19,7 @@ public class LiteralContent extends LiteralContent_Base {
     }
     
     //more LiteralContent methods
-    
+    @Override
     public Element export(){
     	Element e = new Element("Literal");
     	e.setAttribute("value", "" + this.getValue());
