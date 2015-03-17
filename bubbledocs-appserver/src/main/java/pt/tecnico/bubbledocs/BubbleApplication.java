@@ -20,9 +20,12 @@ import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.SheetAccess;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
+import pt.tecnico.bubbledocs.domain.LiteralArgument;
+import pt.tecnico.bubbledocs.domain.ReferenceArgument;
 
 import pt.tecnico.bubbledocs.exception.UserIsNotOwnerException;
 import pt.tecnico.bubbledocs.exception.UserDoesNotExistException;
+import pt.tecnico.bubbledocs.exception.PositionOutOfBoundsException;
 
 @SuppressWarnings("unused")
 public class BubbleApplication {
@@ -153,10 +156,20 @@ public class BubbleApplication {
 		User pf = bd.createUser("pf","sub","Paul Door");
 		bd.createUser("ra","cor","Step Rabbit");
 		SpreadSheet s1 = pf.createSheet("Notas ES",300,20);
-		//s1.setCellText("pf",3,4,"5");
-		//s1.setCellText("pf",1,1,"5;6");
-		//s1.setCellText("pf",5,6,"=ADD(2,3;4)");
-		//s1.setCellText("pf",2,2,"=DIV(1;1,3;4)");			
+		
+		//TODO: Verificar permissoes do user para read/write
+		try{
+			s1.getCell(3, 4).setLiteralContent(5);
+			
+			s1.getCell(1,1).setReferenceContent(s1.getCell(5,6));
+			
+			s1.getCell(5,6).setBFAdd(new LiteralArgument(2), new ReferenceArgument(s1.getCell(3,4)));
+			
+			s1.getCell(2,2).setBFDiv(new ReferenceArgument(s1.getCell(1,1)), new ReferenceArgument(s1.getCell(3,4)));
+			
+		}catch (PositionOutOfBoundsException e){
+			System.out.println();
+		}
 	}
 
 	@Atomic

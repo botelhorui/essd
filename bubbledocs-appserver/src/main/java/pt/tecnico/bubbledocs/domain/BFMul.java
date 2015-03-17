@@ -8,6 +8,12 @@ public class BFMul extends BFMul_Base {
         super();
     }
     
+    public BFMul(Argument right, Argument left){
+    	super();
+    	setLeftArgument(left);
+    	setRightArgument(right);
+    }
+    
     @Override
     public Element export(){
     	Element e = new Element("=MUL");

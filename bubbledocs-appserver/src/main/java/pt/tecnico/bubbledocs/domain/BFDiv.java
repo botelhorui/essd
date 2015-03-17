@@ -8,6 +8,12 @@ public class BFDiv extends BFDiv_Base {
 		super();
 	}
 	
+    public BFDiv(Argument right, Argument left){
+    	super();
+    	setLeftArgument(left);
+    	setRightArgument(right);
+    }
+	
 	@Override
 	public Element export(){
     	Element e = new Element("=DIV");

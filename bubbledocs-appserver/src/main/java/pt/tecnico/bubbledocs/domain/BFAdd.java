@@ -8,6 +8,12 @@ public class BFAdd extends BFAdd_Base {
         super();
     }
     
+    public BFAdd(Argument right, Argument left){
+    	super();
+    	setLeftArgument(left);
+    	setRightArgument(right);
+    }
+    
     @Override
     public Element export(){
     	Element e = new Element("=ADD");

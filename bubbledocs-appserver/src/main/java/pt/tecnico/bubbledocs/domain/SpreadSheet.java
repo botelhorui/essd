@@ -51,15 +51,12 @@ public class SpreadSheet extends SpreadSheet_Base{
 		owner.addSheetAccess(sa);
 		
 	}
-
-	private void checkBounds(int line,int column) throws PositionOutOfBoundsException{
+	
+	public Cell getCell(int line, int column) throws PositionOutOfBoundsException{
 		if(line < 1 || line > getLines() || column < 1 || column > getColumns())
 			throw new PositionOutOfBoundsException();
-	}
-
-	private Cell getCell(int line, int column) throws PositionOutOfBoundsException{
-		checkBounds(line, column);
-		for(Cell x:getCellSet()){
+		
+		for(Cell x : getCellSet()){
 			if(x.getLine() == line && x.getColumn() == column){
 				return x;
 			}

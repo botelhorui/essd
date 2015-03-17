@@ -31,8 +31,23 @@ public class Cell extends Cell_Base {
 		setContent(ref);
 	}
 	
-	public void setBinaryFunctionContent(Argument left, Argument right){
-		BinaryFunction bf = new BinaryFunction(left, right);
+	public void setBFAdd(Argument left, Argument right){
+		BFAdd bf = new BFAdd(left, right);
+		setContent(bf);
+	}
+	
+	public void setBFSub(Argument left, Argument right){
+		BFSub bf = new BFSub(left, right);
+		setContent(bf);
+	}
+	
+	public void setBFDiv(Argument left, Argument right){
+		BFDiv bf = new BFDiv(left, right);
+		setContent(bf);
+	}
+	
+	public void setBFMul(Argument left, Argument right){
+		BFMul bf = new BFMul(left, right);
 		setContent(bf);
 	}
 	
@@ -57,9 +72,9 @@ public class Cell extends Cell_Base {
 		e.setAttribute("line", "" + getLine());
 		e.setAttribute("column", "" + getColumn());
 		
-		if(this.getContent() != null){
-			e.addContent(this.getContent().export());
-		}
+		//if(this.getContent() != null){
+			//e.addContent(this.getContent().export());
+		//}
 		
 		return e;
 	}

@@ -8,6 +8,12 @@ public class BFSub extends BFSub_Base {
         super();
     }
     
+    public BFSub(Argument right, Argument left){
+    	super();
+    	setLeftArgument(left);
+    	setRightArgument(right);
+    }
+    
     @Override
     public Element export(){
     	Element e = new Element("=SUB");
