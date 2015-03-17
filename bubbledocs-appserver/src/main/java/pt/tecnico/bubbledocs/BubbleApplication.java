@@ -64,7 +64,7 @@ public class BubbleApplication {
 				RollbackException|
 				HeuristicMixedException |
 				HeuristicRollbackException ex) {
-			System.err.println("Error in execution of transaction: ");
+			System.err.println("Error in execution of transaction: " + ex);
 			ex.printStackTrace();
 		
 		} catch (UserDoesNotExistException e) {
@@ -151,7 +151,8 @@ public class BubbleApplication {
 	@Atomic
 	private static void populateDomain() {
 		if(isInitialized())
-			return;		
+			return;
+		
 		BubbleDocs bd = BubbleDocs.getInstance();
 		User pf = bd.createUser("pf","sub","Paul Door");
 		bd.createUser("ra","cor","Step Rabbit");
@@ -165,11 +166,12 @@ public class BubbleApplication {
 			s1.getCell(1,1).setReferenceContent(s1.getCell(5,6));
 			
 			s1.getCell(5,6).setBFAdd(new LiteralArgument(2), new ReferenceArgument(s1.getCell(3,4)));
+			
 			//second one is getCell(3,4)
-			s1.getCell(2,2).setBFDiv(new ReferenceArgument(s1.getCell(1,1)), new ReferenceArgument(s1.getCell(3,8)));
+			s1.getCell(2,2).setBFDiv(new ReferenceArgument(s1.getCell(1,1)), new ReferenceArgument(s1.getCell(3,4)));
 			
 		}catch (PositionOutOfBoundsException e){
-			System.out.println();
+			System.out.println("Trying to access an out of bounds cell.");
 		}
 	}
 

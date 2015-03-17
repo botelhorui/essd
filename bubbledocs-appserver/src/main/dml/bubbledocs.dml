@@ -129,11 +129,11 @@ relation BinaryFunctionContainsRightArgument{
 }
 
 relation ReferenceContentHasCell{
-	ReferenceContent playsRole referenceContent{multiplicity 1;}
+	ReferenceContent playsRole referenceContent{multiplicity 0..*;}
 	Cell playsRole referenceCell{multiplicity 1;}
 }
 
 relation ReferenceArgumentHasCell{
-	ReferenceArgument playsRole referenceArgument{multiplicity 1;}
-	Cell playsRole referenceCell{multiplicity 1;}
+	ReferenceArgument playsRole referenceArgument{multiplicity 0..*;}
+	Cell playsRole reference{multiplicity 1;}
 }

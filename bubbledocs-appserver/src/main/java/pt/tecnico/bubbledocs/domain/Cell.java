@@ -59,8 +59,15 @@ public class Cell extends Cell_Base {
 	public void delete() {
 		//Delete Roles
 		setSpreadSheet(null);
-		setReferenceContent( (Cell) null);
-		setReferenceArgument(null);
+
+		for(ReferenceContent rc : getReferenceContentSet()){
+			removeReferenceContent(rc);
+		}
+		
+		for(ReferenceArgument ra : getReferenceArgumentSet()){
+			removeReferenceArgument(ra);
+		}
+		
 		setContent(null);
 		
 		//Delete Object
