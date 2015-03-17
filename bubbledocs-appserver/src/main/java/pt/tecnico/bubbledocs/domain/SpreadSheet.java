@@ -114,8 +114,42 @@ public class SpreadSheet extends SpreadSheet_Base{
 	}*/
 
 	public Document export() {
-		//TODO by John
-		return null;
+		Document doc = new Document();
+		Element root = new Element("SpreadSheet");
+		doc.setRootElement(root);
+
+		root.setAttribute("name", getName());		
+		root.setAttribute("creation-date",getCreationDate().toString(ISODateTimeFormat.dateTime()));
+		root.setAttribute("lines", ""+getLines());
+		root.setAttribute("columns", ""+getColumns());
+
+		Element owner = new Element("Owner");
+		owner.setAttribute("username", getOwner().getUsername());
+		root.addContent(owner);
+		
+		Element readers = new Element("Readers");
+		root.addContent(readers);
+		for(User u : getReaderUserSet()){
+			Element user = new Element("User");
+			user.setAttribute("username", u.getUsername());
+			readers.addContent(user);
+		}
+		
+		Element writers = new Element("Writers");
+		root.addContent(writers);
+		for(User u : getWriterUserSet()){
+			Element user = new Element("User");
+			user.setAttribute("username", u.getUsername());
+			writers.addContent(user);
+		}
+
+		Element cells = new Element("Cells");
+		root.addContent(cells);
+		for(Cell c: getCellSet()){
+			cells.addContent(c.export());
+		}
+		
+		return doc;
 	}
 
 	public void delete() {

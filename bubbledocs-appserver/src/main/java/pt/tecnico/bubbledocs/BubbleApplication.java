@@ -39,7 +39,7 @@ public class BubbleApplication {
 			printAllUserSheets("pf"); 
 			printAllUserSheets("ra"); 
 			//
-			//Document doc = exportPfSheet();
+			Document doc = exportSheet(BubbleDocs.getInstance().getUserByUsername("pf").getOwnedSpreadByName("Notas ES").get(0));
 			//
 			//deleteSheet("pf","Notas ES");
 			//
@@ -98,18 +98,33 @@ public class BubbleApplication {
 	
 	}
 
+	/*
+	 * Deprecated
+	 * 
 	@Atomic
 	private static Document exportPfSheet() {
 		User pf = BubbleDocs.getInstance().getUserByUsername("pf");
-		System.out.println("Exporting "+ pf.getOwnedSpreadSet().size()+" sheets:");			
+		System.out.println("Exporting "+ pf.getSpreadSheetSet().size()+" sheets:");			
 		XMLOutputter xml = new XMLOutputter();
 		xml.setFormat(Format.getPrettyFormat());
 		Document doc=null;
-		for(SpreadSheet x: pf.getOwnedSpreadSet()){
+		for(SpreadSheet x: pf.getSpreadSheetSet()){
 			doc = x.export();				
 			System.out.println(xml.outputString(doc));
 			break;
 		}
+		return doc;
+	}
+	*/
+	
+	@Atomic
+	private static Document exportSheet(SpreadSheet ss){
+		System.out.println("Exporting Spreadsheet " + ss.getName() + " with " + ss.getLines() + " lines and " + ss.getColumns() + " columns.");
+		XMLOutputter xml = new XMLOutputter();
+		xml.setFormat(Format.getPrettyFormat());
+		Document doc = null;
+		doc = ss.export();
+		System.out.println(xml.outputString(doc));
 		return doc;
 	}
 

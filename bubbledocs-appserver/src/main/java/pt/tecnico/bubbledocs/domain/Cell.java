@@ -47,8 +47,11 @@ public class Cell extends Cell_Base {
 	}
 
 	public Element export() {
-		//TODO by John
-		return null;
+		Element e = new Element("Cell");
+		e.setAttribute("line", "" + getLine());
+		e.setAttribute("column", "" + getColumn());
+		
+		return e;
 	}
     
 }
