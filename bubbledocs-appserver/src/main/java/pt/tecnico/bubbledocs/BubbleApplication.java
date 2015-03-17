@@ -155,7 +155,8 @@ public class BubbleApplication {
 		BubbleDocs bd = BubbleDocs.getInstance();
 		User pf = bd.createUser("pf","sub","Paul Door");
 		bd.createUser("ra","cor","Step Rabbit");
-		SpreadSheet s1 = pf.createSheet("Notas ES",300,20);
+		//Here it's 300,20
+		SpreadSheet s1 = pf.createSheet("Notas ES",20,20);
 		
 		//TODO: Verificar permissoes do user para read/write
 		try{
@@ -164,8 +165,8 @@ public class BubbleApplication {
 			s1.getCell(1,1).setReferenceContent(s1.getCell(5,6));
 			
 			s1.getCell(5,6).setBFAdd(new LiteralArgument(2), new ReferenceArgument(s1.getCell(3,4)));
-			
-			s1.getCell(2,2).setBFDiv(new ReferenceArgument(s1.getCell(1,1)), new ReferenceArgument(s1.getCell(3,4)));
+			//second one is getCell(3,4)
+			s1.getCell(2,2).setBFDiv(new ReferenceArgument(s1.getCell(1,1)), new ReferenceArgument(s1.getCell(3,8)));
 			
 		}catch (PositionOutOfBoundsException e){
 			System.out.println();

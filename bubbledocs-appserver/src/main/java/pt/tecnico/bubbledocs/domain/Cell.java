@@ -72,9 +72,9 @@ public class Cell extends Cell_Base {
 		e.setAttribute("line", "" + getLine());
 		e.setAttribute("column", "" + getColumn());
 		
-		//if(this.getContent() != null){
-			//e.addContent(this.getContent().export());
-		//}
+		if(this.getContent() != null){
+			e.addContent(this.getContent().export());
+		}
 		
 		return e;
 	}

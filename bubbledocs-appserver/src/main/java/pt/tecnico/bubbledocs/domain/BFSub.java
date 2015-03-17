@@ -8,7 +8,7 @@ public class BFSub extends BFSub_Base {
         super();
     }
     
-    public BFSub(Argument right, Argument left){
+    public BFSub(Argument left, Argument right){
     	super();
     	setLeftArgument(left);
     	setRightArgument(right);
@@ -16,7 +16,7 @@ public class BFSub extends BFSub_Base {
     
     @Override
     public Element export(){
-    	Element e = new Element("=SUB");
+    	Element e = new Element("SUB");
     	e.addContent(this.getLeftArgument().export());
     	e.addContent(this.getRightArgument().export());
     	return e;

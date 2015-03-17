@@ -8,7 +8,7 @@ public class BFDiv extends BFDiv_Base {
 		super();
 	}
 	
-    public BFDiv(Argument right, Argument left){
+    public BFDiv(Argument left, Argument right){
     	super();
     	setLeftArgument(left);
     	setRightArgument(right);
@@ -16,7 +16,7 @@ public class BFDiv extends BFDiv_Base {
 	
 	@Override
 	public Element export(){
-    	Element e = new Element("=DIV");
+    	Element e = new Element("DIV");
     	e.addContent(this.getLeftArgument().export());
     	e.addContent(this.getRightArgument().export());
     	return e;

@@ -8,7 +8,7 @@ public class BFAdd extends BFAdd_Base {
         super();
     }
     
-    public BFAdd(Argument right, Argument left){
+    public BFAdd(Argument left, Argument right){
     	super();
     	setLeftArgument(left);
     	setRightArgument(right);
@@ -16,7 +16,7 @@ public class BFAdd extends BFAdd_Base {
     
     @Override
     public Element export(){
-    	Element e = new Element("=ADD");
+    	Element e = new Element("ADD");
     	e.addContent(this.getLeftArgument().export());
     	e.addContent(this.getRightArgument().export());
     	return e;
