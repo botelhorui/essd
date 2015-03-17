@@ -21,12 +21,30 @@ public class User extends User_Base {
     	setToken(null);
     }   
     
-    public void delete(){
-    	for(SpreadSheet sd: getOwnedSpreadSet())
-    		sd.delete();
-    	setBubbleDocs(null);
-    	deleteDomainObject();
-    }
+	public void delete(){
+		//Delete Roles
+		for(SheetAccess sa: getSheetAccessSet()){
+			sa.delete();
+		}
+		
+		for(SpreadSheet s: getOwnedSpreadSet()){
+			removeOwnedSpread(s);
+			s.delete();
+		}
+		
+		for(SpreadSheet rs: getReadableSpreadSet()){
+			removeReadableSpread(rs);
+		}
+		
+		for(SpreadSheet ws: getWritableSpreadSet()){
+			removeWritableSpread(ws);
+		}
+		
+		setBubbleDocs(null);
+
+		//Delete Object
+		deleteDomainObject();
+	}
     
     @Override
     public void setUsername(String username) {

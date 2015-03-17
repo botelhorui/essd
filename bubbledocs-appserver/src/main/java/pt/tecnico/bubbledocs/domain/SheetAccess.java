@@ -13,8 +13,11 @@ public class SheetAccess extends SheetAccess_Base {
     }
 
 	public void delete() {
+		//Delete Roles
 		setUser(null);
 		setSpreadSheet(null);
+		
+		//Delete Object
 		deleteDomainObject();
 	}
     

@@ -42,7 +42,13 @@ public class Cell extends Cell_Base {
 	}
 
 	public void delete() {
+		//Delete Roles
 		setSpreadSheet(null);
+		setReferenceContent( (Cell) null);
+		setReferenceArgument(null);
+		setContent(null);
+		
+		//Delete Object
 		deleteDomainObject();
 	}
 

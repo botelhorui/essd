@@ -153,20 +153,27 @@ public class SpreadSheet extends SpreadSheet_Base{
 	}
 
 	public void delete() {
-		//SheetAccess delete is always called before this
-		for(SheetAccess sa: getSheetAccessSet())
+		//Delete Roles
+		for(SheetAccess sa: getSheetAccessSet()){
 			sa.delete();
+		}
 		
-		for(Cell c: getCellSet())
+		for(Cell c: getCellSet()){
 			c.delete();
+		}
 		
-		for(User r: getReaderUserSet())
+		for(User r: getReaderUserSet()){
 			removeReaderUser(r);
+		}
 		
-		//TODO Writer
+		for(User w: getWriterUserSet()){
+			removeWriterUser(w);
+		}
 		
 		setOwner(null);
 		setBubbleDocs(null);
+		
+		//Delete Object
 		deleteDomainObject();		
 	}
 
