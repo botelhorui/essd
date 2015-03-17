@@ -109,8 +109,10 @@ public class BubbleDocs extends BubbleDocs_Base {
     		 */
     		Element root = doc.getRootElement();
     		Element owner = root.getChild("Owner");
+    		
+    		String docUsername = owner.getAttributeValue("username");
     				
-    		if(owner.getAttributeValue("username") != username){
+    		if(!docUsername.equals(username)){
     			System.out.println(owner.getAttributeValue("username") + " | " + username);
     			throw new UserIsNotOwnerException();
     		}
