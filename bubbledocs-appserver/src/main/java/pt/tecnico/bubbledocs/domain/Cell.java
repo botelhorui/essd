@@ -85,5 +85,23 @@ public class Cell extends Cell_Base {
 		
 		return e;
 	}
+	
+	public void importXML(Element e) throws NullPointerException{
+		
+		if(!e.getChildren().isEmpty()){
+			Element content = e.getChildren().get(0);
+			
+			if (content.getName() == "Literal"){
+				this.setLiteralContent(Integer.parseInt(content.getAttributeValue("value")));
+			}
+			else if(content.getName() == "Reference"){
+				Element c = content.getChild("Cell");
+				Cell cell = this.getSpreadSheet().getCell(Integer.parseInt(c.getAttributeValue("line")), Integer.parseInt(c.getAttributeValue("column")));
+				this.setReferenceContent(cell);
+			}
+	
+		}
+		
+	}
     
 }

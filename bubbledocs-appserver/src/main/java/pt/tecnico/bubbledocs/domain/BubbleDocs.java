@@ -18,6 +18,7 @@ import pt.tecnico.bubbledocs.exception.DifferentUserImportException;
 import pt.tecnico.bubbledocs.exception.UnknownBubbleDocsUserException;
 import pt.tecnico.bubbledocs.exception.DuplicateUsernameException;
 import pt.tecnico.bubbledocs.exception.UserDoesNotExistException;
+import pt.tecnico.bubbledocs.exception.UserIsNotOwnerException;
 
 public class BubbleDocs extends BubbleDocs_Base {
 	private static final Logger logger = LoggerFactory.getLogger(FenixFramework.class);
@@ -98,6 +99,53 @@ public class BubbleDocs extends BubbleDocs_Base {
         User u = new User(username, password, name);
 		addUser(u);
 		return u;
+    }
+  
+    @Atomic
+    public void importSheet(Document doc, String username){
+    	try{
+    		/*
+    		 * Checking for potential errors.
+    		 */
+    		Element root = doc.getRootElement();
+    		Element owner = root.getChild("Owner");
+    				
+    		if(owner.getAttributeValue("username") != username){
+    			System.out.println(owner.getAttributeValue("username") + " | " + username);
+    			throw new UserIsNotOwnerException();
+    		}
+    				
+    		if(!hasUser(username)){
+    			throw new UnknownBubbleDocsUserException();
+    		}
+    		
+    		/*
+    		 * Populating data.
+    		 */
+    		
+    		User creator = getUserByUsername(username);
+    		SpreadSheet ss = creator.createSheet(root.getAttributeValue("name"), Integer.parseInt(root.getAttributeValue("lines")), Integer.parseInt(root.getAttributeValue("columns")));
+    		
+    		DateTimeFormatter dtf = ISODateTimeFormat.dateTime();
+    		ss.setCreationDate(dtf.parseDateTime(root.getAttributeValue("creation-date")));
+    		
+    		Element cells = root.getChild("Cells");
+    		
+    		for(Element cellElement : cells.getChildren()){
+    			Cell cell = ss.getCell(Integer.parseInt(cellElement.getAttributeValue("line")), Integer.parseInt(cellElement.getAttributeValue("column")));
+    			cell.importXML(cellElement);
+    		}
+    
+    		
+    	} catch(UserIsNotOwnerException e){
+    		System.err.println("User is not the original owner of this Spreadsheet.");
+    	} catch(UnknownBubbleDocsUserException e){
+    		System.err.println("Unknown user.");
+    	} catch(NullPointerException e){
+    		System.err.println("Could not import from XML document.");
+    	}
+    	
+    	
     }
     
     //
