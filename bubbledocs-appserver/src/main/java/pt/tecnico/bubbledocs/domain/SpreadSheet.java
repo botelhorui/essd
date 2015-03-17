@@ -34,12 +34,16 @@ public class SpreadSheet extends SpreadSheet_Base{
 
 		setOwner(owner);
 		owner.addOwnedSpread(this);
+		addReaderUser(owner);
+		owner.addReadableSpread(this);
+		addWriterUser(owner);
+		owner.addWritableSpread(this);
 
 		SheetAccess sa = new SheetAccess();
 		sa.init(owner,this,true);
 		getSheetAccessSet().add(sa);
 		owner.addSheetAccess(sa);
-		owner.addOwnedSpread(this);
+		
 	}
 
 	private void checkBounds(int line,int column) throws PositionOutOfBoundsException{

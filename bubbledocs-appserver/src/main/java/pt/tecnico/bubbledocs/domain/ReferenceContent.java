@@ -15,7 +15,7 @@ public class ReferenceContent extends ReferenceContent_Base {
     
     public Element export(){
     	Element e = new Element("Reference");
-    	e.addContent(this.getReferenceCell());
+    	e.addContent(this.getReferenceCell().export());
     	return e;
 	}
     
