@@ -113,7 +113,6 @@ public class BubbleDocs extends BubbleDocs_Base {
     		String docUsername = owner.getAttributeValue("username");
     				
     		if(!docUsername.equals(username)){
-    			System.out.println(owner.getAttributeValue("username") + " | " + username);
     			throw new UserIsNotOwnerException();
     		}
     				

@@ -34,28 +34,44 @@ public class BubbleApplication {
 		TransactionManager tm = FenixFramework.getTransactionManager();
 		boolean committed = false;
 		try {
+			//
 			tm.begin();
-			//
 			populateDomain();
+			tm.commit();
 			//
-			printUsers(); 
+			tm.begin();
+			printUsers();
+			tm.commit();
 			//
+			tm.begin();
 			printAllUserSheets("pf"); 
-			printAllUserSheets("ra"); 
+			printAllUserSheets("ra");
+			tm.commit();
 			//
+			tm.begin();
 			Document doc = exportSheet(BubbleDocs.getInstance().getUserByUsername("pf").getOwnedSpreadByName("Notas ES").get(0));
+			tm.commit();
 			//
+			tm.begin();
 			deleteSheet("pf","Notas ES");
+			tm.commit();
 			//
+			tm.begin();
 			printAllUserSheets("pf"); 
+			tm.commit();
 			//
+			tm.begin();
 			importSheet(doc, "pf");
+			tm.commit();
 			//
-			printAllUserSheets("pf"); 
+			tm.begin();
+			printAllUserSheets("pf");
+			tm.commit();
 			//
+			tm.begin();
 			exportSheet(BubbleDocs.getInstance().getUserByUsername("pf").getOwnedSpreadByName("Notas ES").get(0));
 			//
-			System.out.println("Finished ");			
+			System.out.println("Finished.");			
 			tm.commit();
 			committed = true;
 			
@@ -90,8 +106,8 @@ public class BubbleApplication {
 	
 	}*/
 	
+	@Atomic
 	private static void importSheet(Document doc, String username){
-	
 		BubbleDocs.getInstance().importSheet(doc, username);
 		
 	}
