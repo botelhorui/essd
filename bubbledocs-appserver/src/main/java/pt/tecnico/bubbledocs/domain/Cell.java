@@ -56,7 +56,11 @@ public class Cell extends Cell_Base {
 		Element e = new Element("Cell");
 		e.setAttribute("line", "" + getLine());
 		e.setAttribute("column", "" + getColumn());
-		e.addContent(this.getContent().export());
+		
+		if(this.getContent() != null){
+			e.addContent(this.getContent().export());
+		}
+		
 		return e;
 	}
     
