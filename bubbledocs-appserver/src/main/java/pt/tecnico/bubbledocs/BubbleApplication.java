@@ -22,6 +22,7 @@ import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
 
 import pt.tecnico.bubbledocs.exception.UserIsNotOwnerException;
+import pt.tecnico.bubbledocs.exception.UserDoesNotExistException;
 
 @SuppressWarnings("unused")
 public class BubbleApplication {
@@ -54,14 +55,19 @@ public class BubbleApplication {
 			System.out.println("Finished ");			
 			tm.commit();
 			committed = true;
-		}catch (SystemException|
+			
+		} catch (SystemException|
 				NotSupportedException |
 				RollbackException|
 				HeuristicMixedException |
 				HeuristicRollbackException ex) {
 			System.err.println("Error in execution of transaction: ");
 			ex.printStackTrace();
+		
+		} catch (UserDoesNotExistException e) {
+			System.out.println("User pf does not exist.");
 		} finally {
+		
 			if (!committed){
 				System.out.println("Rolling back");
 				try {
@@ -73,29 +79,34 @@ public class BubbleApplication {
 		}		
 	}
 
-	@Atomic
+	/*@Atomic
 	private static void importSheet(Document doc) {
+	
 		System.out.println("Importing 1 sheet. \"Notas ES\"");
 		BubbleDocs.getInstance().importSheet(doc, "pf");
-	}
+	
+	}*/
 
 	@Atomic
 	private static void deleteSheet(String username, String sheetname) {
 		
-		User user = BubbleDocs.getInstance().getUserByUsername(username);
-		
-		System.out.println("Deleting user \"" + username + "\"'s sheet \""+ sheetname +"\"");
-		SpreadSheet sheet;
-		
 		try {
+			
+			User user = BubbleDocs.getInstance().getUserByUsername(username);
+			
+			System.out.println("Deleting user \"" + username + "\"'s sheet \""+ sheetname +"\"");
+			SpreadSheet sheet;
+		
 			sheet = user.getOwnedSpreadByName(sheetname).get(0);
 			sheet.delete();
 			sheet = null;
 		}
+		catch (UserDoesNotExistException e) {
+			System.out.println("User \"" + username + "\" does not exist.");
+		}
 		catch (UserIsNotOwnerException e) {
 			System.out.println("User \"" + username + "\" has not created sheet \"" + sheetname + "\".");
 		}
-	
 	}
 
 	/*
@@ -172,7 +183,7 @@ public class BubbleApplication {
 	@Atomic
 	private static void printAllUserSheets(String username) {
 
-		if(BubbleDocs.getInstance().hasUser(username)) {
+		try {
 			User u = BubbleDocs.getInstance().getUserByUsername(username);
 
 			System.out.println(username + "'s Sheets (" + u.getOwnedSpreadSet().size() + " sheets found):");
@@ -180,6 +191,9 @@ public class BubbleApplication {
 			for(SpreadSheet x: u.getOwnedSpreadSet()){
 				System.out.println("\tSheet, name:\""+x.getName()+"\" id:"+x.getId());
 			}
+		}
+		catch (UserDoesNotExistException e) {
+			System.out.println("User \"" + username + "\" does not exist.");
 		}
 	}
 }

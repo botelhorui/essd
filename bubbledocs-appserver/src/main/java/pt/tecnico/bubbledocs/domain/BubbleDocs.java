@@ -17,6 +17,7 @@ import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.bubbledocs.exception.DifferentUserImportException;
 import pt.tecnico.bubbledocs.exception.UnknownBubbleDocsUserException;
 import pt.tecnico.bubbledocs.exception.DuplicateUsernameException;
+import pt.tecnico.bubbledocs.exception.UserDoesNotExistException;
 
 public class BubbleDocs extends BubbleDocs_Base {
 	private static final Logger logger = LoggerFactory.getLogger(FenixFramework.class);
@@ -41,46 +42,69 @@ public class BubbleDocs extends BubbleDocs_Base {
 		return genId;
 	}
 	
-	public User getUserByUsername(String username){
+	public User getUserByUsername(String username) throws UserDoesNotExistException {
+		
 		for(User u: getUserSet()){
+		
 			if(u.getUsername().equals(username)){
 				return u;
 			}
 		}
-		return null;
+		
+		throw new UserDoesNotExistException();
 	}
 	
 	public boolean hasUser(String username){
-		return getUserByUsername(username) != null;
+		
+		for(User u: getUserSet()){
+			
+			if(u.getUsername().equals(username)){
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	@Override
     public void addUser(pt.tecnico.bubbledocs.domain.User user) throws DuplicateUsernameException {
-        if(hasUser(user.getUsername())){
-        	throw new DuplicateUsernameException();
+        
+		if(hasUser(user.getUsername())){
+			throw new DuplicateUsernameException();
         }
-        super.addUser(user);
+        
+		super.addUser(user);
     }
 
-    public void removeUser(String username) throws UnknownBubbleDocsUserException {
-    	User u = getUserByUsername(username);
-    	if(u == null){
-    		throw new UnknownBubbleDocsUserException();
-    	}
-    	super.removeUser(u);
-    }
+	
+	public void removeUser(String username) {
+		
+		try {
+			User u = getUserByUsername(username);
+			super.removeUser(u);
+		}
+		catch (UserDoesNotExistException e) {
+			System.out.println("User \"" + username + "\" does not exist.");
+		}
+	}
+
     
-    public User createUser(String username,String password,String name)throws DuplicateUsernameException{
-        if(hasUser(username)){
+    public User createUser(String username,String password,String name) throws DuplicateUsernameException{
+        
+    	if(hasUser(username)){
         	throw new DuplicateUsernameException();
         }
+        
         User u = new User();
 		u.init(username,password,name);
 		addUser(u);
 		return u;
     }
     
-    @Atomic
+    //
+    // Joao will get to it
+    //
+    /*@Atomic
     public void importSheet(Document doc,String username){
     	try{
     		//Every element/attribute get we use in the xml doc might be null if the xml is invalid
@@ -114,7 +138,7 @@ public class BubbleDocs extends BubbleDocs_Base {
     		System.out.println(e);
     		throw e;
     	}    	
-    }
+    }*/
 
 	public User getUserByToken(String token){
 		for(User u:getUserSet()){			
@@ -124,10 +148,12 @@ public class BubbleDocs extends BubbleDocs_Base {
 		return null;
 	}
 
+	
 	public void renewSessionDuration(User u) {
 		u.setLastAccess(new LocalTime());		
 	}
 
+	
 	public void renewToken(User u) {
 		logger.info("renewing token for user:"+u.getUsername()+" token:"+u.getToken());
 		String token;
@@ -151,6 +177,7 @@ public class BubbleDocs extends BubbleDocs_Base {
 			}			
 		}
 	}
+	
 	
 	public void cleanInvalidSessions(){
 		LocalTime now = new LocalTime();
