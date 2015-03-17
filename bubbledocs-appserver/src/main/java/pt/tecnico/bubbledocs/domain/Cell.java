@@ -9,25 +9,36 @@ public class Cell extends Cell_Base {
     public Cell() {
         super();
     }
+    
+    public Cell(SpreadSheet spread, int line, int column){
+    	super();
+    	init(spread, line, column);
+    }
 
-	public void init(SpreadSheet SpreadSheet,int line, int column,String text) {
-		setSpreadSheet(SpreadSheet);
+	protected void init(SpreadSheet spread, int line, int column){
+		setSpreadSheet(spread);
 		setLine(line);
-		setColumn(column);	
-		setText(text);
-		setIsProtected(false);
+		setColumn(column);
 	}
 	
-	@Override
-	public void setText(String text) {
-		if(getIsProtected())
-			throw new CellProtectedException();
-		super.setText(text);
+	public void setLiteralContent(int value){
+		LiteralContent lit = new LiteralContent();
+		setContent(lit);
 	}
-
-	public String getValue() {
+	
+	public void setReferenceContent(Cell targetCell){
+		ReferenceContent ref = new ReferenceContent(targetCell);
+		setContent(ref);
+	}
+	
+	public void setBinaryFunctionContent(Argument left, Argument right){
+		BinaryFunction bf = new BinaryFunction(left, right);
+		setContent(bf);
+	}
+	
+	public int getValue() {
 		// TODO Auto-generated method stub
-		return null;
+		return 0;
 	}
 
 	public void delete() {
@@ -36,12 +47,8 @@ public class Cell extends Cell_Base {
 	}
 
 	public Element export() {
-		Element e = new Element("Cell");
-		e.setAttribute("line", ""+getLine());
-		e.setAttribute("column", ""+getColumn());
-		e.setAttribute("text", getText());
-		e.setAttribute("isProtected", ""+getIsProtected());
-		return e;
+		//TODO by John
+		return null;
 	}
     
 }

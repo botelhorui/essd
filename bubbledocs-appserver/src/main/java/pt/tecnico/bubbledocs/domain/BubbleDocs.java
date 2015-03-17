@@ -104,11 +104,9 @@ public class BubbleDocs extends BubbleDocs_Base {
 	    	// import all cells if any
 	    	Element cells = root.getChild("Cells");
 	    	for(Element celle: cells.getChildren()){
-	    		Cell cell = new Cell();
-	    		cell.init(sd, 
+	    		Cell cell = new Cell(sd, 
 	    				Integer.parseInt(celle.getAttributeValue("line")),
-	    				Integer.parseInt(celle.getAttributeValue("column")),
-	    				celle.getAttributeValue("text"));    		
+	    				Integer.parseInt(celle.getAttributeValue("column"))); 		
 	    	}
     	}
     	catch(NullPointerException e){

@@ -9,7 +9,7 @@ public class SheetAccess extends SheetAccess_Base {
     public void init(User user, SpreadSheet SpreadSheet, boolean canWrite){
     	setUser(user);
     	setSpreadSheet(SpreadSheet);
-    	setCanWrite(canWrite);
+    	//setCanWrite(canWrite);
     }
 
 	public void delete() {

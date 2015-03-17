@@ -6,4 +6,9 @@ public class ReferenceContent extends ReferenceContent_Base {
         super();
     }
     
+    public ReferenceContent(Cell cell){
+    	super();
+    	setReferenceCell(cell);
+    }
+    
 }

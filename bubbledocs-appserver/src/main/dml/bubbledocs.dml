@@ -13,7 +13,6 @@ class User{
 }
 
 class SheetAccess{
-	boolean canWrite;
 }
 
 class SpreadSheet{
@@ -27,8 +26,6 @@ class SpreadSheet{
 class Cell{
 	int line;
 	int column;
-	boolean isProtected;
-	String text;
 }
 
 class Content{
@@ -85,19 +82,25 @@ relation BubbleDocsContainsSpreadSheet{
 	SpreadSheet playsRole spreadSheet{multiplicity 0..*;}
 }
 
-relation UserContainsSpreadSheet{
-	User playsRole user{multiplicity 1..*;}
-	SpreadSheet playsRole spreadSheet{multiplicity 0..*;}
-}
 
 relation SpreadSheetHasSheetAccess{
 	SpreadSheet playsRole spreadSheet{multiplicity 1;}
 	SheetAccess playsRole sheetAccess{multiplicity 1..*;}
 }
 
-relation UserContainsCreatedSheets{
-	User playsRole creator{multiplicity 1;}
-	SpreadSheet playsRole createdSheet{multiplicity 0..*;}
+relation UserOwnedSheets{
+	User playsRole owner{multiplicity 1;}
+	SpreadSheet playsRole ownedSpread{multiplicity 0..*;}
+}
+
+relation UserCanReadSpreadSheet{
+	User playsRole readerUser{multiplicity 0..*;}
+	SpreadSheet playsRole readableSpread{multiplicity 0..*;}
+}
+
+relation UserCanWriteSpreadSheet{
+	User playsRole writerUser{multiplicity 0..*;}
+	SpreadSheet playsRole writableSpread{multiplicity 0..*;}
 }
 
 relation SheetAccessHasUser{
@@ -133,14 +136,4 @@ relation ReferenceContentHasCell{
 relation ReferenceArgumentHasCell{
 	ReferenceArgument playsRole referenceArgument{multiplicity 1;}
 	Cell playsRole referenceCell{multiplicity 1;}
-}
-
-relation UserCanReadSpreadSheet{
-	User playsRole readerUser{multiplicity 0..*;}
-	SpreadSheet playsRole readableSpreadSheet{multiplicity 0..*;}
-}
-
-relation UserCanWriteSpreadSheet{
-	User playsRole writerUser{multiplicity 0..*;}
-	SpreadSheet playsRole writableSpreadSheet{multiplicity 0..*;}
 }

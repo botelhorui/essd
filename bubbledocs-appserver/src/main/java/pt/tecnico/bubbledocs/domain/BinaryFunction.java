@@ -6,4 +6,10 @@ public class BinaryFunction extends BinaryFunction_Base {
         super();
     }
     
+    public BinaryFunction(Argument right, Argument left){
+    	super();
+    	setLeftArgument(left);
+    	setRightArgument(right);
+    }
+    
 }

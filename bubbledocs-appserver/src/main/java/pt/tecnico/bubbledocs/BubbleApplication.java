@@ -39,17 +39,17 @@ public class BubbleApplication {
 			printAllUserSheets("pf"); 
 			printAllUserSheets("ra"); 
 			//
-			Document doc = exportPfSheet();
+			//Document doc = exportPfSheet();
 			//
-			deleteSheet("pf","Notas ES");
+			//deleteSheet("pf","Notas ES");
 			//
-			printAllUserSheets("pf"); 
+			//printAllUserSheets("pf"); 
 			//
-			importSheet(doc);
+			//importSheet(doc);
 			//
-			printAllUserSheets("pf"); 
+			//printAllUserSheets("pf"); 
 			//
-			exportPfSheet();
+			//exportPfSheet();
 			//
 			System.out.println("Finished ");			
 			tm.commit();
@@ -88,7 +88,7 @@ public class BubbleApplication {
 		SpreadSheet sheet;
 		
 		try {
-			sheet = user.getCreatedSpreadSheetByName(sheetname).get(0);
+			sheet = user.getOwnedSpreadByName(sheetname).get(0);
 			sheet.delete();
 			sheet = null;
 		}
@@ -101,11 +101,11 @@ public class BubbleApplication {
 	@Atomic
 	private static Document exportPfSheet() {
 		User pf = BubbleDocs.getInstance().getUserByUsername("pf");
-		System.out.println("Exporting "+ pf.getSpreadSheetSet().size()+" sheets:");			
+		System.out.println("Exporting "+ pf.getOwnedSpreadSet().size()+" sheets:");			
 		XMLOutputter xml = new XMLOutputter();
 		xml.setFormat(Format.getPrettyFormat());
 		Document doc=null;
-		for(SpreadSheet x: pf.getSpreadSheetSet()){
+		for(SpreadSheet x: pf.getOwnedSpreadSet()){
 			doc = x.export();				
 			System.out.println(xml.outputString(doc));
 			break;
@@ -127,10 +127,10 @@ public class BubbleApplication {
 		User pf = bd.createUser("pf","sub","Paul Door");
 		bd.createUser("ra","cor","Step Rabbit");
 		SpreadSheet s1 = pf.createSheet("Notas ES",300,20);
-		s1.setCellText("pf",3,4,"5");
-		s1.setCellText("pf",1,1,"5;6");
-		s1.setCellText("pf",5,6,"=ADD(2,3;4)");
-		s1.setCellText("pf",2,2,"=DIV(1;1,3;4)");			
+		//s1.setCellText("pf",3,4,"5");
+		//s1.setCellText("pf",1,1,"5;6");
+		//s1.setCellText("pf",5,6,"=ADD(2,3;4)");
+		//s1.setCellText("pf",2,2,"=DIV(1;1,3;4)");			
 	}
 
 	@Atomic
@@ -147,8 +147,8 @@ public class BubbleApplication {
 		System.out.println("Registered users and their sheets names:");
 		 
 		for(User u: BubbleDocs.getInstance().getUserSet()){
-			System.out.println("\tusername:"+u.getUsername()+" has "+u.getSpreadSheetSet().size()+" sheets:");
-			for(SpreadSheet x: u.getSpreadSheetSet()){
+			System.out.println("\tusername:"+u.getUsername()+" has "+u.getOwnedSpreadSet().size()+" sheets:");
+			for(SpreadSheet x: u.getOwnedSpreadSet()){
 				System.out.println("\t\tSheet, name:\""+x.getName()+"\" id:"+x.getId());
 			}
 		}
@@ -160,9 +160,9 @@ public class BubbleApplication {
 		if(BubbleDocs.getInstance().hasUser(username)) {
 			User u = BubbleDocs.getInstance().getUserByUsername(username);
 
-			System.out.println(username + "'s Sheets (" + u.getSpreadSheetSet().size() + " sheets found):");
+			System.out.println(username + "'s Sheets (" + u.getOwnedSpreadSet().size() + " sheets found):");
 			
-			for(SpreadSheet x: u.getSpreadSheetSet()){
+			for(SpreadSheet x: u.getOwnedSpreadSet()){
 				System.out.println("\tSheet, name:\""+x.getName()+"\" id:"+x.getId());
 			}
 		}

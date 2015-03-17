@@ -20,7 +20,7 @@ public class User extends User_Base {
     }   
     
     public void delete(){
-    	for(SpreadSheet sd: getSpreadSheetSet())
+    	for(SpreadSheet sd: getOwnedSpreadSet())
     		sd.delete();
     	setBubbleDocs(null);
     	deleteDomainObject();
@@ -32,15 +32,9 @@ public class User extends User_Base {
     	super.setUsername(username);
     }
     
-    public List<SpreadSheet> getSpreadSheetByName(String name){
-    	return getSpreadSheetSet().stream()
-    			.filter(as -> as.getName().equals(name))
-    			.collect(Collectors.toList());    	
-    }
-   
-    public List<SpreadSheet> getCreatedSpreadSheetByName(String name) throws UserIsNotOwnerException {
+    public List<SpreadSheet> getOwnedSpreadByName(String name) throws UserIsNotOwnerException {
     	
-    	List<SpreadSheet> spreadsheet = getCreatedSheetSet().stream()
+    	List<SpreadSheet> spreadsheet = getOwnedSpreadSet().stream()
     			.filter(ds -> ds.getName().equals(name))
     			.collect(Collectors.toList());
     	
