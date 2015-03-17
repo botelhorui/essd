@@ -8,6 +8,8 @@ public class FunctionContent extends FunctionContent_Base {
         super();
     }
     
-    
+    public Element export(){
+    	return null;
+	}
 
 }
