@@ -45,15 +45,15 @@ public class BubbleApplication {
 			//
 			Document doc = exportSheet(BubbleDocs.getInstance().getUserByUsername("pf").getOwnedSpreadByName("Notas ES").get(0));
 			//
-			//deleteSheet("pf","Notas ES");
+			deleteSheet("pf","Notas ES");
 			//
-			//printAllUserSheets("pf"); 
+			printAllUserSheets("pf"); 
 			//
-			//importSheet(doc);
+			importSheet(doc, "pf");
 			//
-			//printAllUserSheets("pf"); 
+			printAllUserSheets("pf"); 
 			//
-			//exportPfSheet();
+			exportSheet(BubbleDocs.getInstance().getUserByUsername("pf").getOwnedSpreadByName("Notas ES").get(0));
 			//
 			System.out.println("Finished ");			
 			tm.commit();
@@ -89,6 +89,12 @@ public class BubbleApplication {
 		BubbleDocs.getInstance().importSheet(doc, "pf");
 	
 	}*/
+	
+	private static void importSheet(Document doc, String username){
+	
+		BubbleDocs.getInstance().importSheet(doc, username);
+		
+	}
 
 	@Atomic
 	private static void deleteSheet(String username, String sheetname) {
@@ -150,8 +156,9 @@ public class BubbleApplication {
 
 	@Atomic
 	private static void populateDomain() {
-		if(isInitialized())
+		if(isInitialized()){
 			return;
+		}
 		
 		BubbleDocs bd = BubbleDocs.getInstance();
 		User pf = bd.createUser("pf","sub","Paul Door");

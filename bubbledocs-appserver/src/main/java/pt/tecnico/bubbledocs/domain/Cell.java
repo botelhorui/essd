@@ -99,6 +99,121 @@ public class Cell extends Cell_Base {
 				Cell cell = this.getSpreadSheet().getCell(Integer.parseInt(c.getAttributeValue("line")), Integer.parseInt(c.getAttributeValue("column")));
 				this.setReferenceContent(cell);
 			}
+			else if(content.getName() == "ADD"){
+				Element left = content.getChildren().get(0);
+				Element right = content.getChildren().get(1);
+				Argument leftArgument = null;
+				Argument rightArgument = null;
+				if(left.getName() == "Literal"){
+					leftArgument = new LiteralArgument(Integer.parseInt(left.getAttributeValue("value")));
+				} else if (left.getName() == "Reference"){
+					Element c = left.getChild("Cell");
+					Cell cell = this.getSpreadSheet().getCell(Integer.parseInt(c.getAttributeValue("line")), Integer.parseInt(c.getAttributeValue("column")));
+					leftArgument = new ReferenceArgument(cell);
+				} else {
+					return;
+				}
+				
+				if(right.getName() == "Literal"){
+					rightArgument = new LiteralArgument(Integer.parseInt(right.getAttributeValue("value")));
+				} else if (right.getName() == "Reference"){
+					Element c = right.getChild("Cell");
+					Cell cell = this.getSpreadSheet().getCell(Integer.parseInt(c.getAttributeValue("line")), Integer.parseInt(c.getAttributeValue("column")));
+					rightArgument = new ReferenceArgument(cell);
+				} else {
+					return;
+				}
+				
+				this.setBFAdd(leftArgument, rightArgument);
+				
+			}
+			
+			else if(content.getName() == "SUB"){
+				Element left = content.getChildren().get(0);
+				Element right = content.getChildren().get(1);
+				Argument leftArgument = null;
+				Argument rightArgument = null;
+				if(left.getName() == "Literal"){
+					leftArgument = new LiteralArgument(Integer.parseInt(left.getAttributeValue("value")));
+				} else if (left.getName() == "Reference"){
+					Element c = left.getChild("Cell");
+					Cell cell = this.getSpreadSheet().getCell(Integer.parseInt(c.getAttributeValue("line")), Integer.parseInt(c.getAttributeValue("column")));
+					leftArgument = new ReferenceArgument(cell);
+				} else {
+					return;
+				}
+				
+				if(right.getName() == "Literal"){
+					rightArgument = new LiteralArgument(Integer.parseInt(right.getAttributeValue("value")));
+				} else if (right.getName() == "Reference"){
+					Element c = right.getChild("Cell");
+					Cell cell = this.getSpreadSheet().getCell(Integer.parseInt(c.getAttributeValue("line")), Integer.parseInt(c.getAttributeValue("column")));
+					rightArgument = new ReferenceArgument(cell);
+				} else {
+					return;
+				}
+				
+				this.setBFSub(leftArgument, rightArgument);
+				
+			}
+			
+			else if(content.getName() == "MUL"){
+				Element left = content.getChildren().get(0);
+				Element right = content.getChildren().get(1);
+				Argument leftArgument = null;
+				Argument rightArgument = null;
+				if(left.getName() == "Literal"){
+					leftArgument = new LiteralArgument(Integer.parseInt(left.getAttributeValue("value")));
+				} else if (left.getName() == "Reference"){
+					Element c = left.getChild("Cell");
+					Cell cell = this.getSpreadSheet().getCell(Integer.parseInt(c.getAttributeValue("line")), Integer.parseInt(c.getAttributeValue("column")));
+					leftArgument = new ReferenceArgument(cell);
+				} else {
+					return;
+				}
+				
+				if(right.getName() == "Literal"){
+					rightArgument = new LiteralArgument(Integer.parseInt(right.getAttributeValue("value")));
+				} else if (right.getName() == "Reference"){
+					Element c = right.getChild("Cell");
+					Cell cell = this.getSpreadSheet().getCell(Integer.parseInt(c.getAttributeValue("line")), Integer.parseInt(c.getAttributeValue("column")));
+					rightArgument = new ReferenceArgument(cell);
+				} else {
+					return;
+				}
+				
+				this.setBFMul(leftArgument, rightArgument);
+				
+			}
+			
+			else if(content.getName() == "DIV"){
+				Element left = content.getChildren().get(0);
+				Element right = content.getChildren().get(1);
+				Argument leftArgument = null;
+				Argument rightArgument = null;
+				if(left.getName() == "Literal"){
+					leftArgument = new LiteralArgument(Integer.parseInt(left.getAttributeValue("value")));
+				} else if (left.getName() == "Reference"){
+					Element c = left.getChild("Cell");
+					Cell cell = this.getSpreadSheet().getCell(Integer.parseInt(c.getAttributeValue("line")), Integer.parseInt(c.getAttributeValue("column")));
+					leftArgument = new ReferenceArgument(cell);
+				} else {
+					return;
+				}
+				
+				if(right.getName() == "Literal"){
+					rightArgument = new LiteralArgument(Integer.parseInt(right.getAttributeValue("value")));
+				} else if (right.getName() == "Reference"){
+					Element c = right.getChild("Cell");
+					Cell cell = this.getSpreadSheet().getCell(Integer.parseInt(c.getAttributeValue("line")), Integer.parseInt(c.getAttributeValue("column")));
+					rightArgument = new ReferenceArgument(cell);
+				} else {
+					return;
+				}
+				
+				this.setBFDiv(leftArgument, rightArgument);
+				
+			}
 	
 		}
 		
