@@ -41,15 +41,15 @@ public class BubbleApplication {
 			//
 			tm.begin();
 			printUsers();
-			tm.commit();
-			//
+			//tm.commit();
+			/*
 			tm.begin();
 			printAllUserSheets("pf"); 
 			printAllUserSheets("ra");
 			tm.commit();
 			//
 			tm.begin();
-			Document doc = exportSheet(BubbleDocs.getInstance().getUserByUsername("pf").getOwnedSpreadByName("Notas ES").get(0));
+			//Document doc = exportSheet(BubbleDocs.getInstance().getUserByUsername("pf").getOwnedSpreadByName("Notas ES").get(0));
 			tm.commit();
 			//
 			tm.begin();
@@ -57,7 +57,7 @@ public class BubbleApplication {
 			tm.commit();
 			//
 			tm.begin();
-			printAllUserSheets("pf"); 
+			//printAllUserSheets("pf"); 
 			tm.commit();
 			//
 			tm.begin();
@@ -65,12 +65,12 @@ public class BubbleApplication {
 			tm.commit();
 			//
 			tm.begin();
-			printAllUserSheets("pf");
+			//printAllUserSheets("pf");
 			tm.commit();
 			//
 			tm.begin();
-			exportSheet(BubbleDocs.getInstance().getUserByUsername("pf").getOwnedSpreadByName("Notas ES").get(0));
-			//
+			//exportSheet(BubbleDocs.getInstance().getUserByUsername("pf").getOwnedSpreadByName("Notas ES").get(0));
+			*/
 			System.out.println("Finished.");			
 			tm.commit();
 			committed = true;
