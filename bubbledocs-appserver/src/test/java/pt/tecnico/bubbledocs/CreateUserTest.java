@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import pt.tecnico.bubbledocs.domain.User;
+import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.exception.DuplicateUsernameException;
 
 public class CreateUserTest extends AbstractTest {
@@ -20,6 +21,8 @@ public class CreateUserTest extends AbstractTest {
     @Test
     public void success() {
     	
+    	BubbleDocs bd = BubbleDocs.getInstance();
+    	
     	User pf = bd.createUser("pf","sub","Paul Door");
         assertTrue("User wasn't created", bd.hasUser("pf"));
         User u = bd.getUserByUsername("pf");
@@ -32,8 +35,10 @@ public class CreateUserTest extends AbstractTest {
 
     @Test(expected = DuplicateUsernameException.class)
     public void invalidUserCreationWithDuplicateName() {
-       
+    	
+    	BubbleDocs bd = BubbleDocs.getInstance();
     	User pf = bd.createUser("pf","sub","Paul Door");
+    	bd.createUser("pf","sub","Paul Door");
     }
 
     

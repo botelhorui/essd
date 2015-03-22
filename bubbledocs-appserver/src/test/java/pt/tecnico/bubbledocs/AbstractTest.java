@@ -14,12 +14,12 @@ import pt.tecnico.bubbledocs.domain.BubbleDocs;
 
 public abstract class AbstractTest {
 	
-	BubbleDocs bd;
+	
 	
     @Before
     public void setUp() throws Exception {
         try {
-        	bd = BubbleDocs.getInstance();
+        	
             FenixFramework.getTransactionManager().begin(false);
             populateDomain();
         } catch (WriteOnReadError | NotSupportedException | SystemException e1) {

@@ -8,11 +8,13 @@ import org.junit.Test;
 
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
+import pt.tecnico.bubbledocs.domain.BubbleDocs;
 
 
-public class CreateUserTest extends AbstractTest {
+public class CreateSpreadSheetTest extends AbstractTest {
 
     protected void populateDomain() {
+    	BubbleDocs bd = BubbleDocs.getInstance();
 		User pf = bd.createUser("pf","sub","Paul Door");
     }
 
@@ -21,12 +23,14 @@ public class CreateUserTest extends AbstractTest {
     @Test
     public void success() {
     	
-    	SpreadSheet ss = pf.createSheet("testsheet", 80, 80);
+    	BubbleDocs bd = BubbleDocs.getInstance();
     	
-        assertNotNull("Spreadsheet wasn't created", ss);
+    	SpreadSheet s = bd.getUserByUsername("pf").createSheet("testsheet", 80, 80);
+    	
+        assertNotNull("Spreadsheet wasn't created", s);
         
-        assertEquals("Columns number doesnt match", 80, ss.getColumns());
-        assertEquals("Lines number doesnt match", 80, ss.getLines());
+        assertEquals("Columns number doesnt match", 80, s.getColumns());
+        assertEquals("Lines number doesnt match", 80, s.getLines());
         
     }
 
