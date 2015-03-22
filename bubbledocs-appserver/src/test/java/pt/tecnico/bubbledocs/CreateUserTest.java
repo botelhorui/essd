@@ -2,6 +2,7 @@ package pt.tecnico.bubbledocs;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -11,13 +12,19 @@ import pt.tecnico.bubbledocs.exception.DuplicateUsernameException;
 public class CreateUserTest extends AbstractTest {
 
     protected void populateDomain() {
-		User pf = bd.createUser("pf","sub","Paul Door");
+		
     }
 
     
 
     @Test
     public void success() {
+    	
+    	User pf = bd.createUser("pf","sub","Paul Door");
+        assertTrue("User wasn't created", bd.hasUser("pf"));
+        User u = bd.getUserByUsername("pf");
+        assertEquals("Password doesnt get stored correctly", "sub", u.getPassword());
+        assertEquals("Name doesnt get stored correctly", "Paul Door", u.getName());
         
     }
 
@@ -26,6 +33,7 @@ public class CreateUserTest extends AbstractTest {
     @Test(expected = DuplicateUsernameException.class)
     public void invalidUserCreationWithDuplicateName() {
        
+    	User pf = bd.createUser("pf","sub","Paul Door");
     }
 
     

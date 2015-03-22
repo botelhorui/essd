@@ -57,6 +57,9 @@ public class User extends User_Base {
     	super.setUsername(username);
     }
     
+    
+    //Editar para devolver null em vez de excepcao. nao faz sentido.
+    
     public List<SpreadSheet> getOwnedSpreadByName(String name) throws UserIsNotOwnerException {
     	
     	List<SpreadSheet> spreadsheet = getOwnedSpreadSet().stream()
