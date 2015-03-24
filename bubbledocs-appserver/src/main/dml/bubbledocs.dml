@@ -26,6 +26,7 @@ class SpreadSheet{
 class Cell{
 	int line;
 	int column;
+	boolean isProtected;
 }
 
 class Content{
