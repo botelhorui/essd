@@ -9,6 +9,8 @@ import org.joda.time.LocalTime;
 import org.joda.time.Seconds;
 
 import pt.tecnico.bubbledocs.domain.User;
+import pt.tecnico.bubbledocs.exception.UnknownBubbleDocsUserException;
+import pt.tecnico.bubbledocs.exception.WrongPasswordException;
 
 // add needed import declarations
 
@@ -29,6 +31,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
 	// It must get this data from the session object of the application
 	private LocalTime getLastAccessTimeInSession(String userToken) {		
 		// TODO add code here
+		return null;
 	}
 
 	@Test

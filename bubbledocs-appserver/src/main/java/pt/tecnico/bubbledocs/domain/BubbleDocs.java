@@ -101,7 +101,6 @@ public class BubbleDocs extends BubbleDocs_Base {
 		return u;
 	}
 
-	@Atomic
 	public void importSheet(Document doc, String username){
 		try{
 			/*
