@@ -32,8 +32,18 @@ public class BubbleDocs extends BubbleDocs_Base {
 		if(bd==null){
 			bd = new BubbleDocs();
 		}
-
+		bd.getUserRoot();
 		return bd;
+	}
+
+	private User getUserRoot() {		
+		User root = null;
+		if(!hasUser("root")){
+			root = createUser("root", "root", "Super User");
+		}else{
+			root = getUserByToken("root");
+		}
+		return null;
 	}
 
 	public int generateId(){
@@ -57,12 +67,10 @@ public class BubbleDocs extends BubbleDocs_Base {
 	public boolean hasUser(String username){
 
 		for(User u: getUserSet()){
-
 			if(u.getUsername().equals(username)){
-				return true;
+				return true;			
 			}
 		}
-
 		return false;
 	}
 
@@ -135,7 +143,7 @@ public class BubbleDocs extends BubbleDocs_Base {
 			cell.importXML(cellElement);
 		}
 	}
-	
+
 	public User getUserByToken(String token){
 		for(User u:getUserSet()){			
 			if(u.getToken() != null && u.getToken().equals(token))
