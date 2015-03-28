@@ -4,6 +4,13 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import pt.tecnico.bubbledocs.domain.BubbleDocs;
+import pt.tecnico.bubbledocs.domain.User;
+import pt.tecnico.bubbledocs.exception.DuplicateUsernameException;
+import pt.tecnico.bubbledocs.exception.EmptyUsernameException;
+import pt.tecnico.bubbledocs.exception.UnauthorizedOperationException;
+import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
+
 // add needed import declarations
 
 public class CreateUserTest extends BubbleDocsServiceTest {
@@ -19,7 +26,8 @@ public class CreateUserTest extends BubbleDocsServiceTest {
 
     @Override
     public void populate4Test() {
-        createUserUSERNAME, PASSWORD, "António Rito Silva");
+    	BubbleDocs bd = BubbleDocs.getInstance();
+        bd.createUser(PASSWORD,USERNAME,"António Rito Silva");
         root = addUserToSession("root");
         ars = addUserToSession("ars");
     }
