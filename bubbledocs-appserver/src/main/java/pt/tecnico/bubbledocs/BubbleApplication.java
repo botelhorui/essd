@@ -99,7 +99,7 @@ public class BubbleApplication {
 
 	@Atomic
 	private static void importSheet(Document doc, String username){
-		System.out.println("Importing SpreaSheet from XML");
+		System.out.println("Importing SpreaSheet from XML");		
 		BubbleDocs.getInstance().importSheet(doc, username);		
 	}
 

@@ -101,91 +101,41 @@ public class BubbleDocs extends BubbleDocs_Base {
 	}
 
 	public void importSheet(Document doc, String username){
-		try{
-			/*
-			 * Checking for potential errors.
-			 */
-			Element root = doc.getRootElement();
-			Element owner = root.getChild("Owner");
 
-			String docUsername = owner.getAttributeValue("username");
+		/*
+		 * Checking for potential errors.
+		 */
+		Element root = doc.getRootElement();
+		Element owner = root.getChild("Owner");
 
-			if(!docUsername.equals(username)){
-				throw new UserIsNotOwnerException();
-			}
+		String docUsername = owner.getAttributeValue("username");
 
-			if(!hasUser(username)){
-				throw new UnknownBubbleDocsUserException();
-			}
-
-			/*
-			 * Populating data.
-			 */
-
-			User creator = getUserByUsername(username);
-			SpreadSheet ss = creator.createSheet(root.getAttributeValue("name"), Integer.parseInt(root.getAttributeValue("lines")), Integer.parseInt(root.getAttributeValue("columns")));
-
-			DateTimeFormatter dtf = ISODateTimeFormat.dateTime();
-			ss.setCreationDate(dtf.parseDateTime(root.getAttributeValue("creation-date")));
-
-			Element cells = root.getChild("Cells");
-
-			for(Element cellElement : cells.getChildren()){
-				Cell cell = ss.getCell(Integer.parseInt(cellElement.getAttributeValue("line")), Integer.parseInt(cellElement.getAttributeValue("column")));
-				cell.importXML(cellElement);
-			}
-
-
-		} catch(UserIsNotOwnerException e){
-			System.err.println("User is not the original owner of this Spreadsheet.");
-		} catch(UnknownBubbleDocsUserException e){
-			System.err.println("Unknown user.");
-		} catch(NullPointerException e){
-			System.err.println("Could not import from XML document.");
+		if(!docUsername.equals(username)){
+			throw new UserIsNotOwnerException();
 		}
 
+		if(!hasUser(username)){
+			throw new UnknownBubbleDocsUserException();
+		}
 
+		/*
+		 * Populating data.
+		 */
+
+		User creator = getUserByUsername(username);
+		SpreadSheet ss = creator.createSheet(root.getAttributeValue("name"), Integer.parseInt(root.getAttributeValue("lines")), Integer.parseInt(root.getAttributeValue("columns")));
+
+		DateTimeFormatter dtf = ISODateTimeFormat.dateTime();
+		ss.setCreationDate(dtf.parseDateTime(root.getAttributeValue("creation-date")));
+
+		Element cells = root.getChild("Cells");
+
+		for(Element cellElement : cells.getChildren()){
+			Cell cell = ss.getCell(Integer.parseInt(cellElement.getAttributeValue("line")), Integer.parseInt(cellElement.getAttributeValue("column")));
+			cell.importXML(cellElement);
+		}
 	}
-
-	//
-	// Joao will get to it
-	//
-	/*@Atomic
-    public void importSheet(Document doc,String username){
-    	try{
-    		//Every element/attribute get we use in the xml doc might be null if the xml is invalid
-	    	Element root = doc.getRootElement();
-	    	Element creatorEl = root.getChild("Creator");
-	    	String importUsername = creatorEl.getAttributeValue("username");
-	    	if(!hasUser(importUsername))
-	    		throw new UnknownBubbleDocsUserException();
-	    	User creator = getUserByUsername(username);
-	    	if(creator == null)
-	    		throw new UnknownBubbleDocsUserException();	    	
-	    	if(!importUsername.equals(username))
-	    		throw new DifferentUserImportException();
-	    	// import SheetData
-	    	SpreadSheet sd = new SpreadSheet();
-	    	sd.init(creator, root.getAttributeValue("name"),
-	    			Integer.parseInt(root.getAttributeValue("lines")),
-	    			Integer.parseInt(root.getAttributeValue("columns")));
-	    	DateTimeFormatter dtf = ISODateTimeFormat.dateTime();
-	    	sd.setCreationDate(dtf.parseDateTime(root.getAttributeValue("creation-date")));  	
-	    	// import all cells if any
-	    	Element cells = root.getChild("Cells");
-	    	for(Element celle: cells.getChildren()){
-	    		Cell cell = new Cell(sd, 
-	    				Integer.parseInt(celle.getAttributeValue("line")),
-	    				Integer.parseInt(celle.getAttributeValue("column"))); 		
-	    	}
-    	}
-    	catch(NullPointerException e){
-    		System.out.println("Exception while importing a sheet:");
-    		System.out.println(e);
-    		throw e;
-    	}    	
-    }*/
-
+	
 	public User getUserByToken(String token){
 		for(User u:getUserSet()){			
 			if(u.getToken() != null && u.getToken().equals(token))
