@@ -6,18 +6,22 @@ import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 
 public class LoginUser extends BubbleDocsService {
 
-    private String userToken;
+	private String userToken;
+	private String username;
+	private String password;
 
-    public LoginUser(String username, String password) {
-	// add code here
-    }
+	public LoginUser(String username, String password) {
+		// TODO
+		this.username=username;
+		this.password=password;
+	}
 
-    @Override
-    protected void dispatch() throws BubbleDocsException {
-	// add code here
-    }
+	@Override
+	protected void dispatch() throws BubbleDocsException {
+		// add code here
+	}
 
-    public final String getUserToken() {
-	return userToken;
-    }
+	public final String getUserToken() {
+		return userToken;
+	}
 }

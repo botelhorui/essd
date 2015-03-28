@@ -16,7 +16,7 @@ public class BFSub extends BFSub_Base {
     
     @Override
     public Element export(){
-    	Element e = new Element("SUB");
+    	Element e = new Element("BFSUB");
     	e.addContent(this.getLeftArgument().export());
     	e.addContent(this.getRightArgument().export());
     	return e;

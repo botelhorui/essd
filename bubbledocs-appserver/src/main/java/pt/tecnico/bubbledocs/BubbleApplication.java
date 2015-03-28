@@ -24,7 +24,7 @@ import pt.tecnico.bubbledocs.domain.LiteralArgument;
 import pt.tecnico.bubbledocs.domain.ReferenceArgument;
 
 import pt.tecnico.bubbledocs.exception.UserIsNotOwnerException;
-import pt.tecnico.bubbledocs.exception.UserDoesNotExistException;
+import pt.tecnico.bubbledocs.exception.UnknownBubbleDocsUserException;
 import pt.tecnico.bubbledocs.exception.PositionOutOfBoundsException;
 
 @SuppressWarnings("unused")
@@ -41,15 +41,15 @@ public class BubbleApplication {
 			//
 			tm.begin();
 			printUsers();
-			//tm.commit();
-			/*
+			tm.commit();
+			//
 			tm.begin();
 			printAllUserSheets("pf"); 
 			printAllUserSheets("ra");
 			tm.commit();
 			//
 			tm.begin();
-			//Document doc = exportSheet(BubbleDocs.getInstance().getUserByUsername("pf").getOwnedSpreadByName("Notas ES").get(0));
+			Document doc = exportSheet(BubbleDocs.getInstance().getUserByUsername("pf").getOwnedSpreadSheetsByName("Notas ES").get(0));
 			tm.commit();
 			//
 			tm.begin();
@@ -57,7 +57,7 @@ public class BubbleApplication {
 			tm.commit();
 			//
 			tm.begin();
-			//printAllUserSheets("pf"); 
+			printAllUserSheets("pf"); 
 			tm.commit();
 			//
 			tm.begin();
@@ -65,14 +65,13 @@ public class BubbleApplication {
 			tm.commit();
 			//
 			tm.begin();
-			//printAllUserSheets("pf");
+			printAllUserSheets("pf");
 			tm.commit();
 			//
 			tm.begin();
-			//exportSheet(BubbleDocs.getInstance().getUserByUsername("pf").getOwnedSpreadByName("Notas ES").get(0));
-			*/
-			System.out.println("Finished.");			
+			exportSheet(BubbleDocs.getInstance().getUserByUsername("pf").getOwnedSpreadSheetsByName("Notas ES").get(0));					
 			tm.commit();
+			System.out.println("Finished.");	
 			committed = true;
 			
 		} catch (SystemException|
@@ -83,7 +82,7 @@ public class BubbleApplication {
 			System.err.println("Error in execution of transaction: " + ex);
 			ex.printStackTrace();
 		
-		} catch (UserDoesNotExistException e) {
+		} catch (UnknownBubbleDocsUserException e) {
 			System.out.println("User pf does not exist.");
 		} finally {
 		
@@ -98,18 +97,10 @@ public class BubbleApplication {
 		}		
 	}
 
-	/*@Atomic
-	private static void importSheet(Document doc) {
-	
-		System.out.println("Importing 1 sheet. \"Notas ES\"");
-		BubbleDocs.getInstance().importSheet(doc, "pf");
-	
-	}*/
-	
 	@Atomic
 	private static void importSheet(Document doc, String username){
-		BubbleDocs.getInstance().importSheet(doc, username);
-		
+		System.out.println("Importing SpreaSheet from XML");
+		BubbleDocs.getInstance().importSheet(doc, username);		
 	}
 
 	@Atomic
@@ -120,39 +111,16 @@ public class BubbleApplication {
 			User user = BubbleDocs.getInstance().getUserByUsername(username);
 			
 			System.out.println("Deleting user \"" + username + "\"'s sheet \""+ sheetname +"\"");
-			SpreadSheet sheet;
-		
-			sheet = user.getOwnedSpreadByName(sheetname).get(0);
+			SpreadSheet sheet;			
+			sheet = user.getOwnedSpreadSheetsByName(sheetname).get(0);
 			sheet.delete();
 			sheet = null;
 		}
-		catch (UserDoesNotExistException e) {
+		catch (UnknownBubbleDocsUserException e) {
 			System.out.println("User \"" + username + "\" does not exist.");
-		}
-		catch (UserIsNotOwnerException e) {
-			System.out.println("User \"" + username + "\" has not created sheet \"" + sheetname + "\".");
-		}
+		}		
 	}
 
-	/*
-	 * Deprecated
-	 * 
-	@Atomic
-	private static Document exportPfSheet() {
-		User pf = BubbleDocs.getInstance().getUserByUsername("pf");
-		System.out.println("Exporting "+ pf.getSpreadSheetSet().size()+" sheets:");			
-		XMLOutputter xml = new XMLOutputter();
-		xml.setFormat(Format.getPrettyFormat());
-		Document doc=null;
-		for(SpreadSheet x: pf.getSpreadSheetSet()){
-			doc = x.export();				
-			System.out.println(xml.outputString(doc));
-			break;
-		}
-		return doc;
-	}
-	*/
-	
 	@Atomic
 	private static Document exportSheet(SpreadSheet ss){
 		System.out.println("Exporting Spreadsheet " + ss.getName() + " with " + ss.getLines() + " lines and " + ss.getColumns() + " columns.");
@@ -180,7 +148,8 @@ public class BubbleApplication {
 		User pf = bd.createUser("pf","sub","Paul Door");
 		bd.createUser("ra","cor","Step Rabbit");
 
-		SpreadSheet s1 = pf.createSheet("Notas ES", 300, 20);
+		//SpreadSheet s1 = pf.createSheet("Notas ES", 300, 20);
+		SpreadSheet s1 = pf.createSheet("Notas ES", 6, 6);
 		
 		//TODO: Verificar permissoes do user para read/write
 		try{
@@ -230,7 +199,7 @@ public class BubbleApplication {
 				System.out.println("\tSheet, name:\""+x.getName()+"\" id:"+x.getId());
 			}
 		}
-		catch (UserDoesNotExistException e) {
+		catch (UnknownBubbleDocsUserException e) {
 			System.out.println("User \"" + username + "\" does not exist.");
 		}
 	}

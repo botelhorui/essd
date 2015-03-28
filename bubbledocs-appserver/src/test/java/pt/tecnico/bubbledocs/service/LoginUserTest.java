@@ -74,7 +74,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
 	}
 
 	@Test(expected = WrongPasswordException.class)
-	public void loginUserWithinWrongPassword() {
+	public void loginUserWithWrongPassword() {
 		LoginUser service = new LoginUser(USERNAME, "jp2");
 		service.execute();
 	}

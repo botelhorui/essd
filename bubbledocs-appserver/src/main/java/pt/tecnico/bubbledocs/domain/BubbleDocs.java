@@ -17,7 +17,6 @@ import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.bubbledocs.exception.DifferentUserImportException;
 import pt.tecnico.bubbledocs.exception.UnknownBubbleDocsUserException;
 import pt.tecnico.bubbledocs.exception.DuplicateUsernameException;
-import pt.tecnico.bubbledocs.exception.UserDoesNotExistException;
 import pt.tecnico.bubbledocs.exception.UserIsNotOwnerException;
 
 public class BubbleDocs extends BubbleDocs_Base {
@@ -43,7 +42,7 @@ public class BubbleDocs extends BubbleDocs_Base {
 		return genId;
 	}
 
-	public User getUserByUsername(String username) throws UserDoesNotExistException {
+	public User getUserByUsername(String username) throws UnknownBubbleDocsUserException {
 
 		for(User u: getUserSet()){
 
@@ -52,7 +51,7 @@ public class BubbleDocs extends BubbleDocs_Base {
 			}
 		}
 
-		throw new UserDoesNotExistException();
+		throw new UnknownBubbleDocsUserException();
 	}
 
 	public boolean hasUser(String username){
@@ -69,7 +68,7 @@ public class BubbleDocs extends BubbleDocs_Base {
 
 	@Override
 	public void addUser(pt.tecnico.bubbledocs.domain.User user) throws DuplicateUsernameException {
-
+		// TODO if the user is BubbleDocs already has the user User, should it throw exception?
 		if(hasUser(user.getUsername())){
 			throw new DuplicateUsernameException();
 		}
@@ -84,7 +83,7 @@ public class BubbleDocs extends BubbleDocs_Base {
 			User u = getUserByUsername(username);
 			super.removeUser(u);
 		}
-		catch (UserDoesNotExistException e) {
+		catch (UnknownBubbleDocsUserException e) {
 			System.out.println("User \"" + username + "\" does not exist.");
 		}
 	}

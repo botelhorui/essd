@@ -16,7 +16,7 @@ public class BFDiv extends BFDiv_Base {
 	
 	@Override
 	public Element export(){
-    	Element e = new Element("DIV");
+    	Element e = new Element("BFDIV");
     	e.addContent(this.getLeftArgument().export());
     	e.addContent(this.getRightArgument().export());
     	return e;
