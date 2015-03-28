@@ -42,7 +42,7 @@ public class BubbleDocsServiceTest {
 	}
 
 	// auxiliary methods that access the domain layer and are needed in the test classes
-	// for defining the iniital state and checking that the service has the expected behavior
+	// for defining the initial state and checking that the service has the expected behavior
 	User createUser(String username, String password, String name) {
 		BubbleDocs bd = BubbleDocs.getInstance();
 		return bd.createUser(username, password, name);
@@ -54,6 +54,12 @@ public class BubbleDocsServiceTest {
 
 	// returns a spreadsheet whose name is equal to name
 	public SpreadSheet getSpreadSheet(String name) {
+		BubbleDocs bd = BubbleDocs.getInstance();
+		// TODO
+		return null;
+	}
+	
+	public SpreadSheet getSpreadSheetById(int id) {
 		BubbleDocs bd = BubbleDocs.getInstance();
 		// TODO
 		return null;

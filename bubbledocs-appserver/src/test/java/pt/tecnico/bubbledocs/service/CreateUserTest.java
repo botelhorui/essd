@@ -26,10 +26,10 @@ public class CreateUserTest extends BubbleDocsServiceTest {
 
     @Override
     public void populate4Test() {
-    	BubbleDocs bd = BubbleDocs.getInstance();
-        bd.createUser(PASSWORD,USERNAME,"António Rito Silva");
-        root = addUserToSession("root");
-        ars = addUserToSession("ars");
+    	
+        createUser(PASSWORD,USERNAME,"António Rito Silva");
+        root = addUserToSession(ROOT_USERNAME);
+        ars = addUserToSession(USERNAME);
     }
 
     @Test
