@@ -41,7 +41,7 @@ public class BubbleDocs extends BubbleDocs_Base {
 		if(!hasUser("root")){
 			root = createUser("root", "root", "Super User");
 		}else{
-			root = getUserByToken("root");
+			root = getUserByUsername("root");
 		}
 		return null;
 	}
@@ -143,53 +143,63 @@ public class BubbleDocs extends BubbleDocs_Base {
 			cell.importXML(cellElement);
 		}
 	}
+	
+	public boolean isUserInSession(String token){
+		User u = getUserByToken(token);
+		if(u == null)
+			return false;
+		if(u.getSession()==null)
+			return false;
+		Session s = u.getSession();
+		LocalTime now = new LocalTime();		
+		int dif = Hours.hoursBetween(now, s.getLastAccess()).getHours();
+		if(dif>=LEASE_HOURS){			
+			s.delete();
+			return false;
+		}
+		return true;
+	}
 
+	public String getUsernameFromToken(String token){
+		Pattern p = Pattern.compile("(.+)-(\\d)$");
+		Matcher m = p.matcher(token);
+		m.find();
+		return m.group(1);
+	}
+	
 	public User getUserByToken(String token){
-		for(User u:getUserSet()){			
-			if(u.getToken() != null && u.getToken().equals(token))
+		for(User u:getUserSet()){
+			Session s = u.getSession();
+			if(s!=null && s.getToken().equals(token))
 				return u;
 		}
 		return null;
 	}
 
-
 	public void renewSessionDuration(User u) {
-		u.setLastAccess(new LocalTime());		
+		u.getSession().renewLassAccess();	
+	}
+	
+	public void renewSessionDuration(String token){
+		getUserByToken(token).getSession().renewLassAccess();
 	}
 
 
 	public void renewToken(User u) {
-		logger.info("renewing token for user:"+u.getUsername()+" token:"+u.getToken());
-		String token;
-		int rn;
-		if(u.getToken()==null){
-			rn = (int)(Math.random()*9);
-			token = u.getUsername()+"-"+rn;
-			u.setToken(token);
-			return;
-		}
-		Pattern p = Pattern.compile("(\\d)$");
-		Matcher m = p.matcher(u.getToken());
-		m.find();
-		int n = Integer.parseInt(m.group());		
-		while(true){
-			rn = (int)(Math.random()*9);
-			if(rn!=n){
-				token = u.getUsername()+"-"+rn;
-				u.setToken(token);
-				return;
-			}			
-		}
+		u.getSession().renewToken();
 	}
 
 
 	public void cleanInvalidSessions(){
 		LocalTime now = new LocalTime();
 		for(User u: getUserSet()){
-			int dif = Hours.hoursBetween(now, u.getLastAccess()).getHours();
+			Session s = u.getSession();
+			if(s==null)
+				continue;			
+			
+			int dif = Hours.hoursBetween(now, s.getLastAccess()).getHours();
 			if(dif>=LEASE_HOURS){
-				u.setLastAccess(null);
-				u.setToken(null);
+				s.delete();
 			}
 		}		
 	}

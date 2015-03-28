@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.joda.time.LocalTime;
 import org.joda.time.Seconds;
 
+import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exception.UnknownBubbleDocsUserException;
 import pt.tecnico.bubbledocs.exception.WrongPasswordException;
@@ -29,9 +30,10 @@ public class LoginUserTest extends BubbleDocsServiceTest {
 
 	// returns the time of the last access for the user with token userToken.
 	// It must get this data from the session object of the application
-	private LocalTime getLastAccessTimeInSession(String userToken) {		
-		// TODO add code here
-		return null;
+	private LocalTime getLastAccessTimeInSession(String token) {		
+		BubbleDocs bd = BubbleDocs.getInstance();
+		User u = bd.getUserByToken(token);
+		return u.getSession().getLastAccess();
 	}
 
 	@Test

@@ -87,9 +87,9 @@ public class Cell extends Cell_Base {
 	}
 	
 	public Argument importArgumentXML(Element e){
-		if(e.getName() == "Literal"){
+		if(e.getName().equals("Literal")){
 			return new LiteralArgument(Integer.parseInt(e.getAttributeValue("value")));
-		} else if (e.getName() == "Reference"){
+		} else if (e.getName().equals("Reference")){
 			Element c = e.getChild("Cell");
 			Cell cell = this.getSpreadSheet().getCell(Integer.parseInt(c.getAttributeValue("line")), Integer.parseInt(c.getAttributeValue("column")));
 			return new ReferenceArgument(cell);
@@ -103,10 +103,10 @@ public class Cell extends Cell_Base {
 		if(!e.getChildren().isEmpty()){
 			Element content = e.getChildren().get(0);
 			
-			if (content.getName() == "Literal"){
+			if (content.getName().equals("Literal")){
 				this.setLiteralContent(Integer.parseInt(content.getAttributeValue("value")));
 			}
-			else if(content.getName() == "Reference"){
+			else if(content.getName().equals("Reference")){
 				Element c = content.getChild("Cell");
 				Cell cell = this.getSpreadSheet().getCell(Integer.parseInt(c.getAttributeValue("line")), Integer.parseInt(c.getAttributeValue("column")));
 				this.setReferenceContent(cell);
@@ -116,16 +116,16 @@ public class Cell extends Cell_Base {
 				Element right = content.getChildren().get(1);
 				Argument leftArgument = importArgumentXML(left);
 				Argument rightArgument = importArgumentXML(right);			
-				if(content.getName() == "BFADD"){	
+				if(content.getName().equals("BFADD")){	
 					this.setBFAdd(leftArgument, rightArgument);			
 				}			
-				else if(content.getName() == "BFSUB"){			
+				else if(content.getName().equals("BFSUB")){			
 					this.setBFSub(leftArgument, rightArgument);				
 				}			
-				else if(content.getName() == "BFMUL"){
+				else if(content.getName().equals("BFMUL")){
 					this.setBFMul(leftArgument, rightArgument);				
 				}			
-				else if(content.getName() == "BFDIV"){
+				else if(content.getName().equals("BFDIV")){
 					this.setBFDiv(leftArgument, rightArgument);					
 				}
 			}else{

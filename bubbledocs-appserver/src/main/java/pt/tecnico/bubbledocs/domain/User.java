@@ -20,9 +20,8 @@ public class User extends User_Base {
     protected void init(String username, String password, String name){
     	setUsername(username);
     	setPassword(password);
-    	setName(name);	
-    	setLastAccess(null);
-    	setToken(null);
+    	setName(name);
+    	setSession(null);
     }   
     
 	public void delete(){
