@@ -12,4 +12,16 @@ public abstract class BinaryFunction extends BinaryFunction_Base {
     	return null;
 	}
     
+    public void delete(){
+    	//Delete Argument Objects
+    	getRightArgument().delete();
+    	getLeftArgument().delete();
+    	
+    	//Delete Roles
+    	setRightArgument(null);
+    	setLeftArgument(null);
+    	
+    	super.delete();
+    }
+    
 }

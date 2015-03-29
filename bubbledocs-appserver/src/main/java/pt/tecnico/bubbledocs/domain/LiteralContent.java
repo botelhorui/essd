@@ -13,7 +13,7 @@ public class LiteralContent extends LiteralContent_Base {
     	init(value);
     }
     
-    //allows to class hierarchy to grow
+    //allows the class hierarchy to grow
     protected void init(int value){
     	setValue(value);
     }
@@ -25,5 +25,9 @@ public class LiteralContent extends LiteralContent_Base {
     	e.setAttribute("value", "" + this.getValue());
     	return e;
 	}
+    
+    public void delete(){
+    	super.delete();
+    }
     
 }

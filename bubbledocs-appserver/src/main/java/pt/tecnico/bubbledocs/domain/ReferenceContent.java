@@ -20,4 +20,9 @@ public class ReferenceContent extends ReferenceContent_Base {
     	return e;
 	}
     
+    public void delete(){
+    	setReferenceCell(null);
+    	super.delete();
+    }
+    
 }

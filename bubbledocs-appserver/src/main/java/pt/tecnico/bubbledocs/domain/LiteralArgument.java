@@ -26,4 +26,8 @@ public class LiteralArgument extends LiteralArgument_Base {
     	return e;
 	}
     
+    public void delete(){
+    	super.delete();
+    }
+    
 }

@@ -13,4 +13,13 @@ public abstract class Argument extends Argument_Base {
     	return null;
 	}
     
+    protected void delete(){
+    	//Delete Roles
+    	setRightBinaryFunction(null);
+    	setLeftBinaryFunction(null);
+    	
+    	//Delete Object
+    	deleteDomainObject();
+    }
+    
 }

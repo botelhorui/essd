@@ -67,8 +67,12 @@ public class Cell extends Cell_Base {
 		
 		for(ReferenceArgument ra : getReferenceArgumentSet()){
 			removeReferenceArgument(ra);
-		}		
-		setContent(null);
+		}
+		
+		if(getContent() != null){
+			getContent().delete();
+			setContent(null);
+		}
 		
 		//Delete Object
 		deleteDomainObject();
