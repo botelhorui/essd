@@ -17,6 +17,9 @@ import pt.tecnico.bubbledocs.exception.WrongPasswordException;
 
 public class LoginUserTest extends BubbleDocsServiceTest {
 
+	private String jp; // the token for user jp
+	private String root; // the token for user root
+
 	private static final String USERNAME = "jp";
 	private static final String PASSWORD = "jp#";
 

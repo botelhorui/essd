@@ -2,6 +2,7 @@ package pt.tecnico.bubbledocs.domain;
 
 import org.jdom2.Element;
 
+import pt.tecnico.bubbledocs.exception.CellProtectedException;
 import pt.tecnico.bubbledocs.exception.importXMLException;
 
 public class Cell extends Cell_Base {

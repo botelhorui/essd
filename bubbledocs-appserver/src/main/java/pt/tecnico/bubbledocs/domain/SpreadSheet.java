@@ -5,6 +5,7 @@ import org.jdom2.Element;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
 
+import pt.tecnico.bubbledocs.exception.CellProtectedException;
 import pt.tecnico.bubbledocs.exception.PositionOutOfBoundsException;
 import pt.tecnico.bubbledocs.exception.UserHasNotReadAccessException;
 import pt.tecnico.bubbledocs.exception.UserHasNotWriteAccessException;
@@ -30,7 +31,7 @@ public class SpreadSheet extends SpreadSheet_Base{
 		//Create all the spread's empty cells
 		for(int i=1; i <= lines ;i++){
     		for(int j=1; j <= columns ;j++){
-    			new Cell(this, i, j);
+    			Cell c = new Cell(this, i, j);
     		}
     	}
 		
@@ -154,5 +155,4 @@ public class SpreadSheet extends SpreadSheet_Base{
 		//Delete Object
 		deleteDomainObject();		
 	}
-
 }

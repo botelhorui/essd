@@ -12,7 +12,9 @@ import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.FenixFramework;
+import pt.tecnico.bubbledocs.exception.DifferentUserImportException;
 import pt.tecnico.bubbledocs.exception.UnknownBubbleDocsUserException;
 import pt.tecnico.bubbledocs.exception.DuplicateUsernameException;
 import pt.tecnico.bubbledocs.exception.UserIsNotOwnerException;
@@ -35,10 +37,11 @@ public class BubbleDocs extends BubbleDocs_Base {
 	}
 
 	private User getUserRoot() {		
+		User root = null;
 		if(!hasUser("root")){
-			createUser("root", "root", "Super User");
+			root = createUser("root", "root", "Super User");
 		}else{
-			getUserByUsername("root");
+			root = getUserByUsername("root");
 		}
 		return null;
 	}
@@ -139,7 +142,6 @@ public class BubbleDocs extends BubbleDocs_Base {
 			Cell cell = ss.getCell(Integer.parseInt(cellElement.getAttributeValue("line")), Integer.parseInt(cellElement.getAttributeValue("column")));
 			cell.importXML(cellElement);
 		}
-		
 		return ss;
 	}
 	
