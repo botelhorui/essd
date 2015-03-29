@@ -143,5 +143,5 @@ relation ReferenceContentHasCell{
 
 relation ReferenceArgumentHasCell{
 	ReferenceArgument playsRole referenceArgument{multiplicity 0..*;}
-	Cell playsRole reference{multiplicity 1;}
+	Cell playsRole referenceCell{multiplicity 1;}
 }

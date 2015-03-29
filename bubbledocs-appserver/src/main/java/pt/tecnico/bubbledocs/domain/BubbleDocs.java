@@ -108,7 +108,7 @@ public class BubbleDocs extends BubbleDocs_Base {
 		return u;
 	}
 
-	public void importSheet(Document doc, String username){
+	public SpreadSheet importSheet(Document doc, String username){
 
 		/*
 		 * Checking for potential errors.
@@ -142,6 +142,8 @@ public class BubbleDocs extends BubbleDocs_Base {
 			Cell cell = ss.getCell(Integer.parseInt(cellElement.getAttributeValue("line")), Integer.parseInt(cellElement.getAttributeValue("column")));
 			cell.importXML(cellElement);
 		}
+		
+		return ss;
 	}
 	
 	public boolean isUserInSession(String token){

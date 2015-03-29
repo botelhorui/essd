@@ -34,6 +34,9 @@ public class CreateSpreadSheetTest extends BubbleDocsServiceTest {
 		removeUserFromSession(ars);
     }
 	
+	private boolean sameSpreadSheet(SpreadSheet s1,SpreadSheet s2){
+		return false;
+	}
 	
 	@Test
     public void success() {

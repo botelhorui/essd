@@ -7,7 +7,7 @@ import org.joda.time.format.ISODateTimeFormat;
 
 import pt.tecnico.bubbledocs.exception.CellProtectedException;
 import pt.tecnico.bubbledocs.exception.PositionOutOfBoundsException;
-import pt.tecnico.bubbledocs.exception.UserHasNotAccessException;
+import pt.tecnico.bubbledocs.exception.UserHasNotReadAccessException;
 import pt.tecnico.bubbledocs.exception.UserHasNotWriteAccessException;
 
 public class SpreadSheet extends SpreadSheet_Base{
@@ -64,12 +64,12 @@ public class SpreadSheet extends SpreadSheet_Base{
 		return null;
 	}
 
-	private void checkWriteAccess(String username) throws UserHasNotWriteAccessException,UserHasNotAccessException{
+	private void checkWriteAccess(String username) throws UserHasNotWriteAccessException,UserHasNotReadAccessException{
 		//checkReadAccess(username);
 		//SheetAccess sa = getSheetAccessSet().stream().filter(x -> x.getUser().getUsername().equals(username)).findFirst().get();
 	}
 
-	private void checkReadAccess(String username) throws UserHasNotAccessException{
+	private void checkReadAccess(String username) throws UserHasNotReadAccessException{
 		//if(!getSheetAccessSet().stream().anyMatch(sa -> sa.getUser().getUsername().equals(username))){
 			//throw new UserHasNotAccessException();
 		//}

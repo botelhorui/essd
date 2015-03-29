@@ -140,29 +140,27 @@ public class BubbleApplication {
 
 	@Atomic
 	private static void populateDomain() {
-		if(isInitialized()){
-			return;
-		}
-		
 		BubbleDocs bd = BubbleDocs.getInstance();
-		User pf = bd.createUser("pf","sub","Paul Door");
-		bd.createUser("ra","cor","Step Rabbit");
-
-		//SpreadSheet s1 = pf.createSheet("Notas ES", 300, 20);
-		SpreadSheet s1 = pf.createSheet("Notas ES", 6, 6);
-		
-		//TODO: Verificar permissoes do user para read/write
-		try{
-			s1.getCell(3, 4).setLiteralContent(5);
+		if(!bd.hasUser("ra"))
+			bd.createUser("ra","cor","Step Rabbit");
 			
-			s1.getCell(1,1).setReferenceContent(s1.getCell(5,6));
-			
-			s1.getCell(5,6).setBFAdd(new LiteralArgument(2), new ReferenceArgument(s1.getCell(3,4)));
-			
-			s1.getCell(2,2).setBFDiv(new ReferenceArgument(s1.getCell(1,1)), new ReferenceArgument(s1.getCell(3,4)));
-			
-		}catch (PositionOutOfBoundsException e){
-			System.out.println("Trying to access an out of bounds cell.");
+		if(!bd.hasUser("pf")){
+			User pf = bd.createUser("pf","sub","Paul Door");	
+			//SpreadSheet s1 = pf.createSheet("Notas ES", 300, 20);
+			SpreadSheet s1 = pf.createSheet("Notas ES", 6, 6);			
+			//TODO: Verificar permissoes do user para read/write
+			try{
+				s1.getCell(3, 4).setLiteralContent(5);
+				
+				s1.getCell(1,1).setReferenceContent(s1.getCell(5,6));
+				
+				s1.getCell(5,6).setBFAdd(new LiteralArgument(2), new ReferenceArgument(s1.getCell(3,4)));
+				
+				s1.getCell(2,2).setBFDiv(new ReferenceArgument(s1.getCell(1,1)), new ReferenceArgument(s1.getCell(3,4)));
+				
+			}catch (PositionOutOfBoundsException e){
+				System.out.println("Trying to access an out of bounds cell.");
+			}
 		}
 	}
 

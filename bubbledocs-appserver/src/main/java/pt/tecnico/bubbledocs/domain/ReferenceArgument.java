@@ -10,12 +10,12 @@ public class ReferenceArgument extends ReferenceArgument_Base {
     
     public ReferenceArgument(Cell cell) {
         super();
-        setReference(cell);
+        setReferenceCell(cell);
     }
     
     public Element export(){
     	Element e = new Element("Reference");
-    	e.addContent(this.getReference().export());
+    	e.addContent(this.getReferenceCell().export());
     	return e;
 	}
     
