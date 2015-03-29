@@ -19,4 +19,9 @@ public class ReferenceArgument extends ReferenceArgument_Base {
     	return e;
 	}
     
+    public void delete(){
+    	setReference(null);
+    	super.delete();
+    }
+    
 }

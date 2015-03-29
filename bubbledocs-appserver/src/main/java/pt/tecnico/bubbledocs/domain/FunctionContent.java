@@ -2,7 +2,7 @@ package pt.tecnico.bubbledocs.domain;
 
 import org.jdom2.Element;
 
-public class FunctionContent extends FunctionContent_Base {
+public abstract class FunctionContent extends FunctionContent_Base {
     
     public FunctionContent() {
         super();
@@ -11,5 +11,9 @@ public class FunctionContent extends FunctionContent_Base {
     public Element export(){
     	return null;
 	}
+    
+    protected void delete(){
+    	super.delete();
+    }
 
 }
