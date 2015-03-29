@@ -3,8 +3,6 @@ package pt.tecnico.bubbledocs.domain;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import pt.tecnico.bubbledocs.exception.UserIsNotOwnerException;
-
 
 public class User extends User_Base {
      
