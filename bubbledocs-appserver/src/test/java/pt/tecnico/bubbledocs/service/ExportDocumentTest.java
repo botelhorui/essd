@@ -1,5 +1,8 @@
 package pt.tecnico.bubbledocs.service;
 
+import org.joda.time.Hours;
+import org.joda.time.LocalTime;
+import org.joda.time.Seconds;
 import org.junit.Test;
 
 import pt.tecnico.bubbledocs.domain.Argument;
@@ -11,6 +14,7 @@ import pt.tecnico.bubbledocs.domain.LiteralArgument;
 import pt.tecnico.bubbledocs.domain.LiteralContent;
 import pt.tecnico.bubbledocs.domain.ReferenceArgument;
 import pt.tecnico.bubbledocs.domain.ReferenceContent;
+import pt.tecnico.bubbledocs.domain.Session;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
@@ -150,4 +154,15 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 		serv.execute();		
 	}
 	
+	@Test
+	public void renewToken(){
+		BubbleDocs bd = BubbleDocs.getInstance();
+		Session s = bd.getUserByToken(ruiToken).getSession();
+		LocalTime start = s.getLastAccess();
+		ExportDocument serv = new ExportDocument(ruiToken, s1.getId());
+		serv.execute();
+		LocalTime end = s.getLastAccess();
+		int diference = end.getMillisOfSecond()-start.getMillisOfSecond();
+		assertTrue("The session lease is not renewed", diference > 0);		
+	}	
 }
