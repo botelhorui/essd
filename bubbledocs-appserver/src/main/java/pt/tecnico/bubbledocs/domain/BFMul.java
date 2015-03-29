@@ -16,7 +16,7 @@ public class BFMul extends BFMul_Base {
     
     @Override
     public Element export(){
-    	Element e = new Element("MUL");
+    	Element e = new Element("BFMUL");
     	e.addContent(this.getLeftArgument().export());
     	e.addContent(this.getRightArgument().export());
     	return e;

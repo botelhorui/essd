@@ -17,7 +17,6 @@ import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.bubbledocs.exception.DifferentUserImportException;
 import pt.tecnico.bubbledocs.exception.UnknownBubbleDocsUserException;
 import pt.tecnico.bubbledocs.exception.DuplicateUsernameException;
-import pt.tecnico.bubbledocs.exception.UserDoesNotExistException;
 import pt.tecnico.bubbledocs.exception.UserIsNotOwnerException;
 
 public class BubbleDocs extends BubbleDocs_Base {
@@ -33,8 +32,18 @@ public class BubbleDocs extends BubbleDocs_Base {
 		if(bd==null){
 			bd = new BubbleDocs();
 		}
-
+		bd.getUserRoot();
 		return bd;
+	}
+
+	private User getUserRoot() {		
+		User root = null;
+		if(!hasUser("root")){
+			root = createUser("root", "root", "Super User");
+		}else{
+			root = getUserByUsername("root");
+		}
+		return null;
 	}
 
 	public int generateId(){
@@ -43,7 +52,7 @@ public class BubbleDocs extends BubbleDocs_Base {
 		return genId;
 	}
 
-	public User getUserByUsername(String username) throws UserDoesNotExistException {
+	public User getUserByUsername(String username) throws UnknownBubbleDocsUserException {
 
 		for(User u: getUserSet()){
 
@@ -52,24 +61,22 @@ public class BubbleDocs extends BubbleDocs_Base {
 			}
 		}
 
-		throw new UserDoesNotExistException();
+		throw new UnknownBubbleDocsUserException();
 	}
 
 	public boolean hasUser(String username){
 
 		for(User u: getUserSet()){
-
 			if(u.getUsername().equals(username)){
-				return true;
+				return true;			
 			}
 		}
-
 		return false;
 	}
 
 	@Override
 	public void addUser(pt.tecnico.bubbledocs.domain.User user) throws DuplicateUsernameException {
-
+		// TODO if the user is BubbleDocs already has the user User, should it throw exception?
 		if(hasUser(user.getUsername())){
 			throw new DuplicateUsernameException();
 		}
@@ -84,7 +91,7 @@ public class BubbleDocs extends BubbleDocs_Base {
 			User u = getUserByUsername(username);
 			super.removeUser(u);
 		}
-		catch (UserDoesNotExistException e) {
+		catch (UnknownBubbleDocsUserException e) {
 			System.out.println("User \"" + username + "\" does not exist.");
 		}
 	}
@@ -102,137 +109,97 @@ public class BubbleDocs extends BubbleDocs_Base {
 	}
 
 	public void importSheet(Document doc, String username){
-		try{
-			/*
-			 * Checking for potential errors.
-			 */
-			Element root = doc.getRootElement();
-			Element owner = root.getChild("Owner");
 
-			String docUsername = owner.getAttributeValue("username");
+		/*
+		 * Checking for potential errors.
+		 */
+		Element root = doc.getRootElement();
+		Element owner = root.getChild("Owner");
 
-			if(!docUsername.equals(username)){
-				throw new UserIsNotOwnerException();
-			}
+		String docUsername = owner.getAttributeValue("username");
 
-			if(!hasUser(username)){
-				throw new UnknownBubbleDocsUserException();
-			}
-
-			/*
-			 * Populating data.
-			 */
-
-			User creator = getUserByUsername(username);
-			SpreadSheet ss = creator.createSheet(root.getAttributeValue("name"), Integer.parseInt(root.getAttributeValue("lines")), Integer.parseInt(root.getAttributeValue("columns")));
-
-			DateTimeFormatter dtf = ISODateTimeFormat.dateTime();
-			ss.setCreationDate(dtf.parseDateTime(root.getAttributeValue("creation-date")));
-
-			Element cells = root.getChild("Cells");
-
-			for(Element cellElement : cells.getChildren()){
-				Cell cell = ss.getCell(Integer.parseInt(cellElement.getAttributeValue("line")), Integer.parseInt(cellElement.getAttributeValue("column")));
-				cell.importXML(cellElement);
-			}
-
-
-		} catch(UserIsNotOwnerException e){
-			System.err.println("User is not the original owner of this Spreadsheet.");
-		} catch(UnknownBubbleDocsUserException e){
-			System.err.println("Unknown user.");
-		} catch(NullPointerException e){
-			System.err.println("Could not import from XML document.");
+		if(!docUsername.equals(username)){
+			throw new UserIsNotOwnerException();
 		}
 
+		if(!hasUser(username)){
+			throw new UnknownBubbleDocsUserException();
+		}
 
+		/*
+		 * Populating data.
+		 */
+
+		User creator = getUserByUsername(username);
+		SpreadSheet ss = creator.createSheet(root.getAttributeValue("name"), Integer.parseInt(root.getAttributeValue("lines")), Integer.parseInt(root.getAttributeValue("columns")));
+
+		DateTimeFormatter dtf = ISODateTimeFormat.dateTime();
+		ss.setCreationDate(dtf.parseDateTime(root.getAttributeValue("creation-date")));
+
+		Element cells = root.getChild("Cells");
+
+		for(Element cellElement : cells.getChildren()){
+			Cell cell = ss.getCell(Integer.parseInt(cellElement.getAttributeValue("line")), Integer.parseInt(cellElement.getAttributeValue("column")));
+			cell.importXML(cellElement);
+		}
+	}
+	
+	public boolean isUserInSession(String token){
+		User u = getUserByToken(token);
+		if(u == null)
+			return false;
+		if(u.getSession()==null)
+			return false;
+		Session s = u.getSession();
+		LocalTime now = new LocalTime();		
+		int dif = Hours.hoursBetween(now, s.getLastAccess()).getHours();
+		if(dif>=LEASE_HOURS){			
+			s.delete();
+			return false;
+		}
+		return true;
 	}
 
-	//
-	// Joao will get to it
-	//
-	/*@Atomic
-    public void importSheet(Document doc,String username){
-    	try{
-    		//Every element/attribute get we use in the xml doc might be null if the xml is invalid
-	    	Element root = doc.getRootElement();
-	    	Element creatorEl = root.getChild("Creator");
-	    	String importUsername = creatorEl.getAttributeValue("username");
-	    	if(!hasUser(importUsername))
-	    		throw new UnknownBubbleDocsUserException();
-	    	User creator = getUserByUsername(username);
-	    	if(creator == null)
-	    		throw new UnknownBubbleDocsUserException();	    	
-	    	if(!importUsername.equals(username))
-	    		throw new DifferentUserImportException();
-	    	// import SheetData
-	    	SpreadSheet sd = new SpreadSheet();
-	    	sd.init(creator, root.getAttributeValue("name"),
-	    			Integer.parseInt(root.getAttributeValue("lines")),
-	    			Integer.parseInt(root.getAttributeValue("columns")));
-	    	DateTimeFormatter dtf = ISODateTimeFormat.dateTime();
-	    	sd.setCreationDate(dtf.parseDateTime(root.getAttributeValue("creation-date")));  	
-	    	// import all cells if any
-	    	Element cells = root.getChild("Cells");
-	    	for(Element celle: cells.getChildren()){
-	    		Cell cell = new Cell(sd, 
-	    				Integer.parseInt(celle.getAttributeValue("line")),
-	    				Integer.parseInt(celle.getAttributeValue("column"))); 		
-	    	}
-    	}
-    	catch(NullPointerException e){
-    		System.out.println("Exception while importing a sheet:");
-    		System.out.println(e);
-    		throw e;
-    	}    	
-    }*/
-
+	public String getUsernameFromToken(String token){
+		Pattern p = Pattern.compile("(.+)-(\\d)$");
+		Matcher m = p.matcher(token);
+		m.find();
+		return m.group(1);
+	}
+	
 	public User getUserByToken(String token){
-		for(User u:getUserSet()){			
-			if(u.getToken() != null && u.getToken().equals(token))
+		for(User u:getUserSet()){
+			Session s = u.getSession();
+			if(s!=null && s.getToken().equals(token))
 				return u;
 		}
 		return null;
 	}
 
-
 	public void renewSessionDuration(User u) {
-		u.setLastAccess(new LocalTime());		
+		u.getSession().renewLassAccess();	
+	}
+	
+	public void renewSessionDuration(String token){
+		getUserByToken(token).getSession().renewLassAccess();
 	}
 
 
 	public void renewToken(User u) {
-		logger.info("renewing token for user:"+u.getUsername()+" token:"+u.getToken());
-		String token;
-		int rn;
-		if(u.getToken()==null){
-			rn = (int)(Math.random()*9);
-			token = u.getUsername()+"-"+rn;
-			u.setToken(token);
-			return;
-		}
-		Pattern p = Pattern.compile("(\\d)$");
-		Matcher m = p.matcher(u.getToken());
-		m.find();
-		int n = Integer.parseInt(m.group());		
-		while(true){
-			rn = (int)(Math.random()*9);
-			if(rn!=n){
-				token = u.getUsername()+"-"+rn;
-				u.setToken(token);
-				return;
-			}			
-		}
+		u.getSession().renewToken();
 	}
 
 
 	public void cleanInvalidSessions(){
 		LocalTime now = new LocalTime();
 		for(User u: getUserSet()){
-			int dif = Hours.hoursBetween(now, u.getLastAccess()).getHours();
+			Session s = u.getSession();
+			if(s==null)
+				continue;			
+			
+			int dif = Hours.hoursBetween(now, s.getLastAccess()).getHours();
 			if(dif>=LEASE_HOURS){
-				u.setLastAccess(null);
-				u.setToken(null);
+				s.delete();
 			}
 		}		
 	}

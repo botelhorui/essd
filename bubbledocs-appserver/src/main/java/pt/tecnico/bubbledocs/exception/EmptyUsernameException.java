@@ -1,7 +1,7 @@
 package pt.tecnico.bubbledocs.exception;
 
-public class UserIsNotOwnerException extends BubbleDocsException{
-
+public class EmptyUsernameException extends BubbleDocsException {
+	
 	/**
 	 * 
 	 */

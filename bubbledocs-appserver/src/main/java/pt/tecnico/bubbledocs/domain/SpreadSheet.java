@@ -124,6 +124,7 @@ public class SpreadSheet extends SpreadSheet_Base{
 		}
 
 		Element cells = new Element("Cells");
+		
 		root.addContent(cells);
 		for(Cell c: getCellSet()){
 			cells.addContent(c.export());

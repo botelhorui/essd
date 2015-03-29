@@ -16,7 +16,7 @@ public class BFAdd extends BFAdd_Base {
     
     @Override
     public Element export(){
-    	Element e = new Element("ADD");
+    	Element e = new Element("BFADD");
     	e.addContent(this.getLeftArgument().export());
     	e.addContent(this.getRightArgument().export());
     	return e;

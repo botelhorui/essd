@@ -3,7 +3,6 @@ package pt.tecnico.bubbledocs.domain;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import pt.tecnico.bubbledocs.exception.UserDoesNotExistException;
 import pt.tecnico.bubbledocs.exception.UserIsNotOwnerException;
 
 
@@ -21,9 +20,8 @@ public class User extends User_Base {
     protected void init(String username, String password, String name){
     	setUsername(username);
     	setPassword(password);
-    	setName(name);	
-    	setLastAccess(null);
-    	setToken(null);
+    	setName(name);
+    	setSession(null);
     }   
     
 	public void delete(){
@@ -60,16 +58,13 @@ public class User extends User_Base {
     
     //Editar para devolver null em vez de excepcao. nao faz sentido.
     
-    public List<SpreadSheet> getOwnedSpreadByName(String name) throws UserIsNotOwnerException {
+    public List<SpreadSheet> getOwnedSpreadSheetsByName(String name){
     	
-    	List<SpreadSheet> spreadsheet = getOwnedSpreadSet().stream()
+    	List<SpreadSheet> spreadSheets = getOwnedSpreadSet().stream()
     			.filter(ds -> ds.getName().equals(name))
     			.collect(Collectors.toList());
     	
-    	if (spreadsheet != null)
-    		return spreadsheet;
-    	else  
-    		throw new UserIsNotOwnerException();
+    	return spreadSheets;
     }
     
     

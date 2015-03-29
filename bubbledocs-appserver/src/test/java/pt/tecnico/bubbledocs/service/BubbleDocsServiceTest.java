@@ -42,7 +42,7 @@ public class BubbleDocsServiceTest {
 	}
 
 	// auxiliary methods that access the domain layer and are needed in the test classes
-	// for defining the iniital state and checking that the service has the expected behavior
+	// for defining the initial state and checking that the service has the expected behavior
 	User createUser(String username, String password, String name) {
 		BubbleDocs bd = BubbleDocs.getInstance();
 		return bd.createUser(username, password, name);
@@ -55,7 +55,18 @@ public class BubbleDocsServiceTest {
 	// returns a spreadsheet whose name is equal to name
 	public SpreadSheet getSpreadSheet(String name) {
 		BubbleDocs bd = BubbleDocs.getInstance();
-		// TODO
+		SpreadSheet s=null;
+		for(SpreadSheet x: bd.getSpreadSheetSet())
+			s=x;
+		return s;
+	}
+	
+	public SpreadSheet getSpreadSheetById(int id) {
+		BubbleDocs bd = BubbleDocs.getInstance();
+		for(SpreadSheet s: bd.getSpreadSheetSet()){
+			if(s.getId()==id)
+				return s;
+		}
 		return null;
 	}
 
@@ -67,19 +78,21 @@ public class BubbleDocsServiceTest {
 
 	// put a user into session and returns the token associated to it
 	String addUserToSession(String username) {
-		// TODO add code here
-		return null;
+		LoginUser service = new LoginUser(username, username);
+		service.execute();
+		return service.getUserToken();
 	}
 
 	// remove a user from session given its token
 	void removeUserFromSession(String token) {
-		// TODO add code here
+		BubbleDocs bd = BubbleDocs.getInstance();
+		User u = bd.getUserByToken(token);
+		u.getSession().delete();
 	}
 
 	// return the user registered in session whose token is equal to token
 	User getUserFromSession(String token) {
-		// TODO add code here
-		return null;
+		BubbleDocs bd = BubbleDocs.getInstance();
+		return bd.getUserByToken(token);
 	}
-
 }
