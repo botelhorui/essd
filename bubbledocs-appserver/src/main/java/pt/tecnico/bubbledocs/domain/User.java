@@ -3,6 +3,8 @@ package pt.tecnico.bubbledocs.domain;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import pt.tecnico.bubbledocs.exception.DuplicateUsernameException;
+
 
 public class User extends User_Base {
      
@@ -44,9 +46,14 @@ public class User extends User_Base {
 	}
     
     @Override
-    public void setUsername(String username) {
-    	// TODO Auto-generated method stub
+    public void setUsername(String username) throws DuplicateUsernameException {
+    	
+    	if (BubbleDocs.getInstance().hasUser(username)){
+    		throw new DuplicateUsernameException();
+    	}
+	
     	super.setUsername(username);
+    	
     }
     
     
