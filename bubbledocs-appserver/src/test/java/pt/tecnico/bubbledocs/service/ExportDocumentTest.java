@@ -110,14 +110,18 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 		}	
 		return true;
 	}
-
+	
 	@Test
     public void success() {
+		BubbleDocs bd = BubbleDocs.getInstance();
+		LocalTime start = bd.getUserByToken(ruiToken).getSession().getLastAccess();
 		ExportDocument serv = new ExportDocument(ruiToken, s1.getId());
 		serv.execute();		
-		BubbleDocs bd = BubbleDocs.getInstance();
+		LocalTime end = bd.getUserByToken(ruiToken).getSession().getLastAccess();
 		SpreadSheet s2 = bd.importSheet(serv.getDocXML(), USERNAME);
-		assertTrue("The imported spreadSheet from the exported SpreadSheet are diferent", sameSpreadSheet(s1, s2));		
+		assertTrue("The imported spreadSheet from the exported SpreadSheet are diferent", sameSpreadSheet(s1, s2));
+		int diference = end.getMillisOfSecond()-start.getMillisOfSecond();
+		assertTrue("The session lease is not renewed", diference > 0);		
 	}
 	
 	@Test
@@ -134,13 +138,13 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 	}
 	
 	@Test(expected = SpreadSheetIdUnknown.class)
-	public void exportUnknownId(){
+	public void exportUnknownSpreadSheetId(){
 		ExportDocument serv = new ExportDocument(ruiToken, 15);
 		serv.execute();
 	}
 	
 	@Test(expected = UserHasNotReadAccessException.class)
-	public void noReadPermission(){
+	public void exportNoReadPermission(){
 		createUser("botelho", "botelho", NAME);
 		String token = addUserToSession("botelho");
 		ExportDocument serv = new ExportDocument(token, s1.getId());
@@ -148,21 +152,10 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 	}
 	
 	@Test(expected = UserNotInSessionException.class)
-	public void invalidToken(){
+	public void exportInvalidToken(){
 		createUser("botelho", PASSWORD, NAME);
 		ExportDocument serv = new ExportDocument("botelho-0", s1.getId());
 		serv.execute();		
 	}
 	
-	@Test
-	public void renewToken(){
-		BubbleDocs bd = BubbleDocs.getInstance();
-		Session s = bd.getUserByToken(ruiToken).getSession();
-		LocalTime start = s.getLastAccess();
-		ExportDocument serv = new ExportDocument(ruiToken, s1.getId());
-		serv.execute();
-		LocalTime end = s.getLastAccess();
-		int diference = end.getMillisOfSecond()-start.getMillisOfSecond();
-		assertTrue("The session lease is not renewed", diference > 0);		
-	}	
 }
