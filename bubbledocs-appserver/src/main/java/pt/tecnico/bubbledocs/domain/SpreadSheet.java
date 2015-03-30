@@ -46,10 +46,6 @@ public class SpreadSheet extends SpreadSheet_Base{
 		addWriterUser(owner);
 		owner.addWritableSpread(this);
 
-		SheetAccess sa = new SheetAccess(owner, this);
-		setSheetAccess(sa);
-		owner.addSheetAccess(sa);
-		
 	}
 	
 	public Cell getCell(int line, int column) throws PositionOutOfBoundsException{
@@ -137,7 +133,6 @@ public class SpreadSheet extends SpreadSheet_Base{
 
 	public void delete() {
 		//Delete Roles
-		getSheetAccess().delete();
 		
 		for(Cell c: getCellSet()){
 			c.delete();

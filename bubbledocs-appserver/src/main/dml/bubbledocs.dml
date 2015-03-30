@@ -15,9 +15,6 @@ class Session{
 	String token;
 }
 
-class SheetAccess{
-}
-
 class SpreadSheet{
 	int id;
 	String name;
@@ -91,12 +88,6 @@ relation BubbleDocsContainsSpreadSheet{
 	SpreadSheet playsRole spreadSheet{multiplicity 0..*;}
 }
 
-
-relation SpreadSheetHasSheetAccess{
-	SpreadSheet playsRole spreadSheet{multiplicity 1;}
-	SheetAccess playsRole sheetAccess{multiplicity 1;}
-}
-
 relation UserOwnedSheets{
 	User playsRole owner{multiplicity 1;}
 	SpreadSheet playsRole ownedSpread{multiplicity 0..*;}
@@ -110,11 +101,6 @@ relation UserCanReadSpreadSheet{
 relation UserCanWriteSpreadSheet{
 	User playsRole writerUser{multiplicity 0..*;}
 	SpreadSheet playsRole writableSpread{multiplicity 0..*;}
-}
-
-relation SheetAccessHasUser{
-	SheetAccess playsRole sheetAccess{multiplicity 0..*;}
-	User playsRole user{multiplicity 1;}
 }
 
 relation SpreadSheetContainsCell{

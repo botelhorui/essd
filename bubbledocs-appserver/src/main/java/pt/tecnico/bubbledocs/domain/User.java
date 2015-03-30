@@ -24,10 +24,6 @@ public class User extends User_Base {
     
 	public void delete(){
 		//Delete Roles
-		for(SheetAccess sa: getSheetAccessSet()){
-			sa.delete();
-		}
-		
 		for(SpreadSheet s: getOwnedSpreadSet()){
 			removeOwnedSpread(s);
 			s.delete();
