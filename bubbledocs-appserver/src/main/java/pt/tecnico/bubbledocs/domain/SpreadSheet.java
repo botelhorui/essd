@@ -127,7 +127,9 @@ public class SpreadSheet extends SpreadSheet_Base{
 		
 		root.addContent(cells);
 		for(Cell c: getCellSet()){
-			cells.addContent(c.export());
+			if(c.getContent() != null){
+				cells.addContent(c.export());
+			}
 		}
 		
 		return doc;

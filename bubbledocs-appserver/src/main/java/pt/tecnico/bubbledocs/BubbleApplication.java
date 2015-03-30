@@ -146,8 +146,7 @@ public class BubbleApplication {
 			
 		if(!bd.hasUser("pf")){
 			User pf = bd.createUser("pf","sub","Paul Door");	
-			//SpreadSheet s1 = pf.createSheet("Notas ES", 300, 20);
-			SpreadSheet s1 = pf.createSheet("Notas ES", 6, 6);			
+			SpreadSheet s1 = pf.createSheet("Notas ES", 300, 20);	
 			//TODO: Verificar permissoes do user para read/write
 			try{
 				s1.getCell(3, 4).setLiteralContent(5);
