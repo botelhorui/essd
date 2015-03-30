@@ -5,6 +5,8 @@ import org.jdom2.Element;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
 
+import pt.tecnico.bubbledocs.domain.User;
+
 import pt.tecnico.bubbledocs.exception.CellProtectedException;
 import pt.tecnico.bubbledocs.exception.PositionOutOfBoundsException;
 import pt.tecnico.bubbledocs.exception.UserHasNotReadAccessException;
@@ -34,7 +36,6 @@ public class SpreadSheet extends SpreadSheet_Base{
     			Cell c = new Cell(this, i, j);
     		}
     	}
-		
 
 		BubbleDocs.getInstance().addSpreadSheet(this);
 		setBubbleDocs(BubbleDocs.getInstance());
@@ -59,35 +60,6 @@ public class SpreadSheet extends SpreadSheet_Base{
 		}
 		return null;
 	}
-
-	private void checkWriteAccess(String username) throws UserHasNotWriteAccessException,UserHasNotReadAccessException{
-		//checkReadAccess(username);
-		//SheetAccess sa = getSheetAccessSet().stream().filter(x -> x.getUser().getUsername().equals(username)).findFirst().get();
-	}
-
-	private void checkReadAccess(String username) throws UserHasNotReadAccessException{
-		//if(!getSheetAccessSet().stream().anyMatch(sa -> sa.getUser().getUsername().equals(username))){
-			//throw new UserHasNotAccessException();
-		//}
-	}
-	
-	/*public String getValue(String username,int line, int column)
-			throws PositionOutOfBoundsException, UserHasNotAccessException {
-		checkReadAccess(username);
-		Cell c = getCell(line,column);
-		if(c==null){			
-			return "";
-		}
-		return c.getValue();
-	}*/
-
-	/*public void setUserAccess(String settingUser, String userToSet, boolean canWrite)
-			throws UserHasNotWriteAccessException,
-			UserHasNotAccessException{
-		checkWriteAccess(settingUser);
-		// TODO Auto-generated method stub
-
-	}*/
 
 	public Document export() {
 		Document doc = new Document();
@@ -151,5 +123,36 @@ public class SpreadSheet extends SpreadSheet_Base{
 		
 		//Delete Object
 		deleteDomainObject();		
+	}
+	
+	public boolean checkReadAccess(User user){
+		for(User r: getReaderUserSet()){
+			if(user.equals(r))
+				return true;
+		}
+		
+		return false;
+	}
+
+	public boolean checkWriteAccess(User user){
+		for(User w: getWriterUserSet()){
+			if(user.equals(w))
+				return true;
+		}
+		
+		return false;
+	}
+
+	//Overloaded -- could not Override -- some Fenix Framework class has equals as final
+	public boolean equals(SpreadSheet that) {
+		// Custom equality check here.
+		
+		if(this.getName().equals(that.getName()))
+				if(this.getId() == that.getId()
+				&& this.getLines() == that.getLines()
+				&& this.getColumns() == that.getColumns())
+					return true;
+		
+		return false;
 	}
 }

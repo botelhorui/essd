@@ -3,7 +3,11 @@ package pt.tecnico.bubbledocs.domain;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import pt.tecnico.bubbledocs.domain.SpreadSheet;
+
 import pt.tecnico.bubbledocs.exception.DuplicateUsernameException;
+import pt.tecnico.bubbledocs.exception.UserHasNotWriteAccessException;
+import pt.tecnico.bubbledocs.exception.UserIsNotOwnerException;
 
 
 public class User extends User_Base {
@@ -56,7 +60,6 @@ public class User extends User_Base {
     	
     }
     
-    
     //Editar para devolver null em vez de excepcao. nao faz sentido.
     
     public List<SpreadSheet> getOwnedSpreadSheetsByName(String name){
@@ -73,4 +76,102 @@ public class User extends User_Base {
     	SpreadSheet s = new SpreadSheet(this, name, lines, columns);
     	return s;
     }
+    
+    public boolean checkIfUserOwnsSpread(SpreadSheet spread){
+    	return spread.getOwner().equals(this);
+    }
+    
+	public boolean checkWriteAccess(SpreadSheet spread){
+		for(SpreadSheet ws: getWritableSpreadSet()){
+			if(spread.equals(ws))
+				return true;
+		}
+
+		return false;
+
+	}
+
+	public boolean checkReadAccess(SpreadSheet spread){
+		for(SpreadSheet rs: getReadableSpreadSet()){
+			if(spread.equals(rs))
+				return true;
+		}
+
+		return false;
+	}
+
+	public void addUserToSpreadWriteAccessSet(SpreadSheet spread, User user) throws UserHasNotWriteAccessException, UserIsNotOwnerException{
+		if(this.checkIfUserOwnsSpread(spread) || this.checkWriteAccess(spread)){
+			if(user.checkWriteAccess(spread) == false){
+				user.addWritableSpread(spread);
+				spread.addWriterUser(user);
+			}
+			if(user.checkReadAccess(spread) == false){
+				user.addReadableSpread(spread);
+				spread.addReaderUser(user);
+			}
+		}else{
+			if(this.checkWriteAccess(spread) == false)
+				throw new UserHasNotWriteAccessException();
+			else if(this.checkIfUserOwnsSpread(spread) == false)
+				throw new UserIsNotOwnerException();
+		}
+	}
+
+	public void removeUserFromSpreadWriteAccessSet(SpreadSheet spread, User user){
+		if(this.checkIfUserOwnsSpread(spread) || this.checkWriteAccess(spread)){
+			for(SpreadSheet ws: getWritableSpreadSet()){
+				if(spread.equals(ws)){
+					spread.removeWriterUser(this);
+					removeWritableSpread(ws);
+				}
+			}
+		}else{
+			if(this.checkWriteAccess(spread) == false)
+				throw new UserHasNotWriteAccessException();
+			else if(this.checkIfUserOwnsSpread(spread) == false)
+				throw new UserIsNotOwnerException();
+		}
+	}
+	
+	public void addUserToSpreadReadAccessSet(SpreadSheet spread, User user) throws UserHasNotWriteAccessException, UserIsNotOwnerException{
+		if(this.checkIfUserOwnsSpread(spread) || this.checkWriteAccess(spread)){
+			if(user.checkReadAccess(spread) == false){
+				user.addReadableSpread(spread);
+				spread.addReaderUser(user);
+			}
+		}else{
+			if(this.checkWriteAccess(spread) == false)
+				throw new UserHasNotWriteAccessException();
+			else if(this.checkIfUserOwnsSpread(spread) == false)
+				throw new UserIsNotOwnerException();
+		}
+	}
+	
+	public void removeUserFromSpreadReadAccessSet(SpreadSheet spread, User user) throws UserHasNotWriteAccessException, UserIsNotOwnerException{
+		if(this.checkIfUserOwnsSpread(spread) || this.checkWriteAccess(spread)){
+			for(SpreadSheet rs: getReadableSpreadSet()){
+				if(spread.equals(rs)){
+					spread.removeReaderUser(this);
+					removeReadableSpread(rs);
+				}
+			}
+		}else{
+			if(this.checkWriteAccess(spread) == false)
+				throw new UserHasNotWriteAccessException();
+			else if(this.checkIfUserOwnsSpread(spread) == false)
+				throw new UserIsNotOwnerException();
+		}
+	}
+
+	//Overloaded -- could not Override -- some Fenix Framework class has equals as final
+	public boolean equals(User that) {
+		// Custom equality check here.
+		if(this.getUsername().equals(that.getUsername())
+				&& this.getName().equals(that.getName())
+				&& this.getPassword().equals(that.getPassword()))
+			return true;
+
+		return false;
+	}
 }
