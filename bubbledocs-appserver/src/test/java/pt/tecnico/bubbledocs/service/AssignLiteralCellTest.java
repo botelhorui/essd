@@ -6,17 +6,12 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
-
-import org.joda.time.Hours;
-import org.joda.time.LocalTime;
-import org.joda.time.Seconds;
-
+import org.joda.time.DateTime;
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.LiteralContent;
 import pt.tecnico.bubbledocs.domain.Cell;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
-
 import pt.tecnico.bubbledocs.exception.PositionOutOfBoundsException;
 import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.bubbledocs.exception.SpreadSheetIdUnknown;
@@ -105,9 +100,9 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 		 */
 		BubbleDocs bd = BubbleDocs.getInstance();
 		AssignLiteralCell alc = new AssignLiteralCell(goldToken, sheetId, testCellString, testValueOneString);
-		LocalTime start = bd.getUserByToken(goldToken).getSession().getLastAccess();	
+		DateTime start = bd.getUserByToken(goldToken).getSession().getLastAccess();	
 		alc.execute();
-		LocalTime end = bd.getUserByToken(goldToken).getSession().getLastAccess();
+		DateTime end = bd.getUserByToken(goldToken).getSession().getLastAccess();
 		
 		/*
 		 * Compare cases

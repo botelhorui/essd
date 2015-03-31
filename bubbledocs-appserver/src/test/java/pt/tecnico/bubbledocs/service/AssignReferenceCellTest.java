@@ -6,18 +6,12 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
-
-import org.joda.time.Hours;
-import org.joda.time.LocalTime;
-import org.joda.time.Seconds;
-
+import org.joda.time.DateTime;
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.ReferenceContent;
 import pt.tecnico.bubbledocs.domain.Cell;
-import pt.tecnico.bubbledocs.domain.Content;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
-
 import pt.tecnico.bubbledocs.exception.PositionOutOfBoundsException;
 import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.bubbledocs.exception.SpreadSheetIdUnknown;
@@ -110,10 +104,10 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 		SpreadSheet spreadsheet = getSpreadSheetById(spread_id);
 
 		// user exists & is in session & has permission to write = jp
-		LocalTime start = bd.getUserByToken(jp).getSession().getLastAccess();
+		DateTime start = bd.getUserByToken(jp).getSession().getLastAccess();
 		AssignReferenceCell service = new AssignReferenceCell( jp , spread_id , cell , reference );
 		service.execute();
-		LocalTime end = bd.getUserByToken(jp).getSession().getLastAccess();
+		DateTime end = bd.getUserByToken(jp).getSession().getLastAccess();
 
 		// check if Reference was assigned to Cell
 

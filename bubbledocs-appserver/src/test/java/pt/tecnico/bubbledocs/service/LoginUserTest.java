@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.joda.time.LocalTime;
+import org.joda.time.DateTime;
 import org.joda.time.Seconds;
 
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
@@ -30,7 +30,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
 
 	// returns the time of the last access for the user with token userToken.
 	// It must get this data from the session object of the application
-	private LocalTime getLastAccessTimeInSession(String token) {		
+	private DateTime getLastAccessTimeInSession(String token) {		
 		BubbleDocs bd = BubbleDocs.getInstance();
 		User u = bd.getUserByToken(token);
 		return u.getSession().getLastAccess();
@@ -40,7 +40,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
 	public void success() {
 		LoginUser service = new LoginUser(USERNAME, PASSWORD);
 		service.execute();
-		LocalTime currentTime = new LocalTime();
+		DateTime currentTime = new DateTime();
 
 		String token = service.getUserToken();
 

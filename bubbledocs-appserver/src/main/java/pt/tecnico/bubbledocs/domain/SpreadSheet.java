@@ -7,10 +7,7 @@ import org.joda.time.format.ISODateTimeFormat;
 
 import pt.tecnico.bubbledocs.domain.User;
 
-import pt.tecnico.bubbledocs.exception.CellProtectedException;
 import pt.tecnico.bubbledocs.exception.PositionOutOfBoundsException;
-import pt.tecnico.bubbledocs.exception.UserHasNotReadAccessException;
-import pt.tecnico.bubbledocs.exception.UserHasNotWriteAccessException;
 
 public class SpreadSheet extends SpreadSheet_Base{
 

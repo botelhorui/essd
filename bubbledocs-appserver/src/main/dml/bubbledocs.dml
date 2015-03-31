@@ -11,7 +11,7 @@ class User{
 }
 
 class Session{
-	LocalTime lastAccess;
+	DateTime lastAccess;
 	String token;
 }
 

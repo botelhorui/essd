@@ -1,22 +1,16 @@
 package pt.tecnico.bubbledocs.domain;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.joda.time.DateTime;
 import org.joda.time.Hours;
-import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.FenixFramework;
-import pt.tecnico.bubbledocs.exception.DifferentUserImportException;
 import pt.tecnico.bubbledocs.exception.UnknownBubbleDocsUserException;
-import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.bubbledocs.exception.DuplicateUsernameException;
 import pt.tecnico.bubbledocs.exception.UserIsNotOwnerException;
 
@@ -153,7 +147,7 @@ public class BubbleDocs extends BubbleDocs_Base {
 		if(u.getSession() == null)
 			return false;
 		Session s = u.getSession();
-		LocalTime now = new LocalTime();		
+		DateTime now = new DateTime();		
 		int dif = Hours.hoursBetween(now, s.getLastAccess()).getHours();
 		if(Math.abs(dif)>=LEASE_HOURS){			
 			s.delete();
@@ -194,13 +188,12 @@ public class BubbleDocs extends BubbleDocs_Base {
 	}
 
 
-	public void cleanInvalidSessions(){
-		LocalTime now = new LocalTime();
+	public void cleanInvalidSessions(){		
 		for(User u: getUserSet()){
 			Session s = u.getSession();
 			if(s==null)
 				continue;			
-			
+			DateTime now = new DateTime();
 			int dif = Hours.hoursBetween(now, s.getLastAccess()).getHours();
 			if(dif>=LEASE_HOURS){
 				s.delete();

@@ -3,7 +3,7 @@ package pt.tecnico.bubbledocs.domain;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.joda.time.LocalTime;
+import org.joda.time.DateTime;
 
 public class Session extends Session_Base {
     
@@ -11,13 +11,13 @@ public class Session extends Session_Base {
         super();
     }
     
-    public void init(LocalTime lastAccess, String token){
+    public void init(DateTime lastAccess, String token){
     	setLastAccess(lastAccess);
     	setToken(token);
     }
     
     public void renewLassAccess(){
-    	setLastAccess(new LocalTime());
+    	setLastAccess(new DateTime());
     }
     
     public void renewToken(){

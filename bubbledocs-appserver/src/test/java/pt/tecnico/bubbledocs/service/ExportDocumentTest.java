@@ -1,8 +1,6 @@
 package pt.tecnico.bubbledocs.service;
 
-import org.joda.time.Hours;
-import org.joda.time.LocalTime;
-import org.joda.time.Seconds;
+import org.joda.time.DateTime;
 import org.junit.Test;
 
 import pt.tecnico.bubbledocs.domain.Argument;
@@ -14,7 +12,6 @@ import pt.tecnico.bubbledocs.domain.LiteralArgument;
 import pt.tecnico.bubbledocs.domain.LiteralContent;
 import pt.tecnico.bubbledocs.domain.ReferenceArgument;
 import pt.tecnico.bubbledocs.domain.ReferenceContent;
-import pt.tecnico.bubbledocs.domain.Session;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
@@ -115,9 +112,9 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
     public void success() throws InterruptedException {
 		BubbleDocs bd = BubbleDocs.getInstance();		
 		ExportDocument serv = new ExportDocument(ruiToken, s1.getId());
-		LocalTime start = bd.getUserByToken(ruiToken).getSession().getLastAccess();	
+		DateTime start = bd.getUserByToken(ruiToken).getSession().getLastAccess();	
 		serv.execute();	
-		LocalTime end = bd.getUserByToken(ruiToken).getSession().getLastAccess();
+		DateTime end = bd.getUserByToken(ruiToken).getSession().getLastAccess();
 		assertFalse("The session lease is not renewed", end == start);
 		SpreadSheet s2 = bd.importSheet(serv.getDocXML(), USERNAME);
 		assertTrue("The imported spreadSheet from the exported SpreadSheet are diferent", sameSpreadSheet(s1, s2));	

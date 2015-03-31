@@ -6,11 +6,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
-
-import org.joda.time.Hours;
-import org.joda.time.LocalTime;
-import org.joda.time.Seconds;
-
+import org.joda.time.DateTime;
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.exception.PositionOutOfBoundsException;
@@ -45,10 +41,10 @@ public class CreateSpreadSheetTest extends BubbleDocsServiceTest {
     public void success() {
         
 		BubbleDocs bd = BubbleDocs.getInstance();
-		LocalTime start = bd.getUserByToken(jp).getSession().getLastAccess();
+		DateTime start = bd.getUserByToken(jp).getSession().getLastAccess();
 		CreateSpreadSheet service = new CreateSpreadSheet(jp, "testsheet", 20, 20);
 		service.execute();
-		LocalTime end = bd.getUserByToken(jp).getSession().getLastAccess();
+		DateTime end = bd.getUserByToken(jp).getSession().getLastAccess();
 		int id = service.getSheetId();
 		SpreadSheet sp = getSpreadSheetById(id);
 		assertNotNull("SpreadSheet was not created", sp);
