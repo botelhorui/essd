@@ -111,21 +111,16 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 		return true;
 	}
 
-	private LocalTime getLastAccessTimeInSession(String token) {		
-		BubbleDocs bd = BubbleDocs.getInstance();
-		User u = bd.getUserByToken(token);
-		return u.getSession().getLastAccess();
-	}
-	
 	@Test
-    public void success() {
+    public void success() throws InterruptedException {
 		BubbleDocs bd = BubbleDocs.getInstance();		
 		ExportDocument serv = new ExportDocument(ruiToken, s1.getId());
+		LocalTime start = bd.getUserByToken(ruiToken).getSession().getLastAccess();
+		Thread.sleep(2000);		
 		serv.execute();	
-		LocalTime currentTime = bd.getUserByToken(ruiToken).getSession().getLastAccess();
-		int dif = Seconds.secondsBetween(getLastAccessTimeInSession(ruiToken), currentTime).getSeconds();	
-		assertTrue("The session lease is not renewed", dif >= 0);
-		assertTrue("Diference in seconds greater than expected", dif < 2);
+		LocalTime end = bd.getUserByToken(ruiToken).getSession().getLastAccess();
+		int dif = Seconds.secondsBetween(start, end).getSeconds();	
+		assertTrue("The session lease is not renewed", dif > 0);
 		SpreadSheet s2 = bd.importSheet(serv.getDocXML(), USERNAME);
 		assertTrue("The imported spreadSheet from the exported SpreadSheet are diferent", sameSpreadSheet(s1, s2));	
 				
