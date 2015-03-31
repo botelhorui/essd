@@ -29,7 +29,6 @@ public class CreateUser extends BubbleDocsService {
 		BubbleDocs bd = BubbleDocs.getInstance();
 		User user = bd.getUserByToken(this.token);
 		
-		
 		if(newUsername.equals(""))
 			throw new EmptyUsernameException();
 		

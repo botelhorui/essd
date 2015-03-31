@@ -55,10 +55,15 @@ public class BubbleDocsServiceTest {
 	// returns a spreadsheet whose name is equal to name
 	public SpreadSheet getSpreadSheet(String name) {
 		BubbleDocs bd = BubbleDocs.getInstance();
-		SpreadSheet s=null;
-		for(SpreadSheet x: bd.getSpreadSheetSet())
-			s=x;
-		return s;
+		SpreadSheet n = null;
+		for(SpreadSheet x: bd.getSpreadSheetSet()){
+			if(x.getName().equals(name)) {
+				n = x;
+				break;
+			}
+		}
+		
+		return n;
 	}
 	
 	public SpreadSheet getSpreadSheetById(int id) {

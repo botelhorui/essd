@@ -6,6 +6,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import pt.tecnico.bubbledocs.domain.User;
+import pt.tecnico.bubbledocs.domain.SpreadSheet;
+
 import pt.tecnico.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exception.UnknownBubbleDocsUserException;
 import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
@@ -34,15 +36,28 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
     };
 
     public void success() {
+    	
+    	User user = getUserFromUsername(USERNAME_TO_DELETE);    	
         DeleteUser service = new DeleteUser(root, USERNAME_TO_DELETE);
         service.execute();
-
-        boolean deleted = getUserFromUsername(USERNAME_TO_DELETE) == null;
-
+        User u = null;
+        
+        boolean deleted = false;
+       
+        // changed because getUserFromUsername throws exception, doesn't return null
+        try { 
+        	u = getUserFromUsername(USERNAME_TO_DELETE);   	
+        } catch (UnknownBubbleDocsUserException e) {
+        	deleted = true;
+        }
+        
+        if(u == null)
+        	deleted = true;
+        
+        
         assertTrue("user was not deleted", deleted);
 
-        assertNull("Spreadsheet was not deleted",
-                getSpreadSheet(SPREADSHEET_NAME));
+        assertNull("Spreadsheet was not deleted", getSpreadSheet(SPREADSHEET_NAME));
     }
 
     /*

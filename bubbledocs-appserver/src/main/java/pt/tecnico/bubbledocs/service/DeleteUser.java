@@ -1,19 +1,47 @@
 package pt.tecnico.bubbledocs.service;
 
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
+import pt.tecnico.bubbledocs.exception.UnknownBubbleDocsUserException;
+import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
+import pt.tecnico.bubbledocs.exception.UnauthorizedOperationException;
+
+import pt.tecnico.bubbledocs.domain.BubbleDocs;
+import pt.tecnico.bubbledocs.domain.User;
 
 // add needed import declarations
 
 public class DeleteUser extends BubbleDocsService {
 	private String token;
+	private String username;
+	
 	public DeleteUser(String token, String toDeleteUsername) {
-		// add code here
-		this.token=token;
+		
+		this.username = toDeleteUsername; 
+		this.token = token;
 	}
 
 	@Override
 	protected void dispatch() throws BubbleDocsException {
-		// add code here
+		
+		BubbleDocs bd = BubbleDocs.getInstance();
+		User user = bd.getUserByToken(this.token);
+		User userToDelete = bd.getUserByUsername(this.username);
+		
+		if(!(bd.isUserInSession(this.token)))
+			throw new UserNotInSessionException();
+		
+		if(userToDelete == null)
+			throw new UnknownBubbleDocsUserException();
+		
+		if(user == null)
+			throw new UnknownBubbleDocsUserException();
+		
+		
+		if(!(user.getUsername().equals("root")))
+			throw new UnauthorizedOperationException();
+		
+		userToDelete.delete();
+		
 	}
 
 }
