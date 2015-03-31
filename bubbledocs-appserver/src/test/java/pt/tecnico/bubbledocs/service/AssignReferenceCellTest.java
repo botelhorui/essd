@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import pt.tecnico.bubbledocs.domain.ReferenceContent;
 import pt.tecnico.bubbledocs.domain.Cell;
+import pt.tecnico.bubbledocs.domain.Content;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 
@@ -50,10 +51,13 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 	private static final int c3 = 20;
 	private static final int l4 = 20;
 	private static final int c4 = 21;
+	private static final int l5 = 3;
+	private static final int c5 = 3;
 
 	// the valid cell id & referenced cell id
 	private static final String cell = l1 + ";" + c1;
 	private static final String reference = l2 + ";" + c2;
+	private static final String reference2 = l5 + ";" + c5;
 
 	// the invalid cell id &  referenced cell id
 	private static final String invalidCell = l3 + ";" + c3;
@@ -89,7 +93,6 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 
 	@Test
 	public void success() {
-
 		// valid cell id = cell
 
 		// valid referenced cell id = reference
@@ -105,11 +108,47 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 
 		// check if Reference was assigned to Cell
 
+		ReferenceContent rc = (ReferenceContent) spreadsheet.getCell(l1 , c1).getContent();
+		Cell refc = rc.getReferenceCell();
 		Cell c = spreadsheet.getCell(l1 , c1);
 
 		assertNotNull("Cell Does Not Exist;", c);
 		assertEquals("Cell line doesn't match the given line;", c.getLine(), l1);
 		assertEquals("Cell column doesn't match the given column;", c.getColumn(), c1);
+		assertEquals("Referenced cell line doesn't match the given line;", refc.getLine(), l2);
+		assertEquals("Referenced cell column doesn't match the given column;", refc.getColumn(), c2);
+		assertTrue("Cell content isn't a reference;", c.getContent() instanceof pt.tecnico.bubbledocs.domain.ReferenceContent);
+	}
+
+	@Test
+	public void successTwice() {
+		// valid cell id = cell
+
+		// valid referenced cell id = reference
+
+		// valid spreadsheet = spread_id
+
+		SpreadSheet spreadsheet = getSpreadSheetById(spread_id);
+
+		// user exists & is in session & has permission to write = jp
+
+		AssignReferenceCell service = new AssignReferenceCell( jp , spread_id , cell , reference );
+		service.execute();
+		
+		service = new AssignReferenceCell( jp , spread_id , cell , reference2 );
+		service.execute();
+
+		// check if Reference was assigned to Cell
+		
+		ReferenceContent rc = (ReferenceContent) spreadsheet.getCell(l1 , c1).getContent();
+		Cell refc = rc.getReferenceCell();
+		Cell c = spreadsheet.getCell(l1 , c1);
+
+		assertNotNull("Cell Does Not Exist;", c);
+		assertEquals("Cell line doesn't match the given line;", c.getLine(), l1);
+		assertEquals("Cell column doesn't match the given column;", c.getColumn(), c1);
+		assertEquals("Referenced cell line doesn't match the given line;", refc.getLine(), l5);
+		assertEquals("Referenced cell column doesn't match the given column;", refc.getColumn(), c5);
 		assertTrue("Cell content isn't a reference;", c.getContent() instanceof pt.tecnico.bubbledocs.domain.ReferenceContent);
 	}
 
@@ -149,7 +188,7 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 
 	//Se o user nao estiver logado nao existe forma de saber se ele 
 	//existe ou nao porque so passo o token para o service AssignReferenceCell
-	
+
 	@Test(expected = UnknownBubbleDocsUserException.class)
 
 	public void unknownBubbleDocsUser() {
