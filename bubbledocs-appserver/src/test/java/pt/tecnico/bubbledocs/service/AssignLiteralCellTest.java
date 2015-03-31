@@ -7,7 +7,7 @@ import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 
-import pt.tecnico.bubbledocs.domain.ReferenceContent;
+import pt.tecnico.bubbledocs.domain.LiteralContent;
 import pt.tecnico.bubbledocs.domain.Cell;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
@@ -21,7 +21,7 @@ import pt.tecnico.bubbledocs.exception.InvalidLiteralValueException;
 
 public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 	
-	private static final String redToken = "TotallyAMadeUpToken";
+	private static final String redToken = "Red4";
 	private String goldToken;
 	private String greenToken;
 	
@@ -55,7 +55,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 	private static final String invalidUser = "NotARealUser";
 	private static final int fakeSheetId = 555556;
 	private static final String fakeCellString = "99;45";
-	private static final String fakeValueString = "Can'thandlethefake!";
+	private static final String fakeValueString = "KindaNotANumber";
 	
 	
 	/*
@@ -108,7 +108,8 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 		
 		SpreadSheet successSpread = getSpreadSheetById(sheetId);
 		Cell successCell = successSpread.getCell(testCellRow, testCellColumn);
-		int successValue = successCell.getValue();
+		LiteralContent successContent = (LiteralContent)successCell.getContent();
+		int successValue = successContent.getValue();
 		String successValueString = alc.getResult();
 		
 		/*
@@ -149,7 +150,8 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 		
 		SpreadSheet successSpread = getSpreadSheetById(sheetId);
 		Cell successCell = successSpread.getCell(testCellRow, testCellColumn);
-		int successValueOne = successCell.getValue();
+		LiteralContent successContentOne = (LiteralContent)successCell.getContent();
+		int successValueOne = successContentOne.getValue();
 		
 		
 		/*
@@ -164,7 +166,8 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 		 */
 		
 		successCell = successSpread.getCell(testCellRow, testCellColumn);
-		int successValueTwo = successCell.getValue();
+		LiteralContent successContentTwo = (LiteralContent)successCell.getContent();
+		int successValueTwo = successContentTwo.getValue();
 		String successValueTwoString = alc.getResult();
 		
 		/*
