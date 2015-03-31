@@ -176,7 +176,7 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 
 		// user has session doesn't have write access = nwa
 
-		AssignReferenceCell service = new AssignReferenceCell( nwa , spread_id , cell , reference );
+		AssignReferenceCell service = new AssignReferenceCell( nwp , spread_id , cell , reference );
 		service.execute();
 
 	}
