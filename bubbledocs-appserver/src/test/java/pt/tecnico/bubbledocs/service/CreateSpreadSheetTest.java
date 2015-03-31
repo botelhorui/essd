@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 
+
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.exception.PositionOutOfBoundsException;
 import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
@@ -34,9 +35,7 @@ public class CreateSpreadSheetTest extends BubbleDocsServiceTest {
 		removeUserFromSession(ars);
     }
 	
-	private boolean sameSpreadSheet(SpreadSheet s1,SpreadSheet s2){
-		return false;
-	}
+
 	
 	@Test
     public void success() {

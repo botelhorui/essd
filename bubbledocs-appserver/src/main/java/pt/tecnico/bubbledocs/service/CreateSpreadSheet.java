@@ -18,6 +18,10 @@ public class CreateSpreadSheet extends BubbleDocsService {
 	public int getSheetId() {
 		return sheetId;
 	}
+	
+	public SpreadSheet getSpreadSheet(){
+		return sp;
+	}
 
 	public CreateSpreadSheet(String token, String name, int rows,int columns) {
 		this.columns=columns;

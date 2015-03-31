@@ -3,6 +3,13 @@ package pt.tecnico.bubbledocs;
 import java.util.ArrayList;
 import java.util.List;
  
+
+
+
+
+
+
+
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -21,16 +28,25 @@ import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.domain.LiteralArgument;
 import pt.tecnico.bubbledocs.domain.ReferenceArgument;
-
+import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.bubbledocs.exception.UserIsNotOwnerException;
 import pt.tecnico.bubbledocs.exception.UnknownBubbleDocsUserException;
 import pt.tecnico.bubbledocs.exception.PositionOutOfBoundsException;
+import pt.tecnico.bubbledocs.service.AssignLiteralCell;
+import pt.tecnico.bubbledocs.service.AssignReferenceCell;
+import pt.tecnico.bubbledocs.service.CreateSpreadSheet;
+import pt.tecnico.bubbledocs.service.CreateUser;
+import pt.tecnico.bubbledocs.service.ExportDocument;
+import pt.tecnico.bubbledocs.service.LoginUser;
 
 @SuppressWarnings("unused")
 public class BubbleApplication {
 	public static void main(String[] args){
 		System.out.println("Welcome to the BubbleDocs application!");	
 		TransactionManager tm = FenixFramework.getTransactionManager();
+		XMLOutputter xml = new XMLOutputter();
+		xml.setFormat(Format.getPrettyFormat());
+		Document doc = null;
 		boolean committed = false;
 		try {
 			//
@@ -48,7 +64,23 @@ public class BubbleApplication {
 			tm.commit();
 			//
 			tm.begin();
-			Document doc = exportSheet(BubbleDocs.getInstance().getUserByUsername("pf").getOwnedSpreadSheetsByName("Notas ES").get(0));
+			try{
+				LoginUser pfLogin = new LoginUser("pf", "sub");
+				pfLogin.execute();
+				int id = BubbleDocs.getInstance().getUserByUsername("pf").getOwnedSpreadSheetsByName("Notas ES").get(0).getId();
+				ExportDocument exportDoc = new ExportDocument(pfLogin.getUserToken(), id);
+				exportDoc.execute();
+				doc = exportDoc.getDocXML();
+				System.out.println(xml.outputString(doc));
+			} catch (BubbleDocsException e){
+				
+				System.out.println("Falha ao exportar o Documento \"Notas ES\""+e.getClass().getName());
+				
+			}
+			
+			
+			
+			//Document doc = exportSheet(BubbleDocs.getInstance().getUserByUsername("pf").getOwnedSpreadSheetsByName("Notas ES").get(0));
 			tm.commit();
 			//
 			tm.begin();
@@ -68,7 +100,24 @@ public class BubbleApplication {
 			tm.commit();
 			//
 			tm.begin();
-			exportSheet(BubbleDocs.getInstance().getUserByUsername("pf").getOwnedSpreadSheetsByName("Notas ES").get(0));					
+			
+			try{
+				LoginUser pfLogin = new LoginUser("pf", "sub");
+				pfLogin.execute();
+				int id = BubbleDocs.getInstance().getUserByUsername("pf").getOwnedSpreadSheetsByName("Notas ES").get(0).getId();
+				ExportDocument exportDoc = new ExportDocument(pfLogin.getUserToken(), id);
+				exportDoc.execute();
+				doc = exportDoc.getDocXML();
+				System.out.println(xml.outputString(doc));
+			} catch (BubbleDocsException e){
+				
+				System.out.println("Falha ao exportar o Documento \"Notas ES\""+e.getClass().getName());
+				
+			}
+			
+			
+			
+			//exportSheet(BubbleDocs.getInstance().getUserByUsername("pf").getOwnedSpreadSheetsByName("Notas ES").get(0));					
 			tm.commit();
 			System.out.println("Finished.");	
 			committed = true;
@@ -140,9 +189,71 @@ public class BubbleApplication {
 	@Atomic
 	private static void populateDomain() {
 		BubbleDocs bd = BubbleDocs.getInstance();
-		if(!bd.hasUser("ra"))
-			bd.createUser("ra","cor","Step Rabbit");
+		User root = bd.getUserByUsername("root");
+		LoginUser rootLogin = new LoginUser("root", "root");
+		rootLogin.execute();
+		
+		
+		
+		
+		//==========================================
+		//codigo com servicos
+		
+		if(!bd.hasUser("ra")){
+			try{
+				
+				CreateUser serviceUser = new CreateUser(rootLogin.getUserToken(), "ra", "cor", "Step Rabbit");
 			
+			} catch (BubbleDocsException e){
+				System.out.println("Falha ao criar o user \'ra\' "+e.getClass().getName());
+			}
+		}
+		
+		
+	
+		
+		/*
+		if(!bd.hasUser("pf")){
+			try{
+				
+				CreateUser serviceUser = new CreateUser(rootLogin.getUserToken(), "pf", "sub", "Paul Door");
+			
+			} catch (BubbleDocsException e){
+				System.out.println("Falha ao criar o user \'pf\' "+e.getClass().getName());
+			}
+		}
+		
+		
+		
+		try{
+			User pf = bd.getUserByUsername("pf");
+			LoginUser pfLogin = new LoginUser("pf", "sub");
+			pfLogin.execute();
+			
+			CreateSpreadSheet serviceSheet = new CreateSpreadSheet(pfLogin.getUserToken(), "Notas ES", 300, 20);
+			serviceSheet.execute();
+			
+			AssignLiteralCell serviceLiteralCell = new AssignLiteralCell(pfLogin.getUserToken(), serviceSheet.getSheetId(), "3;4", "5");
+			serviceLiteralCell.execute();
+			
+			AssignReferenceCell serviceReferenceCell = new AssignReferenceCell(pfLogin.getUserToken(), serviceSheet.getSheetId(), "1;1", "5;6");
+			serviceReferenceCell.execute();
+			
+			SpreadSheet s1 = serviceSheet.getSpreadSheet();
+			
+			s1.getCell(5,6).setBFAdd(new LiteralArgument(2), new ReferenceArgument(s1.getCell(3,4)));
+			
+			s1.getCell(2,2).setBFDiv(new ReferenceArgument(s1.getCell(1,1)), new ReferenceArgument(s1.getCell(3,4)));
+			
+			
+		} catch (BubbleDocsException e){
+			System.out.println("Failed creation of SpreadSheet by user \'pf\'"+e.getClass().getName());
+		}
+		 */
+		
+		//===========================================
+		//codigo antigo
+		
 		if(!bd.hasUser("pf")){
 			User pf = bd.createUser("pf","sub","Paul Door");	
 			SpreadSheet s1 = pf.createSheet("Notas ES", 300, 20);	
@@ -160,6 +271,12 @@ public class BubbleApplication {
 				System.out.println("Trying to access an out of bounds cell.");
 			}
 		}
+		
+		//=============================================
+		
+
+		
+		
 	}
 
 	@Atomic
