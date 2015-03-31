@@ -105,7 +105,6 @@ public class AssignLiteralCell extends BubbleDocsService {
 		try{
 			value = Integer.parseInt(literalValue);
 		} catch (NumberFormatException e) {
-			System.out.println("Do I even go in here? What in blazes...?");
 			throw new InvalidLiteralValueException();
 		}
 		

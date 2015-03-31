@@ -194,7 +194,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 		 *  to confirm with teacher after this second checkpoint.
 		 */
 
-		AssignReferenceCell service = new AssignReferenceCell(invalidUser, sheetId, testCellString, testValueOneString);
+		AssignLiteralCell service = new AssignLiteralCell(invalidUser, sheetId, testCellString, testValueOneString);
 		service.execute();
 	}
 	
@@ -207,7 +207,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 		 *  NOTE: See the note in test #1.
 		 */
 
-		AssignReferenceCell service = new AssignReferenceCell(redToken, sheetId, testCellString, testValueOneString);
+		AssignLiteralCell service = new AssignLiteralCell(redToken, sheetId, testCellString, testValueOneString);
 		service.execute();
 	}
 	
@@ -218,7 +218,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 		 *  - User does not contain writing permissions in the given spreadsheet.
 		 */
 
-		AssignReferenceCell service = new AssignReferenceCell(greenToken, sheetId, testCellString, testValueOneString);
+		AssignLiteralCell service = new AssignLiteralCell(greenToken, sheetId, testCellString, testValueOneString);
 		service.execute();
 	}
 	
@@ -229,7 +229,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 		 *  - Invalid spreadsheet id.
 		 */
 
-		AssignReferenceCell service = new AssignReferenceCell(goldToken, fakeSheetId, testCellString, testValueOneString);
+		AssignLiteralCell service = new AssignLiteralCell(goldToken, fakeSheetId, testCellString, testValueOneString);
 		service.execute();
 	}
 	
@@ -240,7 +240,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 		 *  - Invalid cell information.
 		 */
 
-		AssignReferenceCell service = new AssignReferenceCell(goldToken, sheetId, fakeCellString, testValueOneString);
+		AssignLiteralCell service = new AssignLiteralCell(goldToken, sheetId, fakeCellString, testValueOneString);
 		service.execute();
 	}
 	
@@ -251,7 +251,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 		 *  - Invalid value.
 		 */
 
-		AssignReferenceCell service = new AssignReferenceCell(goldToken, sheetId, testCellString, fakeValueString);
+		AssignLiteralCell service = new AssignLiteralCell(goldToken, sheetId, testCellString, fakeValueString);
 		service.execute();
 	}
 	
