@@ -155,7 +155,7 @@ public class BubbleDocs extends BubbleDocs_Base {
 		Session s = u.getSession();
 		LocalTime now = new LocalTime();		
 		int dif = Hours.hoursBetween(now, s.getLastAccess()).getHours();
-		if(dif>=LEASE_HOURS){			
+		if(Math.abs(dif)>=LEASE_HOURS){			
 			s.delete();
 			return false;
 		}

@@ -115,12 +115,10 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
     public void success() throws InterruptedException {
 		BubbleDocs bd = BubbleDocs.getInstance();		
 		ExportDocument serv = new ExportDocument(ruiToken, s1.getId());
-		LocalTime start = bd.getUserByToken(ruiToken).getSession().getLastAccess();
-		Thread.sleep(2000);		
+		LocalTime start = bd.getUserByToken(ruiToken).getSession().getLastAccess();	
 		serv.execute();	
 		LocalTime end = bd.getUserByToken(ruiToken).getSession().getLastAccess();
-		int dif = Seconds.secondsBetween(start, end).getSeconds();	
-		assertTrue("The session lease is not renewed", dif > 0);
+		assertFalse("The session lease is not renewed", end == start);
 		SpreadSheet s2 = bd.importSheet(serv.getDocXML(), USERNAME);
 		assertTrue("The imported spreadSheet from the exported SpreadSheet are diferent", sameSpreadSheet(s1, s2));	
 				

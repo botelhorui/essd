@@ -7,6 +7,11 @@ import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 
+import org.joda.time.Hours;
+import org.joda.time.LocalTime;
+import org.joda.time.Seconds;
+
+import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.LiteralContent;
 import pt.tecnico.bubbledocs.domain.Cell;
 import pt.tecnico.bubbledocs.domain.User;
@@ -98,9 +103,11 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 		 *  - Valid value.
 		 *  - Creates a literal content in given cell.
 		 */
-		
+		BubbleDocs bd = BubbleDocs.getInstance();
 		AssignLiteralCell alc = new AssignLiteralCell(goldToken, sheetId, testCellString, testValueOneString);
+		LocalTime start = bd.getUserByToken(goldToken).getSession().getLastAccess();	
 		alc.execute();
+		LocalTime end = bd.getUserByToken(goldToken).getSession().getLastAccess();
 		
 		/*
 		 * Compare cases
@@ -116,7 +123,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 		 * Tests
 		 */
 		
-		
+		assertFalse("Error: Session time not updated.", end == start);
 		assertTrue("Error: Cell content is not a literal.", successCell.getContent() instanceof pt.tecnico.bubbledocs.domain.LiteralContent);
 		assertNotNull("Error: Cell content does not contain a value.", successValue);
 		assertEquals("Error: Literal value is not the one provided.", successValue, testValueOne);

@@ -51,9 +51,6 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
         	deleted = true;
         }
         
-        if(u == null)
-        	deleted = true;
-        
         
         assertTrue("user was not deleted", deleted);
 

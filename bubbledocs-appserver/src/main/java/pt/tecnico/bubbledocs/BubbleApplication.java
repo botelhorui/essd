@@ -204,7 +204,6 @@ public class BubbleApplication {
 		//codigo com servicos
 		
 		if(!bd.hasUser("ra")){
-			System.out.println("Do I come in here?");
 			try{
 				
 				CreateUser serviceUser = new CreateUser(rootLogin.getUserToken(), "ra", "cor", "Step Rabbit");
@@ -220,7 +219,6 @@ public class BubbleApplication {
 		
 		
 		if(!bd.hasUser("pf")){
-			System.out.println("What about here?");
 			try{
 				
 				CreateUser serviceUser = new CreateUser(rootLogin.getUserToken(), "pf", "sub", "Paul Door");

@@ -3,11 +3,15 @@ package pt.tecnico.bubbledocs.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 
+import org.joda.time.Hours;
+import org.joda.time.LocalTime;
+import org.joda.time.Seconds;
 
-
+import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.exception.PositionOutOfBoundsException;
 import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
@@ -40,16 +44,18 @@ public class CreateSpreadSheetTest extends BubbleDocsServiceTest {
 	@Test
     public void success() {
         
+		BubbleDocs bd = BubbleDocs.getInstance();
+		LocalTime start = bd.getUserByToken(jp).getSession().getLastAccess();
 		CreateSpreadSheet service = new CreateSpreadSheet(jp, "testsheet", 20, 20);
 		service.execute();
+		LocalTime end = bd.getUserByToken(jp).getSession().getLastAccess();
 		int id = service.getSheetId();
 		SpreadSheet sp = getSpreadSheetById(id);
 		assertNotNull("SpreadSheet was not created", sp);
+		assertFalse("Error: Session time not updated.", end == start);
 		assertEquals("Number of lines doesnt match", sp.getLines(), 20);
 		assertEquals("Number of columns doesnt match",sp.getColumns(), 20);
 		assertEquals("Name doesnt match", sp.getName(), "testsheet");
-		
-		
 		
     }
 	

@@ -3,9 +3,15 @@ package pt.tecnico.bubbledocs.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 
+import org.joda.time.Hours;
+import org.joda.time.LocalTime;
+import org.joda.time.Seconds;
+
+import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.ReferenceContent;
 import pt.tecnico.bubbledocs.domain.Cell;
 import pt.tecnico.bubbledocs.domain.Content;
@@ -98,13 +104,16 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 		// valid referenced cell id = reference
 
 		// valid spreadsheet = spread_id
+		
+		BubbleDocs bd = BubbleDocs.getInstance();
 
 		SpreadSheet spreadsheet = getSpreadSheetById(spread_id);
 
 		// user exists & is in session & has permission to write = jp
-
+		LocalTime start = bd.getUserByToken(jp).getSession().getLastAccess();
 		AssignReferenceCell service = new AssignReferenceCell( jp , spread_id , cell , reference );
 		service.execute();
+		LocalTime end = bd.getUserByToken(jp).getSession().getLastAccess();
 
 		// check if Reference was assigned to Cell
 
@@ -113,6 +122,7 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 		Cell c = spreadsheet.getCell(l1 , c1);
 
 		assertNotNull("Cell Does Not Exist;", c);
+		assertFalse("Error: Session time not updated.", end == start);
 		assertEquals("Cell line doesn't match the given line;", c.getLine(), l1);
 		assertEquals("Cell column doesn't match the given column;", c.getColumn(), c1);
 		assertEquals("Referenced cell line doesn't match the given line;", refc.getLine(), l2);
