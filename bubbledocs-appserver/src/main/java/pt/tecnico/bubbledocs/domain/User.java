@@ -44,6 +44,9 @@ public class User extends User_Base {
 		}
 		
 		setBubbleDocs(null);
+		
+		this.getSession().delete();
+		setSession(null);
 
 		//Delete Object
 		deleteDomainObject();

@@ -73,14 +73,14 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 		createUser(USERNAME2,PASSWORD2,"Armenio Rol Silva");
 		createUser(USERNAME3,PASSWORD3,"Jaquim Ambrosio");
 
-		root = addUserToSession(ROOT_USERNAME);
+		//root = addUserToSession(ROOT_USERNAME);
 		jp = addUserToSession(USERNAME);
 		ars = addUserToSession(USERNAME2);	
 		nwp = addUserToSession(USERNAME3);
 
 		removeUserFromSession(ars);
 
-		User jp_user = getUserFromUsername(jp);
+		User jp_user = getUserFromUsername(USERNAME);
 
 		SpreadSheet spreadsheet = createSpreadSheet(jp_user, SPREADNAME, lines, columns);
 		spread_id = spreadsheet.getId();
@@ -147,6 +147,9 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 
 	}
 
+	//Se o user nao estiver logado nao existe forma de saber se ele 
+	//existe ou nao porque so passo o token para o service AssignReferenceCell
+	
 	@Test(expected = UnknownBubbleDocsUserException.class)
 
 	public void unknownBubbleDocsUser() {

@@ -13,7 +13,7 @@ public abstract class Content extends Content_Base {
     	return null;
 	}
     
-    protected void delete(){
+    public void delete(){
     	//Delete Roles
     	setCell(null);
     	

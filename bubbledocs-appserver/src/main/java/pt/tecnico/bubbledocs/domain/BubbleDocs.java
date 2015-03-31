@@ -16,6 +16,7 @@ import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.bubbledocs.exception.DifferentUserImportException;
 import pt.tecnico.bubbledocs.exception.UnknownBubbleDocsUserException;
+import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.bubbledocs.exception.DuplicateUsernameException;
 import pt.tecnico.bubbledocs.exception.UserIsNotOwnerException;
 
@@ -149,7 +150,7 @@ public class BubbleDocs extends BubbleDocs_Base {
 		User u = getUserByToken(token);
 		if(u == null)
 			return false;
-		if(u.getSession()==null)
+		if(u.getSession() == null)
 			return false;
 		Session s = u.getSession();
 		LocalTime now = new LocalTime();		
@@ -162,16 +163,18 @@ public class BubbleDocs extends BubbleDocs_Base {
 	}
 
 	public String getUsernameFromToken(String token){
-		Pattern p = Pattern.compile("(.+)-(\\d)$");
-		Matcher m = p.matcher(token);
-		m.find();
-		return m.group(1);
+		String username = null;
+
+		if(token.length() > 0)
+			username = token.substring(0, token.length()-1);
+		
+		return username;
 	}
 	
 	public User getUserByToken(String token){
-		for(User u:getUserSet()){
+		for(User u : getUserSet()){
 			Session s = u.getSession();
-			if(s!=null && s.getToken().equals(token))
+			if(s != null && s.getToken().equals(token))
 				return u;
 		}
 		return null;

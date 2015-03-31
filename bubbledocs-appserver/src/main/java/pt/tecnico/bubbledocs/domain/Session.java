@@ -25,7 +25,7 @@ public class Session extends Session_Base {
 		int rn;
 		if(getToken()==null){
 			rn = (int)(Math.random()*9);
-			token = getUser().getUsername()+"-"+rn;
+			token = getUser().getUsername()+rn;
 			setToken(token);
 			return;
 		}
@@ -36,7 +36,7 @@ public class Session extends Session_Base {
 		while(true){
 			rn = (int)(Math.random()*9);
 			if(rn!=n){
-				token = getUser().getUsername()+"-"+rn;
+				token = getUser().getUsername()+rn;
 				setToken(token);
 				return;
 			}			
@@ -45,6 +45,7 @@ public class Session extends Session_Base {
 
 	public void delete() {
 		setUser(null);
+		
 		deleteDomainObject();
 	}
 }

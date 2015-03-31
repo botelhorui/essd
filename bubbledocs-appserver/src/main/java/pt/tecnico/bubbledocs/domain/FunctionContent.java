@@ -12,7 +12,7 @@ public abstract class FunctionContent extends FunctionContent_Base {
     	return null;
 	}
     
-    protected void delete(){
+    public void delete(){
     	super.delete();
     }
 
