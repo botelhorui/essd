@@ -110,18 +110,25 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 		}	
 		return true;
 	}
+
+	private LocalTime getLastAccessTimeInSession(String token) {		
+		BubbleDocs bd = BubbleDocs.getInstance();
+		User u = bd.getUserByToken(token);
+		return u.getSession().getLastAccess();
+	}
 	
 	@Test
     public void success() {
-		BubbleDocs bd = BubbleDocs.getInstance();
-		LocalTime start = bd.getUserByToken(ruiToken).getSession().getLastAccess();
+		BubbleDocs bd = BubbleDocs.getInstance();		
 		ExportDocument serv = new ExportDocument(ruiToken, s1.getId());
-		serv.execute();		
-		LocalTime end = bd.getUserByToken(ruiToken).getSession().getLastAccess();
+		serv.execute();	
+		LocalTime currentTime = bd.getUserByToken(ruiToken).getSession().getLastAccess();
+		int dif = Seconds.secondsBetween(getLastAccessTimeInSession(ruiToken), currentTime).getSeconds();	
+		assertTrue("The session lease is not renewed", dif >= 0);
+		assertTrue("Diference in seconds greater than expected", dif < 2);
 		SpreadSheet s2 = bd.importSheet(serv.getDocXML(), USERNAME);
-		assertTrue("The imported spreadSheet from the exported SpreadSheet are diferent", sameSpreadSheet(s1, s2));
-		int diference = end.getMillisOfSecond()-start.getMillisOfSecond();
-		assertTrue("The session lease is not renewed", diference > 0);		
+		assertTrue("The imported spreadSheet from the exported SpreadSheet are diferent", sameSpreadSheet(s1, s2));	
+				
 	}
 	
 	@Test
