@@ -14,6 +14,7 @@ import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.bubbledocs.exception.SpreadSheetIdUnknown;
 import pt.tecnico.bubbledocs.exception.UserHasNotWriteAccessException;
 import pt.tecnico.bubbledocs.exception.UnknownBubbleDocsUserException;
+import pt.tecnico.bubbledocs.exception.PositionOutOfBoundsException;
 
 // add needed import declarations
 
@@ -22,7 +23,7 @@ public class AssignReferenceCell extends BubbleDocsService {
 	private String token;
 	private int iSpreadId;
 	private String sCellId; // "1;1"
-	private String sReference;
+	private String sReference; // "1;1"
 
 	public AssignReferenceCell(String token, int docId, String cellId, String reference){
 		this.iSpreadId = docId;
@@ -67,10 +68,14 @@ public class AssignReferenceCell extends BubbleDocsService {
 
 
 		//Fetch Cell from SpreadSheet
-		StringTokenizer st = new StringTokenizer(sCellId, ";", false);
 		int i = 0;
 		int row = 0;
 		int column = 0;
+		
+		StringTokenizer st = new StringTokenizer(sCellId, ";", false);
+		
+		if(st.countTokens() > 2 || st.countTokens() < 0)
+			throw new PositionOutOfBoundsException();
 
 		while (st.hasMoreTokens()){
 			i = Integer.parseInt(st.nextToken());
@@ -84,7 +89,10 @@ public class AssignReferenceCell extends BubbleDocsService {
 
 		//Fetch Cell to Reference from SpreadSheet
 		st = new StringTokenizer(sReference, ";", false);
-
+		
+		if(st.countTokens() > 2 || st.countTokens() < 0)
+			throw new PositionOutOfBoundsException();
+		
 		while (st.hasMoreTokens()){
 			i = Integer.parseInt(st.nextToken());
 			if(st.countTokens() == 1)

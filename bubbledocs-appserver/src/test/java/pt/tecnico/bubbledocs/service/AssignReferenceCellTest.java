@@ -242,7 +242,7 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 
 	@Test(expected = PositionOutOfBoundsException.class)
 
-	public void referencedCellOutOFBound() {
+	public void referencedCellOutOfBound() {
 
 		// valid cell id = cell
 
