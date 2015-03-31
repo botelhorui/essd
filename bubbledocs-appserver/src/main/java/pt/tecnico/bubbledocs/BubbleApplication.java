@@ -147,7 +147,7 @@ public class BubbleApplication {
 
 	@Atomic
 	private static void importSheet(Document doc, String username){
-		System.out.println("Importing SpreaSheet from XML");		
+		System.out.println("Importing SpreadSheet from XML");		
 		BubbleDocs.getInstance().importSheet(doc, username);		
 	}
 
@@ -180,11 +180,15 @@ public class BubbleApplication {
 		return doc;
 	}
 
-	@Atomic
+	
+	/*
+	 * Not using this version yet.
+	 */
+	/*@Atomic
 	public static boolean isInitialized(){
 		BubbleDocs bd = BubbleDocs.getInstance();
 		return !bd.getUserSet().isEmpty();
-	}
+	}*/
 
 	@Atomic
 	private static void populateDomain() {
@@ -200,9 +204,11 @@ public class BubbleApplication {
 		//codigo com servicos
 		
 		if(!bd.hasUser("ra")){
+			System.out.println("Do I come in here?");
 			try{
 				
 				CreateUser serviceUser = new CreateUser(rootLogin.getUserToken(), "ra", "cor", "Step Rabbit");
+				serviceUser.execute();
 			
 			} catch (BubbleDocsException e){
 				System.out.println("Falha ao criar o user \'ra\' "+e.getClass().getName());
@@ -212,48 +218,50 @@ public class BubbleApplication {
 		
 	
 		
-		/*
+		
 		if(!bd.hasUser("pf")){
+			System.out.println("What about here?");
 			try{
 				
 				CreateUser serviceUser = new CreateUser(rootLogin.getUserToken(), "pf", "sub", "Paul Door");
+				serviceUser.execute();
 			
 			} catch (BubbleDocsException e){
-				System.out.println("Falha ao criar o user \'pf\' "+e.getClass().getName());
+				System.out.println("Failed creation of user \'pf\' "+e.getClass().getName());
+			}
+		
+		
+		
+		
+			try{
+				User pf = bd.getUserByUsername("pf");
+				LoginUser pfLogin = new LoginUser("pf", "sub");
+				pfLogin.execute();
+				
+				CreateSpreadSheet serviceSheet = new CreateSpreadSheet(pfLogin.getUserToken(), "Notas ES", 300, 20);
+				serviceSheet.execute();
+				
+				AssignLiteralCell serviceLiteralCell = new AssignLiteralCell(pfLogin.getUserToken(), serviceSheet.getSheetId(), "3;4", "5");
+				serviceLiteralCell.execute();
+				
+				AssignReferenceCell serviceReferenceCell = new AssignReferenceCell(pfLogin.getUserToken(), serviceSheet.getSheetId(), "1;1", "5;6");
+				serviceReferenceCell.execute();
+				
+				SpreadSheet s1 = serviceSheet.getSpreadSheet();
+				
+				s1.getCell(5,6).setBFAdd(new LiteralArgument(2), new ReferenceArgument(s1.getCell(3,4)));
+				
+				s1.getCell(2,2).setBFDiv(new ReferenceArgument(s1.getCell(1,1)), new ReferenceArgument(s1.getCell(3,4)));
+				
+				
+			} catch (BubbleDocsException e){
+				System.out.println("Failed creation of SpreadSheet by user \'pf\' "+e.getClass().getName());
 			}
 		}
 		
-		
-		
-		try{
-			User pf = bd.getUserByUsername("pf");
-			LoginUser pfLogin = new LoginUser("pf", "sub");
-			pfLogin.execute();
-			
-			CreateSpreadSheet serviceSheet = new CreateSpreadSheet(pfLogin.getUserToken(), "Notas ES", 300, 20);
-			serviceSheet.execute();
-			
-			AssignLiteralCell serviceLiteralCell = new AssignLiteralCell(pfLogin.getUserToken(), serviceSheet.getSheetId(), "3;4", "5");
-			serviceLiteralCell.execute();
-			
-			AssignReferenceCell serviceReferenceCell = new AssignReferenceCell(pfLogin.getUserToken(), serviceSheet.getSheetId(), "1;1", "5;6");
-			serviceReferenceCell.execute();
-			
-			SpreadSheet s1 = serviceSheet.getSpreadSheet();
-			
-			s1.getCell(5,6).setBFAdd(new LiteralArgument(2), new ReferenceArgument(s1.getCell(3,4)));
-			
-			s1.getCell(2,2).setBFDiv(new ReferenceArgument(s1.getCell(1,1)), new ReferenceArgument(s1.getCell(3,4)));
-			
-			
-		} catch (BubbleDocsException e){
-			System.out.println("Failed creation of SpreadSheet by user \'pf\'"+e.getClass().getName());
-		}
-		 */
-		
 		//===========================================
 		//codigo antigo
-		
+		/*
 		if(!bd.hasUser("pf")){
 			User pf = bd.createUser("pf","sub","Paul Door");	
 			SpreadSheet s1 = pf.createSheet("Notas ES", 300, 20);	
@@ -274,7 +282,7 @@ public class BubbleApplication {
 		
 		//=============================================
 		
-
+		 */
 		
 		
 	}
