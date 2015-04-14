@@ -16,6 +16,21 @@ import pt.ulisboa.tecnico.sdis.store.ws.*; // classes generated from WSDL
 )
 public class SDStoreImpl implements SDStore {
 
+	public SDStoreImpl(){
+		populateDomain();
+	}
+	
+	private void populateDomain(){
+		/*
+		 * users:
+		 * alice
+		 * bruno
+		 * carla
+		 * duarte
+		 * eduardo
+		 */
+	}
+	
 	@Override
 	public void createDoc(DocUserPair docUserPair)
 			throws DocAlreadyExists_Exception {
