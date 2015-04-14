@@ -106,7 +106,7 @@
 
 		<mainclass>pt.ulisboa.tecnico.sdis.store.ws.impl.SDStoreMain</mainclass>
 		<uddi.url>http://localhost:8081</uddi.url>
-		<ws.name>SDStore</ws.name>
+		<ws.name>SD-Store</ws.name>
 		<ws.url>http://localhost:8080/store-ws/endpoint</ws.url>
 
 	</properties>
