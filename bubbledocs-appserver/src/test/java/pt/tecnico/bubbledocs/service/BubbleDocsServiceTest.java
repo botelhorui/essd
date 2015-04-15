@@ -45,7 +45,7 @@ public class BubbleDocsServiceTest {
 	// for defining the initial state and checking that the service has the expected behavior
 	User createUser(String username, String password, String name) {
 		BubbleDocs bd = BubbleDocs.getInstance();
-		return bd.createUser(username, password, name);
+		return bd.createUser(username, password, name);  //TODO change new create service
 	}
 
 	public SpreadSheet createSpreadSheet(User user, String name, int lines, int columns) {

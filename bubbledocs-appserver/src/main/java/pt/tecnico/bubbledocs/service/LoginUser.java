@@ -4,6 +4,9 @@ import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.Session;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
+import pt.tecnico.bubbledocs.exception.LoginBubbleDocsException;
+import pt.tecnico.bubbledocs.exception.RemoteInvocationException;
+import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.bubbledocs.exception.WrongPasswordException;
 
 // add needed import declarations
@@ -23,18 +26,27 @@ public class LoginUser extends BubbleDocsService {
 	protected void dispatch() throws BubbleDocsException {
 		BubbleDocs bd = BubbleDocs.getInstance();
 		User u = bd.getUserByUsername(username);
-		if(!u.getPassword().equals(password)){
-			throw new WrongPasswordException();
+		if(u==null){
+			throw new LoginBubbleDocsException();
 		}
-		Session s = u.getSession();
-		if(s==null){
-			s=new Session();
-			u.setSession(s);
-		}
-		s.renewLassAccess();
-		s.renewToken();
-		token=s.getToken();
 		bd.cleanInvalidSessions();
+		try {
+			//remote login
+			bd.IDRemoteServices.loginUser(username, password);
+			// save copy
+			u.setPassword(password);
+		} catch (RemoteInvocationException e) {
+			//local login
+			if(u.getPassword()==null)
+				throw new UnavailableServiceException();
+			
+			if(!u.getPassword().equals(password)){
+				throw new LoginBubbleDocsException();
+			}
+		}		
+		bd.renewSessionDuration(u);
+		bd.renewToken(u);
+		token=u.getSession().getToken();
 	}
 
 	public final String getUserToken() {

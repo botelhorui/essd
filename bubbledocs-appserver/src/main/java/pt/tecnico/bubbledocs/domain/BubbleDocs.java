@@ -13,10 +13,14 @@ import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.bubbledocs.exception.UnknownBubbleDocsUserException;
 import pt.tecnico.bubbledocs.exception.DuplicateUsernameException;
 import pt.tecnico.bubbledocs.exception.UserIsNotOwnerException;
+import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
+import pt.tecnico.bubbledocs.service.remote.StoreRemoteServices;
 
 public class BubbleDocs extends BubbleDocs_Base {
 	private static final Logger logger = LoggerFactory.getLogger(FenixFramework.class);
 	private static final int LEASE_HOURS = 2;
+	public static final IDRemoteServices IDRemoteServices = new IDRemoteServices();
+	public static final StoreRemoteServices StoreRemoteServices = new StoreRemoteServices();
 
 	private BubbleDocs() {        
 		FenixFramework.getDomainRoot().setBubbleDocs(this);            
@@ -47,7 +51,7 @@ public class BubbleDocs extends BubbleDocs_Base {
 		return genId;
 	}
 
-	public User getUserByUsername(String username) throws UnknownBubbleDocsUserException {
+	public User getUserByUsername(String username){
 
 		for(User u: getUserSet()){
 
@@ -56,7 +60,7 @@ public class BubbleDocs extends BubbleDocs_Base {
 			}
 		}
 
-		throw new UnknownBubbleDocsUserException();
+		return null;
 	}
 
 	public boolean hasUser(String username){
@@ -175,6 +179,8 @@ public class BubbleDocs extends BubbleDocs_Base {
 	}
 
 	public void renewSessionDuration(User u) {
+		if(u.getSession()==null)
+			u.setSession(new Session());
 		u.getSession().renewLassAccess();	
 	}
 	
