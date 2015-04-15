@@ -6,8 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import javax.swing.text.html.parser.DocumentParser;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -60,7 +58,7 @@ public class SDStoreImplTest {
 		p.setUserId("unknown");
 		p.setDocumentId("doc1");
 		impl.createDoc(p);
-		List<String> lst = impl.listDocs("alice");
+		List<String> lst = impl.listDocs("unknown");
 		assertNotNull(lst);
 		assertEquals("List of documents size should be just one", 1 , lst.size());
 		assertEquals("The only document should have id 'doc1'","doc1", lst.get(0));
@@ -154,9 +152,11 @@ public class SDStoreImplTest {
 		p.setUserId("alice");
 		p.setDocumentId("doc1");
 		impl.createDoc(p);
-		byte[] data = new byte[10*1024];		
+		byte[] data = new byte[10*1024];	
 		new Random().nextBytes(data);
 		impl.store(p, data);
+		p.setDocumentId("doc2");
+		impl.createDoc(p);
 		data = new byte[1];
 		try {
 			impl.store(p, data);

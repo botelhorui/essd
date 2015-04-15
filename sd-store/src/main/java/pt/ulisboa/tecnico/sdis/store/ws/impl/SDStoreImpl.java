@@ -69,8 +69,11 @@ public class SDStoreImpl implements SDStore {
 	@Override
 	public List<String> listDocs(String userId)
 			throws UserDoesNotExist_Exception {
-		// TODO Auto-generated method stub
-		return null;
+		if(userRepos.containsKey(userId)){
+			return userRepos.get(userId).listDocs();
+		}else{
+			throw new UserDoesNotExist_Exception("The user '"+userId+"' does not exist", null);
+		}
 	}
 	
 	
@@ -85,7 +88,7 @@ public class SDStoreImpl implements SDStore {
 			userRepos.get(docUserPair.getUserId()).storeDoc(docUserPair.getDocumentId(), contents);
 		} else {
 			
-			throw new UserDoesNotExist_Exception("o user "+docUserPair.getUserId()+" nao tem repo associado", null);
+			throw new UserDoesNotExist_Exception("The user '"+docUserPair.getUserId()+"' does not exist", null);
 		}
 		
 	}
@@ -95,8 +98,11 @@ public class SDStoreImpl implements SDStore {
 	@Override
 	public byte[] load(DocUserPair docUserPair)
 			throws DocDoesNotExist_Exception, UserDoesNotExist_Exception {
-		// TODO Auto-generated method stub
-		return null;
+		if(userRepos.containsKey(docUserPair.getUserId())){
+			return userRepos.get(docUserPair.getUserId()).loadDoc(docUserPair.getDocumentId());
+		}else{
+			throw new UserDoesNotExist_Exception("The user '"+docUserPair.getUserId()+"' does not exist", null);
+		}
 	}
 
 	

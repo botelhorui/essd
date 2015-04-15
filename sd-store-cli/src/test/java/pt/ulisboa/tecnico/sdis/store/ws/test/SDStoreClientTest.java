@@ -7,6 +7,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import javax.xml.registry.*;
 
 public class SDStoreClientTest {
 
@@ -30,5 +31,18 @@ public class SDStoreClientTest {
 	public void test() {
 		fail("Not yet implemented");
 	}
+	
+	@Test(expect=javax.xml.registry.JAXRException)
+	public void UDDIDown(){
+		// TODO
+		
+	}
+	
+	@Test
+	public void UDDILookupNull(){
+		// TODO
+	}
+	
+	
 
 }
