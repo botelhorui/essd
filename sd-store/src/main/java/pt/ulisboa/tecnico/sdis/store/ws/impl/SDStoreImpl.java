@@ -1,6 +1,7 @@
 package pt.ulisboa.tecnico.sdis.store.ws.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.jws.*;
 
@@ -15,6 +16,9 @@ import pt.ulisboa.tecnico.sdis.store.ws.*; // classes generated from WSDL
     serviceName="SDStore"
 )
 public class SDStoreImpl implements SDStore {
+	
+	Map<String, UserRepo> userRepos;
+	
 
 	public SDStoreImpl(){
 		populateDomain();
@@ -31,12 +35,26 @@ public class SDStoreImpl implements SDStore {
 		 */
 	}
 	
+	
+	
 	@Override
 	public void createDoc(DocUserPair docUserPair)
 			throws DocAlreadyExists_Exception {
-		// TODO Auto-generated method stub
+		if (userRepos.containsKey(docUserPair.getUserId())){
+			
+			userRepos.get(docUserPair.getUserId()).createDoc(docUserPair.getDocumentId());
+		} else {
+			
+			UserRepo ur = new UserRepo(docUserPair.getUserId());
+			ur.createDoc(docUserPair.getDocumentId());
+			userRepos.put(docUserPair.getUserId(), ur);
+			
+		}
 		
 	}
+	
+	
+	
 
 	@Override
 	public List<String> listDocs(String userId)
@@ -49,9 +67,18 @@ public class SDStoreImpl implements SDStore {
 	public void store(DocUserPair docUserPair, byte[] contents)
 			throws CapacityExceeded_Exception, DocDoesNotExist_Exception,
 			UserDoesNotExist_Exception {
-		// TODO Auto-generated method stub
+		
+		if(userRepos.containsKey(docUserPair.getUserId())){
+			
+			userRepos.get(docUserPair.getUserId()).storeDoc(docUserPair.getDocumentId(), contents);
+		} else {
+			
+			throw new UserDoesNotExist_Exception("o user "+docUserPair.getUserId()+" nao tem repo associado", null);
+		}
 		
 	}
+	
+	
 
 	@Override
 	public byte[] load(DocUserPair docUserPair)
@@ -60,5 +87,7 @@ public class SDStoreImpl implements SDStore {
 		return null;
 	}
 
+	
+	
 
 }
