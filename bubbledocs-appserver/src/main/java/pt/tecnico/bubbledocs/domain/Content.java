@@ -21,4 +21,7 @@ public abstract class Content extends Content_Base {
     	deleteDomainObject();
     }
     
+    
+    public abstract int getValue();
+    
 }

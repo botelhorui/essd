@@ -24,4 +24,6 @@ public abstract class BinaryFunction extends BinaryFunction_Base {
     	super.delete();
     }
     
+    public abstract int getValue();
+    
 }

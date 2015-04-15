@@ -22,4 +22,6 @@ public abstract class Argument extends Argument_Base {
     	deleteDomainObject();
     }
     
+    public abstract int getValue();
+    
 }

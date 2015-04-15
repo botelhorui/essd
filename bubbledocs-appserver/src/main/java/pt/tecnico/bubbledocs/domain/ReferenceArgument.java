@@ -23,5 +23,13 @@ public class ReferenceArgument extends ReferenceArgument_Base {
     	setReferenceCell(null);
     	super.delete();
     }
+
+	@Override
+	public int getValue() {
+		
+		return getReferenceCell().getValue();
+	}
+    
+    
     
 }

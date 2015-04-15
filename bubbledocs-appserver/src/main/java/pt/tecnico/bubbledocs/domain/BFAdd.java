@@ -22,4 +22,10 @@ public class BFAdd extends BFAdd_Base {
     	return e;
 	}
     
+    public int getValue(){
+    	int a = getLeftArgument().getValue(); 
+    	int b = getRightArgument().getValue();
+    	return a+b;
+    }
+    
 }

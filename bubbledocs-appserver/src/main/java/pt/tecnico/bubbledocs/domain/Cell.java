@@ -52,8 +52,7 @@ public class Cell extends Cell_Base {
 	}
 	
 	public int getValue() {
-		// TODO Auto-generated method stub
-		return 0;
+		return getContent().getValue();	
 	}
 
 	public void delete() {

@@ -25,4 +25,10 @@ public class ReferenceContent extends ReferenceContent_Base {
     	super.delete();
     }
     
+    public int getValue(){
+    	
+    	return getReferenceCell().getValue();
+    }
+    
+    
 }

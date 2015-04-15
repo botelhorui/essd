@@ -22,4 +22,10 @@ public class BFMul extends BFMul_Base {
     	return e;
 	}
     
+    public int getValue(){
+    	int a = getLeftArgument().getValue(); 
+    	int b = getRightArgument().getValue();
+    	return a*b;
+    }
+    
 }
