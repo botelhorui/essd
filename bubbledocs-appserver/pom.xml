@@ -14,6 +14,7 @@
 
         <version.fenixframework>2.6.0</version.fenixframework>
         <version.java>1.8</version.java>
+        <version.jmockit>1.16</version.jmockit>
         <version.junit>4.11</version.junit>
         <version.maven.build-helper-plugin>1.7</version.maven.build-helper-plugin>
         <version.org.jdom.jdom>2.0.5</version.org.jdom.jdom>
@@ -88,6 +89,12 @@
             <groupId>pt.ist</groupId>
             <artifactId>fenix-framework-backend-jvstm-ojb-runtime</artifactId>
             <version>${version.fenixframework}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jmockit</groupId>
+            <artifactId>jmockit</artifactId>
+            <version>${version.jmockit}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
