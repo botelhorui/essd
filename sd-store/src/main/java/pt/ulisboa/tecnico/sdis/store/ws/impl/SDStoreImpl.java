@@ -1,5 +1,6 @@
 package pt.ulisboa.tecnico.sdis.store.ws.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ import pt.ulisboa.tecnico.sdis.store.ws.*; // classes generated from WSDL
 )
 public class SDStoreImpl implements SDStore {
 	
-	Map<String, UserRepo> userRepos;
+	Map<String, UserRepo> userRepos = new HashMap<String, UserRepo>();
 	
 
 	public SDStoreImpl(){
@@ -40,7 +41,8 @@ public class SDStoreImpl implements SDStore {
 	@Override
 	public void createDoc(DocUserPair docUserPair)
 			throws DocAlreadyExists_Exception {
-		if (userRepos.containsKey(docUserPair.getUserId())){
+		
+		if ( userRepos.containsKey( docUserPair.getUserId() )){
 			
 			userRepos.get(docUserPair.getUserId()).createDoc(docUserPair.getDocumentId());
 		} else {

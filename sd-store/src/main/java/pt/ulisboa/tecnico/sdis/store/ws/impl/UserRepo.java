@@ -1,6 +1,7 @@
 package pt.ulisboa.tecnico.sdis.store.ws.impl;
 
 
+import java.util.HashMap;
 import java.util.Map;
 
 import pt.ulisboa.tecnico.sdis.store.ws.CapacityExceeded_Exception;
@@ -17,7 +18,7 @@ public class UserRepo {
 
 	
 	private int repoSize = 0;
-	private Map<String, byte[]> docs;
+	private Map<String, byte[]> docs = new HashMap<String, byte[]>();
 	
 	
 	
@@ -28,6 +29,7 @@ public class UserRepo {
 	
 	
 	public void createDoc(String name) throws DocAlreadyExists_Exception{
+		
 		if(docs.containsKey(name)){
 			
 			throw new DocAlreadyExists_Exception("name "+name+" is already in use.", null);
