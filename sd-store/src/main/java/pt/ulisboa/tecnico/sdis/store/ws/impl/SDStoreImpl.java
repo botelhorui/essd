@@ -26,14 +26,22 @@ public class SDStoreImpl implements SDStore {
 	}
 	
 	private void populateDomain(){
-		/*
-		 * users:
-		 * alice
-		 * bruno
-		 * carla
-		 * duarte
-		 * eduardo
-		 */
+		
+		UserRepo ur = new UserRepo("alice");
+		userRepos.put("alice", ur);
+		
+		ur = new UserRepo("bruno");
+		userRepos.put("bruno", ur);
+		
+		ur = new UserRepo("carla");
+		userRepos.put("carla", ur);
+		
+		ur = new UserRepo("duarte");
+		userRepos.put("duarte", ur);
+		
+		ur = new UserRepo("eduardo");
+		userRepos.put("eduardo", ur);
+		
 	}
 	
 	
@@ -64,6 +72,8 @@ public class SDStoreImpl implements SDStore {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
 
 	@Override
 	public void store(DocUserPair docUserPair, byte[] contents)

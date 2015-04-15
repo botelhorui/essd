@@ -17,7 +17,7 @@ public class UserRepo {
 
 
 	
-	private int repoSize = 0;
+	private int repoSize = 0, maxsize=10*1024;
 	private Map<String, byte[]> docs = new HashMap<String, byte[]>();
 	
 	
@@ -47,25 +47,24 @@ public class UserRepo {
 	public void storeDoc(String name, byte[] content) throws CapacityExceeded_Exception, DocDoesNotExist_Exception, UserDoesNotExist_Exception{
 		
 		int nsize;
-		nsize= repoSize + content.length - docs.get(name).length;
+		nsize = repoSize + content.length - docs.get(name).length;
 		
 		if(!docs.containsKey(name)){
 			
 			throw new DocDoesNotExist_Exception("name "+name+" doesn't exist in repo.", null);
 			
-		} else if (nsize > 10000) {
+		} else if (nsize > maxsize) {
 			
 			throw new DocDoesNotExist_Exception("repo exceeds permitted size", null);
 		} else {
 			
 			docs.put(name, content);
+			repoSize = nsize;
 			
 		}
 	}
 
 
-
-	
 
 
 
