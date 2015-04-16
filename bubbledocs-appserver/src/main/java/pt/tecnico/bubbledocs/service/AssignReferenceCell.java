@@ -17,7 +17,7 @@ import pt.tecnico.bubbledocs.exception.PositionOutOfBoundsException;
 
 // add needed import declarations
 
-public class AssignReferenceCell extends BubbleDocsService {
+public class AssignReferenceCell extends AccessBubbleDocsService {
 	private String result;
 	private String token;
 	private int iSpreadId;
@@ -52,18 +52,10 @@ public class AssignReferenceCell extends BubbleDocsService {
 		User check = bd.getUserByUsername(username);
 		
 		// Session validations and renewals
-		if(!bd.isUserInSession(token)){
-			throw new UserNotInSessionException();
-		}else{
-			bd.renewSessionDuration(token);
-		}
+		validateUser(token);
 
 		//Fetch user and check if he has write permission for the SpreadSheet
-		User u = bd.getUserByToken(token);
-
-		if(u.checkWriteAccess(spread) == false){
-			throw new UserHasNotWriteAccessException();
-		}
+		checkWritePermission(token, spread);
 
 
 		//Fetch Cell from SpreadSheet

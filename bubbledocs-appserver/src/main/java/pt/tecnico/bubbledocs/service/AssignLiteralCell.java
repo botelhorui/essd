@@ -20,7 +20,7 @@ import java.lang.NumberFormatException;
 
 // add needed import declarations
 
-public class AssignLiteralCell extends BubbleDocsService {
+public class AssignLiteralCell extends AccessBubbleDocsService {
 	private String result;
 	private String token;
 	private int sheetId;
@@ -40,17 +40,8 @@ public class AssignLiteralCell extends BubbleDocsService {
 	protected void dispatch() throws BubbleDocsException {
 		BubbleDocs bd = BubbleDocs.getInstance();
 		
-		// First, we check the validity of the user.
-		
-		String username = bd.getUsernameFromToken(token);  //<-- This method will need a rework for future checkpoints, I believe.
-		bd.getUserByUsername(username); // <-- That method by itself throws the UnknownBubbleDocsUserException; don't have to worry about it here.
-		
-		// Checking if they're still in session; if they are, renew their validity.
-		if(!bd.isUserInSession(token)){
-			throw new UserNotInSessionException();
-		}else{
-			bd.renewSessionDuration(token);
-		}
+		// First, we check the validity of the user.	
+		validateUser(token);
 		
 		// After that, we get the spreadsheet and test if it's valid.
 		SpreadSheet sheet = null;
@@ -67,11 +58,7 @@ public class AssignLiteralCell extends BubbleDocsService {
 		}
 		
 		// Then we check if they have writing permissions.
-		User writer = bd.getUserByToken(token);
-
-		if(writer.checkWriteAccess(sheet) == false){
-			throw new UserHasNotWriteAccessException();
-		}
+		checkWritePermission(token, sheet);
 		
 		// Afterwards we grab the cell. For that, we need to parse.
 		StringTokenizer st = new StringTokenizer(cellCoords, ";", false);
