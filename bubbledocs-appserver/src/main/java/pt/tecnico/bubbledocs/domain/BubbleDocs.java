@@ -15,6 +15,9 @@ import pt.tecnico.bubbledocs.exception.DuplicateUsernameException;
 import pt.tecnico.bubbledocs.exception.UserIsNotOwnerException;
 import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 import pt.tecnico.bubbledocs.service.remote.StoreRemoteServices;
+import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
+import pt.tecnico.bubbledocs.exception.UnauthorizedOperationException;
+import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 
 public class BubbleDocs extends BubbleDocs_Base {
 	private static final Logger logger = LoggerFactory.getLogger(FenixFramework.class);
@@ -206,4 +209,24 @@ public class BubbleDocs extends BubbleDocs_Base {
 			}
 		}		
 	}
+	
+	public void validateUser(String token) throws BubbleDocsException {
+
+		if (!isUserInSession(token)){
+			throw new UserNotInSessionException();
+		}
+		
+		renewSessionDuration(token);
+		
+	}
+	
+	public void checkIfRoot(String token) throws BubbleDocsException {
+		
+		User u = getUserByToken(token);
+		if(!(u.getUsername().equals("root"))){
+			throw new UnauthorizedOperationException();
+		}
+		
+	}
+		
 }

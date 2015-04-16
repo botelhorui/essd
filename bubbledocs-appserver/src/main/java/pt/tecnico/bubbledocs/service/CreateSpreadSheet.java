@@ -9,7 +9,7 @@ import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
 
 // add needed import declarations
 
-public class CreateSpreadSheet extends BubbleDocsService {
+public class CreateSpreadSheet extends LoggedBubbleDocsService {
 	private int sheetId, rows, columns;  // id of the new sheet
 	private String token, name;
 	private User owner;
@@ -36,19 +36,17 @@ public class CreateSpreadSheet extends BubbleDocsService {
 			
 		
 		// Session validations and renewals
-		if(!bd.isUserInSession(token)){
-			throw new UserNotInSessionException();
-		}else if(rows<=0 || columns<=0){
-				throw new PositionOutOfBoundsException();
-			}else{
+		validateUser(this.token);
+		
+		if(rows<=0 || columns<=0){
+			throw new PositionOutOfBoundsException();
+		}else{		
+			owner = bd.getUserByToken(token);
+			sp = new SpreadSheet(owner, name, rows, columns);
+			bd.addSpreadSheet(sp);
+			sheetId = sp.getId();
 				
-				bd.renewSessionDuration(token);
-				owner = bd.getUserByToken(token);
-				sp = new SpreadSheet(owner, name, rows, columns);
-				bd.addSpreadSheet(sp);
-				sheetId = sp.getId();
-				
-			}
+		}
 	}
 
 }

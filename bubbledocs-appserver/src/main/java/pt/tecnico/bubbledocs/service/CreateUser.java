@@ -12,7 +12,7 @@ import pt.tecnico.bubbledocs.domain.User;
 
 // add needed import declarations
 
-public class CreateUser extends BubbleDocsService {
+public class CreateUser extends LoggedBubbleDocsService {
 	private String token;
 	private String username;
 	private String email;
@@ -24,6 +24,14 @@ public class CreateUser extends BubbleDocsService {
 		this.name = name;
 		this.token = token;
 	}
+	
+	@Override
+	protected void validateUser(String token) throws BubbleDocsException{
+    	super.validateUser(token);
+    	
+    	BubbleDocs bd = BubbleDocs.getInstance();
+    	bd.checkIfRoot(token);	
+    }
 
 	@Override
 	protected void dispatch() throws BubbleDocsException {
@@ -34,11 +42,7 @@ public class CreateUser extends BubbleDocsService {
 		if(username.equals(""))
 			throw new EmptyUsernameException();
 		
-		if(!(bd.isUserInSession(this.token)))
-			throw new UserNotInSessionException();
-		
-		if(!(user.getUsername().equals("root")))
-			throw new UnauthorizedOperationException();
+		validateUser(this.token);
 		
 		try {
 			//remote login

@@ -7,7 +7,7 @@ import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
 
-public class RenewPassword extends BubbleDocsService {
+public class RenewPassword extends LoggedBubbleDocsService {
 	private String _token;
 	
 	public RenewPassword(String token) {
@@ -19,7 +19,7 @@ public class RenewPassword extends BubbleDocsService {
 		BubbleDocs bd = BubbleDocs.getInstance();
 		User user = bd.getUserByToken(this._token);
 		
-		//TODO: Add BubbleDocsService method that verifies if user is in session
+		validateUser(this._token);
 		
 		try {
 			//remote renew password

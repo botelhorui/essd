@@ -10,7 +10,7 @@ import pt.tecnico.bubbledocs.domain.User;
 
 // add needed import declarations
 
-public class DeleteUser extends BubbleDocsService {
+public class DeleteUser extends LoggedBubbleDocsService {
 	private String token;
 	private String username;
 	
@@ -19,6 +19,14 @@ public class DeleteUser extends BubbleDocsService {
 		this.username = toDeleteUsername; 
 		this.token = token;
 	}
+	
+	@Override
+	protected void validateUser(String token) throws BubbleDocsException{
+    	super.validateUser(token);
+    	
+    	BubbleDocs bd = BubbleDocs.getInstance();
+    	bd.checkIfRoot(token);	
+    }
 
 	@Override
 	protected void dispatch() throws BubbleDocsException {
@@ -27,18 +35,13 @@ public class DeleteUser extends BubbleDocsService {
 		User user = bd.getUserByToken(this.token);
 		User userToDelete = bd.getUserByUsername(this.username);
 		
-		if(!(bd.isUserInSession(this.token)))
-			throw new UserNotInSessionException();
+		validateUser(this.token);
 		
 		if(userToDelete == null)
 			throw new UnknownBubbleDocsUserException();
 		
 		if(user == null)
 			throw new UnknownBubbleDocsUserException();
-		
-		
-		if(!(user.getUsername().equals("root")))
-			throw new UnauthorizedOperationException();
 		
 		userToDelete.delete();
 		
