@@ -34,19 +34,10 @@ public class AssignReferenceCell extends AccessBubbleDocsService {
 	@Override
 	protected void dispatch() throws BubbleDocsException {
 		BubbleDocs bd = BubbleDocs.getInstance();
-		SpreadSheet spread = null;
+		
 
 		//Fetch SpreadSheet object from BubbleDocs by ID
-		for(SpreadSheet s: bd.getSpreadSheetSet()){
-			if(s.getId() == iSpreadId){
-				spread = s;
-				break;
-			}
-		}
-
-		if(spread == null){
-			throw new SpreadSheetIdUnknown();
-		}
+		SpreadSheet spread = bd.getSpreadsheetById(iSpreadId);
 
 		String username = bd.getUsernameFromToken(token);
 		User check = bd.getUserByUsername(username);
@@ -59,40 +50,10 @@ public class AssignReferenceCell extends AccessBubbleDocsService {
 
 
 		//Fetch Cell from SpreadSheet
-		int i = 0;
-		int row = 0;
-		int column = 0;
-		
-		StringTokenizer st = new StringTokenizer(sCellId, ";", false);
-		
-		if(st.countTokens() > 2 || st.countTokens() < 0)
-			throw new PositionOutOfBoundsException();
-
-		while (st.hasMoreTokens()){
-			i = Integer.parseInt(st.nextToken());
-			if(st.countTokens() == 1)
-				row = i;
-			if(st.countTokens() == 0)
-				column = i;
-		}
-
-		Cell cell = spread.getCell(row, column);
+		Cell cell = spread.getCellFromString(sCellId);
 
 		//Fetch Cell to Reference from SpreadSheet
-		st = new StringTokenizer(sReference, ";", false);
-		
-		if(st.countTokens() > 2 || st.countTokens() < 0)
-			throw new PositionOutOfBoundsException();
-		
-		while (st.hasMoreTokens()){
-			i = Integer.parseInt(st.nextToken());
-			if(st.countTokens() == 1)
-				row = i;
-			if(st.countTokens() == 0)
-				column = i;
-		}
-
-		Cell reference = spread.getCell(row, column);
+		Cell reference = spread.getCellFromString(sReference);
 
 		//Delete current Cell content if it exists
 		Content content = cell.getContent();

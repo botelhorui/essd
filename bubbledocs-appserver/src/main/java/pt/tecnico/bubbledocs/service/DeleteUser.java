@@ -37,6 +37,12 @@ public class DeleteUser extends LoggedBubbleDocsService {
 		
 		validateUser(this.token);
 		
+		/*
+		 * The following code has not been moved nor removed because
+		 * I'm not exactly sure how to proceed. An e-mail has been sent about
+		 * this issue, and I'll leave this here until I get a response.
+		 */
+		
 		if(userToDelete == null)
 			throw new UnknownBubbleDocsUserException();
 		

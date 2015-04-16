@@ -44,46 +44,13 @@ public class AssignLiteralCell extends AccessBubbleDocsService {
 		validateUser(token);
 		
 		// After that, we get the spreadsheet and test if it's valid.
-		SpreadSheet sheet = null;
-		
-		for(SpreadSheet s: bd.getSpreadSheetSet()){
-			if(s.getId() == sheetId){
-				sheet = s;
-				break;
-			}
-		}
-		
-		if (sheet == null){
-			throw new SpreadSheetIdUnknown();
-		}
+		SpreadSheet sheet = bd.getSpreadsheetById(sheetId);
 		
 		// Then we check if they have writing permissions.
 		checkWritePermission(token, sheet);
 		
 		// Afterwards we grab the cell. For that, we need to parse.
-		StringTokenizer st = new StringTokenizer(cellCoords, ";", false);
-		int buffer = 0;
-		int cellRow = 0;
-		int cellColumn = 0;
-		
-		if (st.countTokens() != 2){
-			throw new PositionOutOfBoundsException();
-		}
-
-		while (st.hasMoreTokens()){
-			try{
-				buffer = Integer.parseInt(st.nextToken());
-			} catch (NumberFormatException e) {
-				throw new PositionOutOfBoundsException();
-			}
-			if(st.countTokens() == 1)
-				cellRow = buffer;
-			if(st.countTokens() == 0)
-				cellColumn = buffer;
-			
-		}
-
-		Cell cell = sheet.getCell(cellRow, cellColumn); // <-- Also throws a PositionOutOfBoundsException in case the spreadsheet doesn't have the provided values! 
+		Cell cell = sheet.getCellFromString(cellCoords); // <-- Also throws a PositionOutOfBoundsException in case the spreadsheet doesn't have the provided values! 
 		
 		// Finally, we check the validity of the value.
 		int value = 0;

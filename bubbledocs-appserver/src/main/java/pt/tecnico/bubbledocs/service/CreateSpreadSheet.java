@@ -38,15 +38,12 @@ public class CreateSpreadSheet extends LoggedBubbleDocsService {
 		// Session validations and renewals
 		validateUser(this.token);
 		
-		if(rows<=0 || columns<=0){
-			throw new PositionOutOfBoundsException();
-		}else{		
-			owner = bd.getUserByToken(token);
-			sp = new SpreadSheet(owner, name, rows, columns);
-			bd.addSpreadSheet(sp);
-			sheetId = sp.getId();
+		owner = bd.getUserByToken(token);
+		sp = new SpreadSheet(owner, name, rows, columns);
+		bd.addSpreadSheet(sp);
+		sheetId = sp.getId();
 				
-		}
+		
 	}
 
 }

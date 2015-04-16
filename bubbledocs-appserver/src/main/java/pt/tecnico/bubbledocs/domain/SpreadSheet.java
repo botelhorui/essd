@@ -5,6 +5,8 @@ import org.jdom2.Element;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
 
+import java.util.StringTokenizer;
+
 import pt.tecnico.bubbledocs.domain.User;
 
 import pt.tecnico.bubbledocs.exception.PositionOutOfBoundsException;
@@ -20,7 +22,12 @@ public class SpreadSheet extends SpreadSheet_Base{
 		init(owner, name, lines, columns);
 	}
 
-	protected void init(User owner, String name, int lines, int columns) {		
+	protected void init(User owner, String name, int lines, int columns) throws PositionOutOfBoundsException {
+		
+		if ((lines < 1) || (columns < 1)){
+			throw new PositionOutOfBoundsException();
+		}
+		
 		setId(BubbleDocs.getInstance().generateId());
 		setName(name);
 		setCreationDate(new DateTime());
@@ -159,5 +166,35 @@ public class SpreadSheet extends SpreadSheet_Base{
 					return true;
 		
 		return false;
+	}
+	
+	public Cell getCellFromString(String input) throws PositionOutOfBoundsException{
+		
+		StringTokenizer st = new StringTokenizer(input, ";", false);
+		int buffer = 0;
+		int cellRow = 0;
+		int cellColumn = 0;
+		
+		if (st.countTokens() != 2){
+			throw new PositionOutOfBoundsException();
+		}
+
+		while (st.hasMoreTokens()){
+			try{
+				buffer = Integer.parseInt(st.nextToken());
+			} catch (NumberFormatException e) {
+				throw new PositionOutOfBoundsException();
+			}
+			if(st.countTokens() == 1)
+				cellRow = buffer;
+			if(st.countTokens() == 0)
+				cellColumn = buffer;
+			
+		}
+
+		Cell cell = getCell(cellRow, cellColumn);
+		
+		return cell;
+		
 	}
 }
