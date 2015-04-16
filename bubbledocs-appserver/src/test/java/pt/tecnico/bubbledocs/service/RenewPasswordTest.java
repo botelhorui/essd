@@ -17,6 +17,7 @@ import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.bubbledocs.exception.LoginBubbleDocsException;
+import pt.tecnico.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
 
 public class RenewPasswordTest extends BubbleDocsServiceTest{
@@ -87,7 +88,7 @@ public class RenewPasswordTest extends BubbleDocsServiceTest{
 		new Expectations() {
 			{
 				IDRemoteService.renewPassword(USERNAME);
-				result = new UnavailableServiceException();
+				result = new RemoteInvocationException();
 			}
 		};
 		rp.execute();
