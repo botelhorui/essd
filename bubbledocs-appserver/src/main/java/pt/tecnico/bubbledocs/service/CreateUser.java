@@ -4,24 +4,34 @@ import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.bubbledocs.exception.EmptyUsernameException;
 import pt.tecnico.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
+import pt.tecnico.bubbledocs.exception.RemoteInvocationException;
+import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
 
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.User;
 
 // add needed import declarations
 
-public class CreateUser extends BubbleDocsService {
+public class CreateUser extends LoggedBubbleDocsService {
 	private String token;
-	private String newUsername;
-	private String password;
+	private String username;
+	private String email;
 	private String name;
 	
-	public CreateUser(String token, String newUsername,String password, String name) {
-		this.newUsername = newUsername;
-		this.password = password;
+	public CreateUser(String token, String username, String name, String email) {
+		this.username = username;
+		this.email = email;
 		this.name = name;
 		this.token = token;
 	}
+	
+	@Override
+	protected void validateUser(String token) throws BubbleDocsException{
+    	super.validateUser(token);
+    	
+    	BubbleDocs bd = BubbleDocs.getInstance();
+    	bd.checkIfRoot(token);	
+    }
 
 	@Override
 	protected void dispatch() throws BubbleDocsException {
@@ -29,16 +39,20 @@ public class CreateUser extends BubbleDocsService {
 		BubbleDocs bd = BubbleDocs.getInstance();
 		User user = bd.getUserByToken(this.token);
 		
-		if(newUsername.equals(""))
+		if(username.equals(""))
 			throw new EmptyUsernameException();
 		
-		if(!(bd.isUserInSession(this.token)))
-			throw new UserNotInSessionException();
+		validateUser(this.token);
 		
-		if(!(user.getUsername().equals("root")))
-			throw new UnauthorizedOperationException();
-		
-		bd.createUser(this.newUsername, this.password, this.name);
+		try {
+			//remote login
+			bd.IDRemoteServices.createUser(this.username, this.name, this.email);;
+			
+		} catch (RemoteInvocationException e) {
+			
+			throw new UnavailableServiceException();
+			
+		}
 		
 	}
 }

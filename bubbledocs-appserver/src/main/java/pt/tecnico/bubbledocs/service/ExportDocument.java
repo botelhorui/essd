@@ -12,7 +12,7 @@ import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
 
 // add needed import declarations
 
-public class ExportDocument extends BubbleDocsService {
+public class ExportDocument extends AccessBubbleDocsService {
 	private Document docXML;
 	private String token;
 	private int docId;
@@ -30,34 +30,12 @@ public class ExportDocument extends BubbleDocsService {
 	@Override
 	protected void dispatch() throws BubbleDocsException {
 		BubbleDocs bd = BubbleDocs.getInstance();
-		SpreadSheet s=null;
-		for(SpreadSheet x: bd.getSpreadSheetSet()){
-			if(x.getId()==docId){
-				s=x;
-				break;
-			}
-		}
-		if(s==null){
-			throw new SpreadSheetIdUnknown();
-		}
+		SpreadSheet s = bd.getSpreadsheetById(docId);
 		
-		if(!bd.isUserInSession(token)){
-			throw new UserNotInSessionException();
-		}else{
-			bd.renewSessionDuration(token);
-		}
+		validateUser(token);
 		
-		User u = bd.getUserByToken(token);
-		s=null;
-		for(SpreadSheet x: u.getReadableSpreadSet()){
-			if(x.getId()==docId){
-				s=x;
-				break;
-			}				
-		}
-		if(s==null){
-			throw new UserHasNotReadAccessException();
-		}
+		checkReadPermission(token, s);
+		
 		docXML = s.export();		
 	}
 }

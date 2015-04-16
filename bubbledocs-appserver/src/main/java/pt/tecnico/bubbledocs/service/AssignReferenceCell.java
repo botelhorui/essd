@@ -17,7 +17,7 @@ import pt.tecnico.bubbledocs.exception.PositionOutOfBoundsException;
 
 // add needed import declarations
 
-public class AssignReferenceCell extends BubbleDocsService {
+public class AssignReferenceCell extends AccessBubbleDocsService {
 	private String result;
 	private String token;
 	private int iSpreadId;
@@ -34,80 +34,26 @@ public class AssignReferenceCell extends BubbleDocsService {
 	@Override
 	protected void dispatch() throws BubbleDocsException {
 		BubbleDocs bd = BubbleDocs.getInstance();
-		SpreadSheet spread = null;
+		
 
 		//Fetch SpreadSheet object from BubbleDocs by ID
-		for(SpreadSheet s: bd.getSpreadSheetSet()){
-			if(s.getId() == iSpreadId){
-				spread = s;
-				break;
-			}
-		}
-
-		if(spread == null){
-			throw new SpreadSheetIdUnknown();
-		}
+		SpreadSheet spread = bd.getSpreadsheetById(iSpreadId);
 
 		String username = bd.getUsernameFromToken(token);
 		User check = bd.getUserByUsername(username);
 		
 		// Session validations and renewals
-		if(!bd.isUserInSession(token)){
-			throw new UserNotInSessionException();
-		}else{
-			bd.renewSessionDuration(token);
-		}
+		validateUser(token);
 
 		//Fetch user and check if he has write permission for the SpreadSheet
-		User u = bd.getUserByToken(token);
-
-		if(u.checkWriteAccess(spread) == false){
-			throw new UserHasNotWriteAccessException();
-		}
+		checkWritePermission(token, spread);
 
 
 		//Fetch Cell from SpreadSheet
-		int i = 0;
-		int row = 0;
-		int column = 0;
-		
-		StringTokenizer st = new StringTokenizer(sCellId, ";", false);
-		
-		if(st.countTokens() > 2 || st.countTokens() < 0)
-			throw new PositionOutOfBoundsException();
-
-		while (st.hasMoreTokens()){
-			i = Integer.parseInt(st.nextToken());
-			if(st.countTokens() == 1)
-				row = i;
-			if(st.countTokens() == 0)
-				column = i;
-		}
-
-		Cell cell = spread.getCell(row, column);
+		Cell cell = spread.getCellFromString(sCellId);
 
 		//Fetch Cell to Reference from SpreadSheet
-		st = new StringTokenizer(sReference, ";", false);
-		
-		if(st.countTokens() > 2 || st.countTokens() < 0)
-			throw new PositionOutOfBoundsException();
-		
-		while (st.hasMoreTokens()){
-			i = Integer.parseInt(st.nextToken());
-			if(st.countTokens() == 1)
-				row = i;
-			if(st.countTokens() == 0)
-				column = i;
-		}
-
-		Cell reference = spread.getCell(row, column);
-
-		//Delete current Cell content if it exists
-		Content content = cell.getContent();
-		if(content != null){
-			content.delete();
-			cell.setContent(null);
-		}
+		Cell reference = spread.getCellFromString(sReference);
 
 		//Add the new ReferenceContent
 		ReferenceContent rc = new ReferenceContent(reference);
