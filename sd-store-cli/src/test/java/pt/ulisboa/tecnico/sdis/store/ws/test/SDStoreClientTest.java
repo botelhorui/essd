@@ -46,12 +46,16 @@ public class SDStoreClientTest {
 	@Before
 	public void setUp() throws Exception {
 		
+		DocUserPair p = new DocUserPair();
+		p.setDocumentId("reset");
+		p.setUserId("reset");
 		new Expectations(){{
 			new UDDINaming(anyString);
 			uddiNaming.lookup(anyString); result="http://localhost:8080/store-ws/endpoint";
 		}};
 				
 		impl = new SDStoreClient("http://localhost:8081", "SD-Store");
+		impl.createDoc(p);
 	}
 	
 	
@@ -93,7 +97,7 @@ public class SDStoreClientTest {
 	public void createDocTest3() throws Exception {
 		
 		DocUserPair p = new DocUserPair();
-		p.setUserId("bruno");
+		p.setUserId("alice");
 		p.setDocumentId("doc1");
 		impl.createDoc(p);
 		try {
@@ -107,12 +111,12 @@ public class SDStoreClientTest {
 	@Test
 	public void createDocTest4() throws Exception {
 		DocUserPair p = new DocUserPair();
-		p.setUserId("calimero");
+		p.setUserId("alice");
 		p.setDocumentId("doc1");
 		impl.createDoc(p);
 		p.setDocumentId("doc2");
 		impl.createDoc(p);
-		List<String> lst = impl.listDocs("calimero");
+		List<String> lst = impl.listDocs("alice");
 		assertNotNull(lst);
 		assertEquals("List of documents size should be just two", 2 , lst.size());
 		assertTrue(lst.contains("doc1"));
@@ -121,7 +125,7 @@ public class SDStoreClientTest {
 	
 	@Test
 	public void listDocsTest1() throws Exception {
-		List<String> lst = impl.listDocs("carla");
+		List<String> lst = impl.listDocs("alice");
 		assertNotNull(lst);
 		assertEquals("List of documents size should be just zero", 0 , lst.size());
 	}
@@ -134,7 +138,7 @@ public class SDStoreClientTest {
 	@Test
 	public void storeLoadTest1() throws Exception {
 		DocUserPair p = new DocUserPair();
-		p.setUserId("bruno");
+		p.setUserId("alice");
 		p.setDocumentId("doc1");
 		impl.createDoc(p);
 		byte[] data = new byte[1024];		
@@ -157,7 +161,7 @@ public class SDStoreClientTest {
 	@Test(expected=DocDoesNotExist_Exception.class)
 	public void storeLoadTest3() throws Exception {
 		DocUserPair p = new DocUserPair();
-		p.setUserId("carlos");
+		p.setUserId("alice");
 		p.setDocumentId("doc1");
 		byte[] data = new byte[1024];		
 		new Random().nextBytes(data);
@@ -167,7 +171,7 @@ public class SDStoreClientTest {
 	@Test
 	public void storeLoadTest4() throws Exception {
 		DocUserPair p = new DocUserPair();
-		p.setUserId("maria");
+		p.setUserId("alice");
 		p.setDocumentId("doc1");
 		impl.createDoc(p);
 		byte[] data = new byte[10*1024];	
@@ -187,7 +191,7 @@ public class SDStoreClientTest {
 	@Test(expected=DocDoesNotExist_Exception.class)
 	public void LoadTest1() throws Exception {
 		DocUserPair p = new DocUserPair();
-		p.setUserId("maria");
+		p.setUserId("alice");
 		p.setDocumentId("doc3");
 		impl.load(p);		
 	}
@@ -201,21 +205,6 @@ public class SDStoreClientTest {
 	}
 	
 	
-	@Test
-	public void test() {
-		fail("Not yet implemented");
-	}
-	
-	@Test
-	public void UDDIDown(){
-		// TODO
-		
-	}
-	
-	@Test
-	public void UDDILookupNull(){
-		// TODO
-	}
 	
 	
 
