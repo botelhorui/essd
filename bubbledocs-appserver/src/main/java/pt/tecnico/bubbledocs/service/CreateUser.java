@@ -13,12 +13,12 @@ import pt.tecnico.bubbledocs.domain.User;
 public class CreateUser extends BubbleDocsService {
 	private String token;
 	private String newUsername;
-	private String password;
+	private String email;
 	private String name;
 	
-	public CreateUser(String token, String newUsername,String password, String name) {
-		this.newUsername = newUsername;
-		this.password = password;
+	public CreateUser(String token, String username, String name, String email) {
+		this.username = username;
+		this.email = email;
 		this.name = name;
 		this.token = token;
 	}
@@ -38,7 +38,15 @@ public class CreateUser extends BubbleDocsService {
 		if(!(user.getUsername().equals("root")))
 			throw new UnauthorizedOperationException();
 		
-		bd.createUser(this.newUsername, this.password, this.name);
+		try {
+			//remote login
+			bd.IDRemoteServices.createUser(this.username, this.name, this.email);;
+			
+		} catch (RemoteInvocationException e) {
+			
+			throw new UnavailableServiceException();
+			
+		}
 		
 	}
 }

@@ -11,7 +11,7 @@ import pt.tecnico.bubbledocs.exception.RemoteInvocationException;
 
 public class IDRemoteServices {
 
-	public void createUser(String username, String email)
+	public void createUser(String username, String name, String email)
 			throws /*InvalidUsernameException,*/ DuplicateUsernameException,
 			/*DuplicateEmailException, InvalidEmailException,*/
 			RemoteInvocationException {
