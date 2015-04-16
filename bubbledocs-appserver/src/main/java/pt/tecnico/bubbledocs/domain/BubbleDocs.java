@@ -18,6 +18,7 @@ import pt.tecnico.bubbledocs.service.remote.StoreRemoteServices;
 import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
+import pt.tecnico.bubbledocs.exception.SpreadSheetIdUnknown;
 
 public class BubbleDocs extends BubbleDocs_Base {
 	private static final Logger logger = LoggerFactory.getLogger(FenixFramework.class);
@@ -226,6 +227,24 @@ public class BubbleDocs extends BubbleDocs_Base {
 		if(!(u.getUsername().equals("root"))){
 			throw new UnauthorizedOperationException();
 		}
+		
+	}
+	
+	public SpreadSheet getSpreadsheetById(int id){
+		
+		SpreadSheet sheet = null;
+		for(SpreadSheet spread: getSpreadSheetSet()){
+			if(spread.getId() == id){
+				sheet = spread;
+				break;
+			}
+		}
+		
+		if(sheet == null){
+			throw new SpreadSheetIdUnknown();
+		}
+		
+		return sheet;
 		
 	}
 		

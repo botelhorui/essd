@@ -30,16 +30,7 @@ public class ExportDocument extends AccessBubbleDocsService {
 	@Override
 	protected void dispatch() throws BubbleDocsException {
 		BubbleDocs bd = BubbleDocs.getInstance();
-		SpreadSheet s=null;
-		for(SpreadSheet x: bd.getSpreadSheetSet()){
-			if(x.getId()==docId){
-				s=x;
-				break;
-			}
-		}
-		if(s==null){
-			throw new SpreadSheetIdUnknown();
-		}
+		SpreadSheet s = bd.getSpreadsheetById(docId);
 		
 		validateUser(token);
 		
