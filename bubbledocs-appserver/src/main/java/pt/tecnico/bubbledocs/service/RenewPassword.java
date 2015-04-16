@@ -3,6 +3,7 @@ package pt.tecnico.bubbledocs.service;
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.User;
 
+import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
 
@@ -22,11 +23,11 @@ public class RenewPassword extends BubbleDocsService {
 		
 		try {
 			//remote renew password
-			bd.IDRemoteServices.renewPassword(user);
+			bd.IDRemoteServices.renewPassword(user.getUsername());
 			user.setPassword(null);
 			
 		} catch (RemoteInvocationException e) {
-			throws new UnavailableServiceException();
+			throw new UnavailableServiceException();
 		}
 		
 		bd.renewSessionDuration(user);
