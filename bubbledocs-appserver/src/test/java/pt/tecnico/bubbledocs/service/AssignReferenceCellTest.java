@@ -108,6 +108,8 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 		AssignReferenceCell service = new AssignReferenceCell( jp , spread_id , cell , reference );
 		service.execute();
 		DateTime end = bd.getUserByToken(jp).getSession().getLastAccess();
+		
+		String result = service.getResult();
 
 		// check if Reference was assigned to Cell
 
@@ -122,6 +124,7 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 		assertEquals("Referenced cell line doesn't match the given line;", refc.getLine(), l2);
 		assertEquals("Referenced cell column doesn't match the given column;", refc.getColumn(), c2);
 		assertTrue("Cell content isn't a reference;", c.getContent() instanceof pt.tecnico.bubbledocs.domain.ReferenceContent);
+		assertEquals("Cell content has a wrong value.", result, reference);
 	}
 
 	@Test
@@ -139,8 +142,13 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 		AssignReferenceCell service = new AssignReferenceCell( jp , spread_id , cell , reference );
 		service.execute();
 		
+		String result1 = service.getResult();
+		
 		service = new AssignReferenceCell( jp , spread_id , cell , reference2 );
 		service.execute();
+		
+		String result2 = service.getResult();
+		
 
 		// check if Reference was assigned to Cell
 		
@@ -154,6 +162,10 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 		assertEquals("Referenced cell line doesn't match the given line;", refc.getLine(), l5);
 		assertEquals("Referenced cell column doesn't match the given column;", refc.getColumn(), c5);
 		assertTrue("Cell content isn't a reference;", c.getContent() instanceof pt.tecnico.bubbledocs.domain.ReferenceContent);
+		assertFalse("Cell content was not overwritten.", result1.equals(result2));
+		assertEquals("Cell content has a wrong value.", result2, reference2);
+		
+		
 	}
 
 	@Test(expected = UserNotInSessionException.class)
@@ -192,7 +204,10 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 
 	//Se o user nao estiver logado nao existe forma de saber se ele 
 	//existe ou nao porque so passo o token para o service AssignReferenceCell
-
+	
+	//Deprecated -- UnknownBubbleDocsUserException ja nao e usado. 
+	//Permanecera em comentario para a terceira entrega; caso nao seja necessario para o R_4, entao sera apagado.
+/*
 	@Test(expected = UnknownBubbleDocsUserException.class)
 
 	public void unknownBubbleDocsUser() {
@@ -208,7 +223,7 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 		AssignReferenceCell service = new AssignReferenceCell( uu , spread_id , cell , reference );
 		service.execute();
 
-	}
+	}*/
 
 	@Test(expected = UserHasNotWriteAccessException.class)
 

@@ -184,21 +184,25 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 		
 	}
 	
-	@Test(expected = UnknownBubbleDocsUserException.class)
+	
+	/*@Test(expected = UnknownBubbleDocsUserException.class)
 	public void unknownBubbleDocsUserError() {
 
-		/* Error case 1:
+		/* Error case 1 (Deprecated for now):
 		 *  - User does not exist.
 		 *  
 		 *  NOTE: Not entirely sure on this one; a made-up token can either mean an unknown user or a user without a session, so...
 		 *  Currently we're relying on the fact that the token is compromised of the username + a digit to figure out the original
 		 *  username and then checking if that exists. Once a more complex token is created, this method will cease to work. Will need
 		 *  to confirm with teacher after this second checkpoint.
+		 *  
+		 *  NOTE2: With the R_3 submission, UnknownBubbleDocsUserException is no longer used. Assuming this is no longer necessary to check.
+		 *  Keeping it in case it becomes necessary again -- otherwise will be removed in R_4.
 		 */
-
+	/*
 		AssignLiteralCell service = new AssignLiteralCell(invalidUser, sheetId, testCellString, testValueOneString);
 		service.execute();
-	}
+	}*/
 	
 	@Test(expected = UserNotInSessionException.class)
 	public void userIsNotInSessionError() {
