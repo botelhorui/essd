@@ -16,14 +16,14 @@ public class User extends User_Base {
         super();
     }
     
-    public User(String username, String password, String name){
+    public User(String username, String name, String email){
     	super();
-    	init(username, password, name);
+    	init(username, name, email);
     }
     
-    protected void init(String username, String password, String name){
+    protected void init(String username, String name, String email){
     	setUsername(username);
-    	setPassword(password);
+    	setEmail(email);
     	setName(name);
     	setSession(null);
     }   
@@ -53,6 +53,7 @@ public class User extends User_Base {
 		deleteDomainObject();
 	}
     
+	
     @Override
     public void setUsername(String username) throws DuplicateUsernameException {
     	
@@ -173,7 +174,8 @@ public class User extends User_Base {
 		// Custom equality check here.
 		if(this.getUsername().equals(that.getUsername())
 				&& this.getName().equals(that.getName())
-				&& this.getPassword().equals(that.getPassword()))
+				&& this.getPassword().equals(that.getPassword())
+				&& this.getEmail().equals(that.getEmail()))
 			return true;
 
 		return false;
