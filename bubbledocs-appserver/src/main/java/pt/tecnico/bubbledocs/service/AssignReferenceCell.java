@@ -55,13 +55,6 @@ public class AssignReferenceCell extends AccessBubbleDocsService {
 		//Fetch Cell to Reference from SpreadSheet
 		Cell reference = spread.getCellFromString(sReference);
 
-		//Delete current Cell content if it exists
-		Content content = cell.getContent();
-		if(content != null){
-			content.delete();
-			cell.setContent(null);
-		}
-
 		//Add the new ReferenceContent
 		ReferenceContent rc = new ReferenceContent(reference);
 		cell.setContent(rc);

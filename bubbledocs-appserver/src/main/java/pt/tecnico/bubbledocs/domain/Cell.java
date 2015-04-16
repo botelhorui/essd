@@ -21,6 +21,17 @@ public class Cell extends Cell_Base {
 		setColumn(column);
 	}
 	
+	@Override
+	public void setContent(Content c){
+		Content content = getContent();
+		if(content != null){
+			content.delete();
+		}
+		
+		super.setContent(c);
+		
+	}
+	
 	public void setLiteralContent(int value){
 		LiteralContent lit = new LiteralContent(value);
 		setContent(lit);

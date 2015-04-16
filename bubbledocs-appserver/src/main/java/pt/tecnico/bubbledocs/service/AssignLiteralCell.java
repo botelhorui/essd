@@ -62,12 +62,6 @@ public class AssignLiteralCell extends AccessBubbleDocsService {
 		}
 		
 		// And now we finally get to assign it! First we check if there's stuff there already...
-		Content content = cell.getContent();
-		if(content != null){
-			content.delete();
-			cell.setContent(null);
-		}
-
 		// ...and then we create the new content and assign it to the provided cell.
 		LiteralContent resultingContent = new LiteralContent(value);
 		cell.setContent(resultingContent);
