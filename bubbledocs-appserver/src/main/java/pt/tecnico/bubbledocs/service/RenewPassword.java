@@ -1,5 +1,11 @@
 package pt.tecnico.bubbledocs.service;
 
+import pt.tecnico.bubbledocs.domain.BubbleDocs;
+import pt.tecnico.bubbledocs.domain.User;
+
+import pt.tecnico.bubbledocs.exception.RemoteInvocationException;
+import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
+
 public class RenewPassword extends BubbleDocsService {
 	private String _token;
 	
