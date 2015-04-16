@@ -39,6 +39,7 @@ public class SDStoreClient implements SDStore {
 		port = service.getSDStoreImplPort();
 
 		System.out.println("Setting endpoint address ...");
+		System.out.println(endpointAddress);
 		BindingProvider bindingProvider = (BindingProvider) port;
 		Map<String, Object> requestContext = bindingProvider.getRequestContext();
 		requestContext.put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpointAddress);

@@ -1,7 +1,9 @@
 package pt.ulisboa.tecnico.sdis.store.ws.impl;
 
 import javax.xml.ws.Endpoint;
+
 import uddi.UDDINaming;
+
 
 public class SDStoreMain {
 

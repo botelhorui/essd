@@ -50,6 +50,7 @@ public class SDStoreImpl implements SDStore {
 	public void createDoc(DocUserPair docUserPair)
 			throws DocAlreadyExists_Exception {
 		
+		System.out.println("Creating Doc");
 		if ( userRepos.containsKey( docUserPair.getUserId() )){
 			
 			userRepos.get(docUserPair.getUserId()).createDoc(docUserPair.getDocumentId());
@@ -69,6 +70,8 @@ public class SDStoreImpl implements SDStore {
 	@Override
 	public List<String> listDocs(String userId)
 			throws UserDoesNotExist_Exception {
+		
+		System.out.println("Listing docs");
 		if(userRepos.containsKey(userId)){
 			return userRepos.get(userId).listDocs();
 		}else{
