@@ -22,6 +22,7 @@ public class CreateUserTest extends BubbleDocsServiceTest {
     private static final String PASSWORD = "ars";
     private static final String ROOT_USERNAME = "root";
     private static final String USERNAME_DOES_NOT_EXIST = "no-one";
+    private static final String EMAIL = "no.one@yahoo.com";
 
     @Override
     public void populate4Test() {
@@ -33,15 +34,14 @@ public class CreateUserTest extends BubbleDocsServiceTest {
 
     @Test
     public void success() {
-        CreateUser service = new CreateUser(rootToken, USERNAME_DOES_NOT_EXIST, "jose",
-                "José Ferreira");
+        CreateUser service = new CreateUser(rootToken, USERNAME_DOES_NOT_EXIST, "José Ferreira", EMAIL);
         service.execute();
 
 	// User is the domain class that represents a User
         User user = getUserFromUsername(USERNAME_DOES_NOT_EXIST);
 
         assertEquals(USERNAME_DOES_NOT_EXIST, user.getUsername());
-        assertEquals("jose", user.getPassword());
+        assertEquals(EMAIL, user.getEmail());
         assertEquals("José Ferreira", user.getName());
     }
 

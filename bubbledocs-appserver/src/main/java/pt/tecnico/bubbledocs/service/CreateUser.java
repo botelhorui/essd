@@ -45,14 +45,16 @@ public class CreateUser extends LoggedBubbleDocsService {
 		validateUser(this.token);
 		
 		try {
-			//remote login
-			bd.IDRemoteServices.createUser(this.username, this.name, this.email);;
+			
+			bd.IDRemoteServices.createUser(this.username, this.name, this.email);
 			
 		} catch (RemoteInvocationException e) {
 			
 			throw new UnavailableServiceException();
 			
 		}
+		
+		bd.createUser(this.username, this.name, this.email);
 		
 	}
 }
