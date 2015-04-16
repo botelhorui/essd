@@ -30,10 +30,6 @@ public class RenewPassword extends BubbleDocsService {
 			throw new UnavailableServiceException();
 		}
 		
-		bd.renewSessionDuration(user);
-		bd.renewToken(user);
-		this._token = user.getSession().getToken();
-		
 	}
 
 }
