@@ -4,6 +4,8 @@ import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.bubbledocs.exception.EmptyUsernameException;
 import pt.tecnico.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
+import pt.tecnico.bubbledocs.exception.RemoteInvocationException;
+import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
 
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.User;
@@ -12,7 +14,7 @@ import pt.tecnico.bubbledocs.domain.User;
 
 public class CreateUser extends BubbleDocsService {
 	private String token;
-	private String newUsername;
+	private String username;
 	private String email;
 	private String name;
 	
@@ -29,7 +31,7 @@ public class CreateUser extends BubbleDocsService {
 		BubbleDocs bd = BubbleDocs.getInstance();
 		User user = bd.getUserByToken(this.token);
 		
-		if(newUsername.equals(""))
+		if(username.equals(""))
 			throw new EmptyUsernameException();
 		
 		if(!(bd.isUserInSession(this.token)))
