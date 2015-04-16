@@ -1,19 +1,17 @@
 package pt.tecnico.bubbledocs.service.remote;
 
-//TODO: create inexistent exceptions
-
-//import pt.tecnico.bubbledocs.exception.DuplicateEmailException;
+import pt.tecnico.bubbledocs.exception.DuplicateEmailException;
 import pt.tecnico.bubbledocs.exception.DuplicateUsernameException;
-//import pt.tecnico.bubbledocs.exception.InvalidEmailException;
-//import pt.tecnico.bubbledocs.exception.InvalidUsernameException;
+import pt.tecnico.bubbledocs.exception.InvalidEmailException;
+import pt.tecnico.bubbledocs.exception.InvalidUsernameException;
 import pt.tecnico.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.bubbledocs.exception.RemoteInvocationException;
 
 public class IDRemoteServices {
 
 	public void createUser(String username, String name, String email)
-			throws /*InvalidUsernameException,*/ DuplicateUsernameException,
-			/*DuplicateEmailException, InvalidEmailException,*/
+			throws InvalidUsernameException, DuplicateUsernameException,
+			DuplicateEmailException, InvalidEmailException,
 			RemoteInvocationException {
 		// TODO : the connection and invocation of the remote service
 	}
