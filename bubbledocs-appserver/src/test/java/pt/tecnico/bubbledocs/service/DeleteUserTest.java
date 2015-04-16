@@ -1,6 +1,7 @@
 package pt.tecnico.bubbledocs.service;
 
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -38,20 +39,9 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
     	User user = getUserFromUsername(USERNAME_TO_DELETE);    	
         DeleteUser service = new DeleteUser(root, USERNAME_TO_DELETE);
         service.execute();
-        User u = null;
+        User deleted = getUserFromUsername(USERNAME_TO_DELETE);   	
         
-        boolean deleted = false;
-       
-        // changed because getUserFromUsername throws exception, doesn't return null
-        try { 
-        	u = getUserFromUsername(USERNAME_TO_DELETE);   	
-        } catch (UnknownBubbleDocsUserException e) {
-        	deleted = true;
-        }
-        
-        
-        assertTrue("user was not deleted", deleted);
-
+        assertNull("user was not deleted", deleted);
         assertNull("Spreadsheet was not deleted", getSpreadSheet(SPREADSHEET_NAME));
     }
 
