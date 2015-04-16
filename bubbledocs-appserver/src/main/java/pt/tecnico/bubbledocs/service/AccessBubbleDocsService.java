@@ -21,7 +21,11 @@ public abstract class AccessBubbleDocsService extends LoggedBubbleDocsService{
     	User writer = bd.getUserByToken(token);
 
 		if(writer.checkWriteAccess(s) == false){
-			throw new UserHasNotWriteAccessException();
+			if (!(writer.getUsername().equals("root"))){
+				
+				throw new UserHasNotWriteAccessException();
+				
+			}		
 		}
     	
     }
@@ -32,7 +36,11 @@ public abstract class AccessBubbleDocsService extends LoggedBubbleDocsService{
     	User reader = bd.getUserByToken(token);
 
 		if(reader.checkReadAccess(s) == false){
-			throw new UserHasNotReadAccessException();
+			if (!(reader.getUsername().equals("root"))){
+				
+				throw new UserHasNotReadAccessException();
+				
+			}
 		}
     	
     }

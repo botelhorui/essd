@@ -23,7 +23,9 @@ import static org.junit.Assert.*;
 public class ExportDocumentTest extends BubbleDocsServiceTest {
 	
 	private String ruiToken; // the token for the user rui
+	private String iurToken; // the token for the user iur
 	private User rui;
+	private User iur;
 	private SpreadSheet s1;
 	
 	
@@ -31,17 +33,26 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 	private static final String PASSWORD = "rui";
 	private static final String NAME = "Rui";
 	
+	private static final String USERNAME2 = "iur";
+	private static final String PASSWORD2 = "iur";
+	private static final String NAME2 = "Iur";
+	
 	@Override
 	public void populate4Test() {
 		rui = createUser(USERNAME, PASSWORD, NAME);
+		iur = createUser(USERNAME2, PASSWORD2, NAME2);
+		
 		ruiToken = addUserToSession(USERNAME);
+		iurToken = addUserToSession(USERNAME2);
 		s1 = rui.createSheet("Test", 3, 2);
 		s1.getCell(1,1).setLiteralContent(2);
 		s1.getCell(1,2).setReferenceContent(s1.getCell(1, 1));
 		s1.getCell(2,1).setBFAdd(new LiteralArgument(3), new ReferenceArgument(s1.getCell(1, 1)));
 		s1.getCell(2,2).setBFSub(new LiteralArgument(3), new ReferenceArgument(s1.getCell(1, 1)));
 		s1.getCell(3,1).setBFMul(new LiteralArgument(3), new ReferenceArgument(s1.getCell(1, 1)));
-		s1.getCell(3,2).setBFDiv(new LiteralArgument(3), new ReferenceArgument(s1.getCell(1, 1)));		
+		s1.getCell(3,2).setBFDiv(new LiteralArgument(3), new ReferenceArgument(s1.getCell(1, 1)));
+		s1.addReader(iur);
+		s1.addWriter(iur);
 	}
 	
 	private boolean sameSpreadSheet(SpreadSheet s1,SpreadSheet s2){
@@ -109,12 +120,25 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 	}
 
 	@Test
-    public void success() throws InterruptedException {
+    public void successOwner() throws InterruptedException {
 		BubbleDocs bd = BubbleDocs.getInstance();		
 		ExportDocument serv = new ExportDocument(ruiToken, s1.getId());
 		DateTime start = bd.getUserByToken(ruiToken).getSession().getLastAccess();	
 		serv.execute();	
 		DateTime end = bd.getUserByToken(ruiToken).getSession().getLastAccess();
+		assertFalse("The session lease is not renewed", end == start);
+		SpreadSheet s2 = bd.importSheet(serv.getDocXML(), USERNAME);
+		assertTrue("The imported spreadSheet from the exported SpreadSheet are diferent", sameSpreadSheet(s1, s2));	
+				
+	}
+	
+	@Test
+    public void successWriter() throws InterruptedException {
+		BubbleDocs bd = BubbleDocs.getInstance();		
+		ExportDocument serv = new ExportDocument(iurToken, s1.getId());
+		DateTime start = bd.getUserByToken(iurToken).getSession().getLastAccess();	
+		serv.execute();	
+		DateTime end = bd.getUserByToken(iurToken).getSession().getLastAccess();
 		assertFalse("The session lease is not renewed", end == start);
 		SpreadSheet s2 = bd.importSheet(serv.getDocXML(), USERNAME);
 		assertTrue("The imported spreadSheet from the exported SpreadSheet are diferent", sameSpreadSheet(s1, s2));	

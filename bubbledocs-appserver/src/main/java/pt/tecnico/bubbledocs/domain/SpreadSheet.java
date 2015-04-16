@@ -39,11 +39,19 @@ public class SpreadSheet extends SpreadSheet_Base{
 
 		setOwner(owner);
 		owner.addOwnedSpread(this);
-		addReaderUser(owner);
-		owner.addReadableSpread(this);
-		addWriterUser(owner);
-		owner.addWritableSpread(this);
+		addReader(owner);
+		addWriter(owner);
 
+	}
+	
+	public void addReader(User u){
+		addReaderUser(u);
+		u.addReadableSpread(this);		
+	}
+	
+	public void addWriter(User u){
+		addWriterUser(u);
+		u.addWritableSpread(this);
 	}
 	
 	public Cell getCell(int line, int column) throws PositionOutOfBoundsException{
