@@ -17,7 +17,7 @@ import pt.ulisboa.tecnico.sdis.id.ws.SDId;
 import pt.ulisboa.tecnico.sdis.id.ws.impl.SDIdImpl;
 import pt.ulisboa.tecnico.sdis.id.ws.impl.UserAccount;
 
-public class SDIdImplTest {
+public class TestSDIdImpl {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {

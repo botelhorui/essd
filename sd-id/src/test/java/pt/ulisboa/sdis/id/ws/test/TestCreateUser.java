@@ -16,7 +16,7 @@ import pt.ulisboa.tecnico.sdis.id.ws.SDId;
 import pt.ulisboa.tecnico.sdis.id.ws.impl.SDIdImpl;
 import pt.ulisboa.tecnico.sdis.id.ws.impl.UserAccount;
 
-public class CreateUserTest extends SDIdImplTest {
+public class TestCreateUser extends TestSDIdImpl {
 
 	private static final String USERNAME = "no-one";
 	private static final String USERNAME_2 = "no-one2";

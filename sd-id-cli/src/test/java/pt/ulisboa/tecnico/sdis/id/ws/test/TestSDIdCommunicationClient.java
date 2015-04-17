@@ -12,11 +12,12 @@ import org.junit.Test;
 import pt.ulisboa.tecnico.sdis.id.ws.*; // classes generated from WSDL
 import pt.ulisboa.tecnico.sdis.id.ws.SDId;
 import pt.ulisboa.tecnico.sdis.id.ws.cli.SDIdClient;
+import pt.ulisboa.tecnico.sdis.id.ws.cli.SDIdClientException;
 import uddi.UDDINaming;
 import javax.xml.ws.WebServiceException;
 import javax.xml.registry.JAXRException;
 
-public class SDIdClientTest {
+public class TestSDIdCommunicationClient {
 
 	private static final String USERNAME = "USERNAME";
 	private static final String EMAIL = "EMAIL";
@@ -37,23 +38,37 @@ public class SDIdClientTest {
 	public void tearDown() throws Exception {
 	}
 	
+	/**
+     *  In this test the server doesn't return the WSDL
+     */
+    @Test(expected=WebServiceException.class)
+    public void WSDLException(@Mocked final UDDINaming uddiNaming) throws Exception {
+    	
+        new Expectations() {
+        	{
+	        	new UDDINaming(anyString);
+	        	uddiNaming.lookup(anyString); result = new WebServiceException("fabricated");
+            }
+        };
+
+        // Unit under test is exercised.
+        SDIdClient c = new SDIdClient("http://localhost:8081", "SD-ID");
+        // call to mocked server
+        c.createUser( USERNAME , EMAIL );
+    }
 
 	/**
      *  In this test the UDDI is not running in the expected address
      */
     @Test(expected=JAXRException.class)
-    public void UDDIException( 
-    		@Mocked final UDDINaming uddiNaming,
-    		@Mocked final SDId_Service service,
-    		@Mocked final SDId port)
-        throws Exception {
+    public void UDDIException(@Mocked final UDDINaming uddiNaming) throws Exception {
     	
-        new Expectations() {{
-        	
-        	new UDDINaming(anyString);
-            uddiNaming.lookup(anyString); result = new JAXRException();
-            
-        }};
+        new Expectations() {
+        	{
+	        	new UDDINaming(anyString);
+	        	uddiNaming.lookup(anyString); result = new JAXRException("fabricated");
+            }
+        };
 
         // Unit under test is exercised.
         SDIdClient client = new SDIdClient("http://localhost:8081", "SD-ID");
