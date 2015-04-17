@@ -55,7 +55,6 @@ public class CreateUser extends LoggedBubbleDocsService {
 	protected void dispatch() throws BubbleDocsException {
 		
 		BubbleDocs bd = BubbleDocs.getInstance();
-		User user = bd.getUserByToken(this.token);
 
 		validateUser(this.token);
 		validateFields(this.username, this.email);

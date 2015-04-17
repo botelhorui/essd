@@ -39,9 +39,6 @@ public class AssignReferenceCell extends AccessBubbleDocsService {
 		//Fetch SpreadSheet object from BubbleDocs by ID
 		SpreadSheet spread = bd.getSpreadsheetById(iSpreadId);
 
-		String username = bd.getUsernameFromToken(token);
-		User check = bd.getUserByUsername(username);
-		
 		// Session validations and renewals
 		validateUser(token);
 
