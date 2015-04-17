@@ -38,28 +38,10 @@ public class ExportDocument extends AccessBubbleDocsService {
 	protected void dispatch() throws BubbleDocsException, UnavailableServiceException {
 		
 		BubbleDocs bd = BubbleDocs.getInstance();
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		ObjectOutput out = null;
-		
-		try {
-			out = new ObjectOutputStream(bos);
-		} catch (IOException e2) {
-			
-			e2.printStackTrace();
-		}
-		
 		StoreRemoteServices remote = new StoreRemoteServices();
 		String username = bd.getUsernameFromToken(token);
 		SpreadSheet s = bd.getSpreadsheetById(docId);
 		
-		try {
-			out.writeObject(s);
-		} catch (IOException e1) {
-			
-			e1.printStackTrace();
-		}
-		
-		byte[] doc = bos.toByteArray();
 		
 		validateUser(token);
 		
@@ -68,7 +50,7 @@ public class ExportDocument extends AccessBubbleDocsService {
 		docXML = s.export();		
 		
 		try {
-			remote.storeDocument(username, null, doc);
+			remote.storeDocument(username, null, s.serializeSpreadSheet());
 		} catch (Exception e) {
 			
 			throw new UnavailableServiceException();

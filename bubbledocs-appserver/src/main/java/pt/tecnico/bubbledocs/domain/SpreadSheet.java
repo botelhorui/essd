@@ -5,10 +5,13 @@ import org.jdom2.Element;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.util.StringTokenizer;
 
 import pt.tecnico.bubbledocs.domain.User;
-
 import pt.tecnico.bubbledocs.exception.PositionOutOfBoundsException;
 
 public class SpreadSheet extends SpreadSheet_Base{
@@ -197,4 +200,28 @@ public class SpreadSheet extends SpreadSheet_Base{
 		return cell;
 		
 	}
+	
+	
+	public byte[] serializeSpreadSheet(){
+		
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ObjectOutput out = null;
+		
+		try {
+			out = new ObjectOutputStream(bos);
+			out.writeObject(this);
+		} catch (IOException e2) {
+			
+			e2.printStackTrace();
+		}
+		
+		return bos.toByteArray();
+		
+		
+	}
+	
+	
+	
+	
+	
 }
