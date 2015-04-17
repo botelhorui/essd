@@ -41,6 +41,10 @@ public class SDIdImpl implements SDId{
 		_users.add(ua);
 	}
 	
+	public ArrayList<UserAccount> getUsers(){
+		return this._users;
+	}
+	
 	@Override
 	public void createUser(String userId, String emailAddress)
 			throws EmailAlreadyExists_Exception, InvalidEmail_Exception,
