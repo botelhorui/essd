@@ -190,7 +190,6 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 	public void remoteServiceFault(@Mocked final StoreRemoteServices service){
 		
 		new Expectations(){{
-			new StoreRemoteServices();
 			byte[] document=null;
 			service.storeDocument(anyString, anyString, document); result = new RemoteInvocationException();
 		}};

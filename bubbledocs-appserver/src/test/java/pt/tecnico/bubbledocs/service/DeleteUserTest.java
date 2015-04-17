@@ -106,7 +106,6 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
     public void remoteServiceFault(@Mocked final IDRemoteServices service) {
         
     	new Expectations(){{
-			new IDRemoteServices();
 			service.removeUser(anyString); result = new UnavailableServiceException();
 		}};
     	
