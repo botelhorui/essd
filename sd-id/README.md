@@ -65,16 +65,15 @@ JUDDI:
 ### Instruções de teste: ###
 
 
-[1] Executar **cliente de testes**
+[1] Executar **testes de implementação do servidor**
 
-> cd \temp\A_10_08_50-project\sd-id-cli
+> cd \temp\A_10_08_50-project\sd-id
 
 > mvn test
 
+[2] Executar **cliente de testes**
 
-[2] Executar **testes de implementação do servidor**
-
-> cd \temp\A_10_08_50-project\sd-id
+> cd \temp\A_10_08_50-project\sd-id-cli
 
 > mvn test
 
