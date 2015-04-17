@@ -19,6 +19,7 @@ Repositório:
 
 ### Instruções de instalação 
 
+
 [0] Iniciar sistema operativo
 
 Windows
@@ -62,18 +63,20 @@ JUDDI:
 -------------------------------------------------------------------------------
 
 ### Instruções de teste: ###
-*(Como verificar que todas as funcionalidades estÃ£o a funcionar correctamente)*
 
 
-[1] Executar **cliente de testes** ...
+[1] Executar **cliente de testes**
 
-> cd ...
+> cd \temp\A_10_08_50-project\sd-id-cli
+
 > mvn test
 
 
-[2] Executar ...
+[2] Executar **testes de implementação do servidor**
 
+> cd \temp\A_10_08_50-project\sd-id
 
+> mvn test
 
 ...
 
