@@ -13,7 +13,7 @@ import pt.tecnico.bubbledocs.domain.User;
 
 // add needed import declarations
 
-public class CreateUser extends LoggedBubbleDocsService {
+public class CreateUser extends RootBubbleDocsService {
 	private String token;
 	private String username;
 	private String email;
@@ -24,16 +24,6 @@ public class CreateUser extends LoggedBubbleDocsService {
 		this.email = email;
 		this.name = name;
 		this.token = token;
-	}
-	
-	@Override
-	protected void validateUser(String token) throws BubbleDocsException{
-    	
-		super.validateUser(token);
-    	
-    	BubbleDocs bd = BubbleDocs.getInstance();
-    	bd.checkIfRoot(token);	
-    
 	}
 	
 	protected void validateFields(String username, String email) throws BubbleDocsException {

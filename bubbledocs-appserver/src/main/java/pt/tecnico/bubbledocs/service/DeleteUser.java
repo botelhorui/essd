@@ -11,7 +11,7 @@ import pt.tecnico.bubbledocs.domain.User;
 
 // add needed import declarations
 
-public class DeleteUser extends LoggedBubbleDocsService {
+public class DeleteUser extends RootBubbleDocsService {
 	private String token;
 	private String username;
 	
@@ -20,14 +20,6 @@ public class DeleteUser extends LoggedBubbleDocsService {
 		this.username = toDeleteUsername; 
 		this.token = token;
 	}
-	
-	@Override
-	protected void validateUser(String token) throws BubbleDocsException{
-    	super.validateUser(token);
-    	
-    	BubbleDocs bd = BubbleDocs.getInstance();
-    	bd.checkIfRoot(token);	
-    }
 
 	@Override
 	protected void dispatch() throws BubbleDocsException, UnavailableServiceException {
