@@ -69,17 +69,17 @@ public class TestSDStoreClientCommunication {
 	
 	
 	@Test(expected=WebServiceException.class)
-	public void portWebException(@Mocked SDStore port, @Mocked SDStore_Service store) throws Exception {
+	public void portWebException(/*@Mocked SDStore port, @Mocked SDStore_Service store*/) throws Exception {
 		
 		new Expectations(){{
 			
 			new UDDINaming(anyString);
 			uddiNaming.lookup(anyString); result="http://localhost:8080/store-ws/endpoint";
 			
-			new SDStore_Service();
-			
+			//new SDStore_Service();
+			/*
 			store.getSDStoreImplPort(); result = port;
-			port.load(p); result = new WebServiceException();
+			port.load(p); result = new WebServiceException();*/
 			
 		}};
 		
