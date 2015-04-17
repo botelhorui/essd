@@ -3,13 +3,6 @@ package pt.tecnico.bubbledocs;
 import java.util.ArrayList;
 import java.util.List;
  
-
-
-
-
-
-
-
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -30,7 +23,7 @@ import pt.tecnico.bubbledocs.domain.LiteralArgument;
 import pt.tecnico.bubbledocs.domain.ReferenceArgument;
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.bubbledocs.exception.UserIsNotOwnerException;
-import pt.tecnico.bubbledocs.exception.UnknownBubbleDocsUserException;
+import pt.tecnico.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.bubbledocs.exception.PositionOutOfBoundsException;
 import pt.tecnico.bubbledocs.service.AssignLiteralCell;
 import pt.tecnico.bubbledocs.service.AssignReferenceCell;
@@ -130,7 +123,7 @@ public class BubbleApplication {
 			System.err.println("Error in execution of transaction: " + ex);
 			ex.printStackTrace();
 		
-		} catch (UnknownBubbleDocsUserException e) {
+		} catch (LoginBubbleDocsException e) {
 			System.out.println("User pf does not exist.");
 		} finally {
 		
@@ -164,7 +157,7 @@ public class BubbleApplication {
 			sheet.delete();
 			sheet = null;
 		}
-		catch (UnknownBubbleDocsUserException e) {
+		catch (LoginBubbleDocsException e) {
 			System.out.println("User \"" + username + "\" does not exist.");
 		}		
 	}
@@ -318,7 +311,7 @@ public class BubbleApplication {
 				System.out.println("\tSheet, name:\""+x.getName()+"\" id:"+x.getId());
 			}
 		}
-		catch (UnknownBubbleDocsUserException e) {
+		catch (LoginBubbleDocsException e) {
 			System.out.println("User \"" + username + "\" does not exist.");
 		}
 	}

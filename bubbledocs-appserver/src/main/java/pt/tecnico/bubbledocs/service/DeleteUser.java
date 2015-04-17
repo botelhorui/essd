@@ -2,7 +2,7 @@ package pt.tecnico.bubbledocs.service;
 
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
-import pt.tecnico.bubbledocs.exception.UnknownBubbleDocsUserException;
+import pt.tecnico.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
@@ -39,17 +39,11 @@ public class DeleteUser extends LoggedBubbleDocsService {
 		
 		validateUser(this.token);
 		
-		/*
-		 * The following code has not been moved nor removed because
-		 * I'm not exactly sure how to proceed. An e-mail has been sent about
-		 * this issue, and I'll leave this here until I get a response.
-		 */
-		
 		if(userToDelete == null)
-			throw new UnknownBubbleDocsUserException();
+			throw new LoginBubbleDocsException();
 		
 		if(user == null)
-			throw new UnknownBubbleDocsUserException();
+			throw new LoginBubbleDocsException();
 		
 		userToDelete.delete();
 		

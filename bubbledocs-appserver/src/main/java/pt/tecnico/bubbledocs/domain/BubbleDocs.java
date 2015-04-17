@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pt.ist.fenixframework.FenixFramework;
-import pt.tecnico.bubbledocs.exception.UnknownBubbleDocsUserException;
+import pt.tecnico.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.bubbledocs.exception.DuplicateUsernameException;
 import pt.tecnico.bubbledocs.exception.DuplicateEmailException;
 import pt.tecnico.bubbledocs.exception.InvalidEmailException;
@@ -105,14 +105,9 @@ public class BubbleDocs extends BubbleDocs_Base {
 
 
 	public void removeUser(String username) {
+		User u = getUserByUsername(username);
+		super.removeUser(u);
 
-		try {
-			User u = getUserByUsername(username);
-			super.removeUser(u);
-		}
-		catch (UnknownBubbleDocsUserException e) {
-			System.out.println("User \"" + username + "\" does not exist.");
-		}
 	}
 
 
@@ -142,7 +137,7 @@ public class BubbleDocs extends BubbleDocs_Base {
 		}
 
 		if(!hasUser(username)){
-			throw new UnknownBubbleDocsUserException();
+			throw new LoginBubbleDocsException();
 		}
 
 		/*

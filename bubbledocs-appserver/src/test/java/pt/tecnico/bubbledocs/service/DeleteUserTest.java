@@ -12,7 +12,7 @@ import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
-import pt.tecnico.bubbledocs.exception.UnknownBubbleDocsUserException;
+import pt.tecnico.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 import pt.tecnico.bubbledocs.service.remote.StoreRemoteServices;
@@ -71,7 +71,7 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
 	assertNull("Removed user but not removed from session", getUserFromSession(token));
     }
 
-    @Test(expected = UnknownBubbleDocsUserException.class)
+    @Test(expected = LoginBubbleDocsException.class)
     public void userToDeleteDoesNotExist() {
         new DeleteUser(root, USERNAME_DOES_NOT_EXIST).execute();
     }
