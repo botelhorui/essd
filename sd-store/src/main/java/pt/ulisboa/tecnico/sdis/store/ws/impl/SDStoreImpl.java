@@ -85,7 +85,7 @@ public class SDStoreImpl implements SDStore {
 		if(userRepos.containsKey(userId)){
 			return userRepos.get(userId).listDocs();
 		}else{
-			throw new UserDoesNotExist_Exception("The user '"+userId+"' does not exist", null);
+			throw new UserDoesNotExist_Exception("The user '"+userId+"' does not exist", new UserDoesNotExist());
 		}
 	}
 	
@@ -103,7 +103,7 @@ public class SDStoreImpl implements SDStore {
 			userRepos.get(docUserPair.getUserId()).storeDoc(docUserPair.getDocumentId(), contents);
 		} else {
 			
-			throw new UserDoesNotExist_Exception("The user '"+docUserPair.getUserId()+"' does not exist", null);
+			throw new UserDoesNotExist_Exception("The user '"+docUserPair.getUserId()+"' does not exist", new UserDoesNotExist());
 		}
 		
 	}
