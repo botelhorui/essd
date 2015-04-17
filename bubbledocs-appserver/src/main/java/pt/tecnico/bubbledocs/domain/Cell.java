@@ -3,6 +3,8 @@ package pt.tecnico.bubbledocs.domain;
 import org.jdom2.Element;
 
 import pt.tecnico.bubbledocs.exception.importXMLException;
+import pt.tecnico.bubbledocs.exception.InvalidLiteralValueException;
+import java.lang.NumberFormatException;
 
 public class Cell extends Cell_Base {
     
@@ -35,6 +37,18 @@ public class Cell extends Cell_Base {
 	public void setLiteralContent(int value){
 		LiteralContent lit = new LiteralContent(value);
 		setContent(lit);
+	}
+	
+	public void setLiteralContent(String value) throws InvalidLiteralValueException{
+		int v = 0;
+		
+		try{
+			v = Integer.parseInt(value);
+		} catch (NumberFormatException e) {
+			throw new InvalidLiteralValueException();
+		}
+		
+		setLiteralContent(v);
 	}
 	
 	public void setReferenceContent(Cell targetCell){

@@ -52,20 +52,10 @@ public class AssignLiteralCell extends AccessBubbleDocsService {
 		// Afterwards we grab the cell. For that, we need to parse.
 		Cell cell = sheet.getCellFromString(cellCoords); // <-- Also throws a PositionOutOfBoundsException in case the spreadsheet doesn't have the provided values! 
 		
-		// Finally, we check the validity of the value.
-		int value = 0;
-		
-		try{
-			value = Integer.parseInt(literalValue);
-		} catch (NumberFormatException e) {
-			throw new InvalidLiteralValueException();
-		}
-		
+		// Finally, we check the validity of the value. <-- Now done in the domain.
 		// And now we finally get to assign it! First we check if there's stuff there already...
 		// ...and then we create the new content and assign it to the provided cell.
-		LiteralContent resultingContent = new LiteralContent(value);
-		cell.setContent(resultingContent); 
-		
+		cell.setLiteralContent(literalValue);
 		
 		// Lastly, we assign our service the actual result of our operation!
 		this.result = cell.getContent().returnValueAsString();

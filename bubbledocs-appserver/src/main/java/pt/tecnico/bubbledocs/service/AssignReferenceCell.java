@@ -56,8 +56,7 @@ public class AssignReferenceCell extends AccessBubbleDocsService {
 		Cell reference = spread.getCellFromString(sReference);
 
 		//Add the new ReferenceContent
-		ReferenceContent rc = new ReferenceContent(reference);
-		cell.setContent(rc);
+		cell.setReferenceContent(reference);
 
 		//Transform the ReferenceContent to result String
 		result = cell.getContent().returnValueAsString();
