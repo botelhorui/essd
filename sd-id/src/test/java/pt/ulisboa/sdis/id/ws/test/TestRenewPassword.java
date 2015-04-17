@@ -13,7 +13,7 @@ import pt.ulisboa.tecnico.sdis.id.ws.SDId;
 import pt.ulisboa.tecnico.sdis.id.ws.impl.SDIdImpl;
 import pt.ulisboa.tecnico.sdis.id.ws.impl.UserAccount;
 
-public class RenewPasswordTest extends SDIdImplTest{
+public class TestRenewPassword extends TestSDIdImpl{
 
 	private static final String USERNAME = "no-one";
 	private static final String INEXISTENT_USERNAME = "idontexist";
