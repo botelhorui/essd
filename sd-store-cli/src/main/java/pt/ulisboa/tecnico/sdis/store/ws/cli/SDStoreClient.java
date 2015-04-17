@@ -50,27 +50,28 @@ public class SDStoreClient implements SDStore {
 	@Override
 	public void createDoc(DocUserPair docUserPair)
 			throws DocAlreadyExists_Exception {
-		// TODO Auto-generated method stub
+		port.createDoc(docUserPair);
 
 	}
 	@Override
 	public List<String> listDocs(String userId)
 			throws UserDoesNotExist_Exception {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return port.listDocs(userId);
 	}
 	@Override
 	public void store(DocUserPair docUserPair, byte[] contents)
 			throws CapacityExceeded_Exception, DocDoesNotExist_Exception,
 			UserDoesNotExist_Exception {
-		// TODO Auto-generated method stub
+		port.store(docUserPair, contents);
 
 	}
+	
 	@Override
 	public byte[] load(DocUserPair docUserPair)
 			throws DocDoesNotExist_Exception, UserDoesNotExist_Exception {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return port.load(docUserPair);
 	}
 
 }

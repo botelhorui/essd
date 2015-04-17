@@ -6,8 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import pt.ulisboa.tecnico.sdis.store.ws.CapacityExceeded;
 import pt.ulisboa.tecnico.sdis.store.ws.CapacityExceeded_Exception;
+import pt.ulisboa.tecnico.sdis.store.ws.DocAlreadyExists;
 import pt.ulisboa.tecnico.sdis.store.ws.DocAlreadyExists_Exception;
+import pt.ulisboa.tecnico.sdis.store.ws.DocDoesNotExist;
 import pt.ulisboa.tecnico.sdis.store.ws.DocDoesNotExist_Exception;
 import pt.ulisboa.tecnico.sdis.store.ws.UserDoesNotExist_Exception;
 
@@ -26,7 +29,7 @@ public class UserRepo {
 
 		if(docs.containsKey(name)){
 
-			throw new DocAlreadyExists_Exception("name "+name+" is already in use.", null);
+			throw new DocAlreadyExists_Exception("name "+name+" is already in use.", new DocAlreadyExists());
 
 		} else {
 
@@ -38,12 +41,12 @@ public class UserRepo {
 	public void storeDoc(String name, byte[] content) throws CapacityExceeded_Exception, DocDoesNotExist_Exception, UserDoesNotExist_Exception{
 		
 		if(!docs.containsKey(name)){
-			throw new DocDoesNotExist_Exception("doc with name '"+name+"' doesn't exist in "+userId+" repo.", null);
+			throw new DocDoesNotExist_Exception("doc with name '"+name+"' doesn't exist in "+userId+" repo.", new DocDoesNotExist());
 		}
 		int nsize = repoSize - docs.get(name).length + content.length ;
 		
 		if (nsize > maxsize) {
-			throw new CapacityExceeded_Exception("New document data exceed repository capacity", null);
+			throw new CapacityExceeded_Exception("New document data exceed repository capacity", new CapacityExceeded());
 			
 		} else {
 			docs.put(name, content);
@@ -64,7 +67,7 @@ public class UserRepo {
 		if(docs.containsKey(documentId)){
 			return docs.get(documentId);
 		}else{
-			throw new DocDoesNotExist_Exception("doc with name '"+documentId+"' doesn't exist in "+userId+" repo.", null);
+			throw new DocDoesNotExist_Exception("doc with name '"+documentId+"' doesn't exist in "+userId+" repo.", new DocDoesNotExist());
 		}
 	}
 }

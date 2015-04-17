@@ -50,6 +50,16 @@ public class SDStoreImpl implements SDStore {
 	public void createDoc(DocUserPair docUserPair)
 			throws DocAlreadyExists_Exception {
 		
+		
+		
+		if( docUserPair.getDocumentId().equals("reset") ){
+			
+			userRepos.clear();
+			populateDomain();
+			System.out.println("Resetting");
+			return;
+		}
+		
 		System.out.println("Creating Doc");
 		if ( userRepos.containsKey( docUserPair.getUserId() )){
 			
@@ -75,7 +85,7 @@ public class SDStoreImpl implements SDStore {
 		if(userRepos.containsKey(userId)){
 			return userRepos.get(userId).listDocs();
 		}else{
-			throw new UserDoesNotExist_Exception("The user '"+userId+"' does not exist", null);
+			throw new UserDoesNotExist_Exception("The user '"+userId+"' does not exist", new UserDoesNotExist());
 		}
 	}
 	
@@ -86,12 +96,14 @@ public class SDStoreImpl implements SDStore {
 			throws CapacityExceeded_Exception, DocDoesNotExist_Exception,
 			UserDoesNotExist_Exception {
 		
+		
+		System.out.println("Storing docs");
 		if(userRepos.containsKey(docUserPair.getUserId())){
 			
 			userRepos.get(docUserPair.getUserId()).storeDoc(docUserPair.getDocumentId(), contents);
 		} else {
 			
-			throw new UserDoesNotExist_Exception("The user '"+docUserPair.getUserId()+"' does not exist", null);
+			throw new UserDoesNotExist_Exception("The user '"+docUserPair.getUserId()+"' does not exist", new UserDoesNotExist());
 		}
 		
 	}
@@ -101,6 +113,8 @@ public class SDStoreImpl implements SDStore {
 	@Override
 	public byte[] load(DocUserPair docUserPair)
 			throws DocDoesNotExist_Exception, UserDoesNotExist_Exception {
+		
+		System.out.println("Loading docs");
 		if(userRepos.containsKey(docUserPair.getUserId())){
 			return userRepos.get(docUserPair.getUserId()).loadDoc(docUserPair.getDocumentId());
 		}else{
