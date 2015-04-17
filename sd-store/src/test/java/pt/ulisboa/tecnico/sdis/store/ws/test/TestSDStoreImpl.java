@@ -20,7 +20,7 @@ import pt.ulisboa.tecnico.sdis.store.ws.SDStore;
 import pt.ulisboa.tecnico.sdis.store.ws.UserDoesNotExist_Exception;
 import pt.ulisboa.tecnico.sdis.store.ws.impl.SDStoreImpl;
 
-public class SDStoreImplTest {
+public class TestSDStoreImpl {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {

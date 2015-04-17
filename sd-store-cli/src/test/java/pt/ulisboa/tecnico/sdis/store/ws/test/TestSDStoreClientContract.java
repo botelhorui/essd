@@ -26,7 +26,7 @@ import pt.ulisboa.tecnico.sdis.store.ws.UserDoesNotExist_Exception;
 import pt.ulisboa.tecnico.sdis.store.ws.cli.SDStoreClient;
 import uddi.UDDINaming;
 
-public class SDStoreClientTestContract {
+public class TestSDStoreClientContract {
 
 	SDStoreClient impl;
 	@Mocked UDDINaming uddiNaming;
