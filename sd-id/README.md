@@ -31,24 +31,29 @@ JUDDI:
 [2] Criar pasta temporária
 
 > cd \
+
 > mkdir temp
 
 [3] Obter versão entregue
 
 > cd \temp
+
 > git clone -b SD-ID_R_1 https://github.com/tecnico-softeng-distsys-2015/A_10_08_50-project/
 
 
 [4] Construir e executar **servidor**
 
 > cd \temp\A_10_08_50-project\sd-id
+
 > mvn clean package 
+
 > mvn exec:java -Dexec.args="http://localhost:8081 SD-ID http://localhost:8080/id-ws/endpoint"
 
 
 [5] Construir **cliente**
 
 > cd \temp\A_10_08_50-project\sd-id-cli
+
 > mvn clean package
 
 ...
