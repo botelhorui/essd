@@ -50,20 +50,20 @@ public class SDIdImpl implements SDId{
 		
 		for (UserAccount ut : _users){
 			if(ut.getEmail().equals(emailAddress))
-				throw new EmailAlreadyExists_Exception("The email '"+emailAddress+"' already exists", null);
+				throw new EmailAlreadyExists_Exception("The email '"+emailAddress+"' already exists", new EmailAlreadyExists());
 		}
 		
 		for (UserAccount ut : _users){
 			if(ut.getUserId().equals(userId))
-				throw new UserAlreadyExists_Exception("The user '"+userId+"' already exists", null);
+				throw new UserAlreadyExists_Exception("The user '"+userId+"' already exists", new UserAlreadyExists());
 		}
 		
 		if(userId == null || userId.equals(""))
-			throw new InvalidUser_Exception("The received user is invalid: either null or empty", null);
+			throw new InvalidUser_Exception("The received user is invalid: either null or empty", new InvalidUser());
 		
 		StringTokenizer st = new StringTokenizer(emailAddress, "@", false);
 		if(st.countTokens() != 2)
-			throw new InvalidEmail_Exception("The email '"+emailAddress+"' is invalid", null);
+			throw new InvalidEmail_Exception("The email '"+emailAddress+"' is invalid", new InvalidEmail());
 		
 		//Create the user
 		
@@ -87,7 +87,7 @@ public class SDIdImpl implements SDId{
 		}
 		
 		if(ua == null)
-			throw new UserDoesNotExist_Exception("The user '"+userId+"' does not exist", null);
+			throw new UserDoesNotExist_Exception("The user '"+userId+"' does not exist", new UserDoesNotExist());
 		
 		//Generate new password
 		
@@ -111,7 +111,7 @@ public class SDIdImpl implements SDId{
 		}
 		
 		if(ua == null)
-			throw new UserDoesNotExist_Exception("The user '"+userId+"' does not exist", null);
+			throw new UserDoesNotExist_Exception("The user '"+userId+"' does not exist", new UserDoesNotExist());
 	}
 	
 	
@@ -128,13 +128,13 @@ public class SDIdImpl implements SDId{
 		}
 		
 		if(ua == null)
-			throw new AuthReqFailed_Exception("Authentication failed: user doesn't exist", null);
+			throw new AuthReqFailed_Exception("Authentication failed: user doesn't exist", new AuthReqFailed());
 		
 		String stored_password = ua.getPassword();
 		byte[] sp = stored_password.getBytes();
 		
 		if(Arrays.equals(sp, reserved) == false)
-			throw new AuthReqFailed_Exception("Authentication failed: received password doesn't match stored password", null);
+			throw new AuthReqFailed_Exception("Authentication failed: received password doesn't match stored password", new AuthReqFailed());
 		
 		byte[] bytes = new byte[1];
 		Arrays.fill( bytes, (byte) 1 );
