@@ -1,5 +1,8 @@
 package pt.tecnico.bubbledocs.service;
 
+import mockit.Expectations;
+import mockit.Mocked;
+
 import org.joda.time.DateTime;
 import org.junit.Test;
 
@@ -15,9 +18,12 @@ import pt.tecnico.bubbledocs.domain.ReferenceContent;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
+import pt.tecnico.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exception.SpreadSheetIdUnknown;
+import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.bubbledocs.exception.UserHasNotReadAccessException;
 import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
+import pt.tecnico.bubbledocs.service.remote.StoreRemoteServices;
 import static org.junit.Assert.*;
 
 public class ExportDocumentTest extends BubbleDocsServiceTest {
@@ -123,6 +129,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
     public void successOwner() throws InterruptedException {
 		BubbleDocs bd = BubbleDocs.getInstance();		
 		ExportDocument serv = new ExportDocument(ruiToken, s1.getId());
+		
 		DateTime start = bd.getUserByToken(ruiToken).getSession().getLastAccess();	
 		serv.execute();	
 		DateTime end = bd.getUserByToken(ruiToken).getSession().getLastAccess();
@@ -176,6 +183,19 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 	public void exportInvalidToken(){
 		createUser("botelho", PASSWORD, NAME);
 		ExportDocument serv = new ExportDocument("botelho-0", s1.getId());
+		serv.execute();		
+	}
+	
+	@Test(expected = UnavailableServiceException.class)
+	public void remoteServiceFault(@Mocked final StoreRemoteServices service){
+		
+		new Expectations(){{
+			new StoreRemoteServices();
+			byte[] document=null;
+			service.storeDocument(anyString, anyString, document); result = new RemoteInvocationException();
+		}};
+		
+		ExportDocument serv = new ExportDocument(ruiToken, s1.getId());
 		serv.execute();		
 	}
 	

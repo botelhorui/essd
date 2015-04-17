@@ -1,10 +1,11 @@
 package pt.tecnico.bubbledocs.service;
 
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
+import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.bubbledocs.exception.UnknownBubbleDocsUserException;
 import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.bubbledocs.exception.UnauthorizedOperationException;
-
+import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.User;
 
@@ -29,8 +30,9 @@ public class DeleteUser extends LoggedBubbleDocsService {
     }
 
 	@Override
-	protected void dispatch() throws BubbleDocsException {
+	protected void dispatch() throws BubbleDocsException, UnavailableServiceException {
 		
+		IDRemoteServices service = new IDRemoteServices();
 		BubbleDocs bd = BubbleDocs.getInstance();
 		User user = bd.getUserByToken(this.token);
 		User userToDelete = bd.getUserByUsername(this.username);
@@ -50,6 +52,14 @@ public class DeleteUser extends LoggedBubbleDocsService {
 			throw new UnknownBubbleDocsUserException();
 		
 		userToDelete.delete();
+		
+		try {
+			
+			service.removeUser(user.getName());
+		} catch (Exception e) {
+			
+			throw new UnavailableServiceException();
+		}
 		
 	}
 
