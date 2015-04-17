@@ -68,7 +68,7 @@ public class AssignLiteralCell extends AccessBubbleDocsService {
 		
 		
 		// Lastly, we assign our service the actual result of our operation!
-		this.result = Integer.toString(value);
+		this.result = cell.getContent().returnValueAsString();
 	
 	}	
 

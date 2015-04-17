@@ -15,5 +15,9 @@ public abstract class FunctionContent extends FunctionContent_Base {
     public void delete(){
     	super.delete();
     }
+    
+    public String returnValueAsString(){
+    	return "ThisIsIrrelevantForNow";
+    }
 
 }

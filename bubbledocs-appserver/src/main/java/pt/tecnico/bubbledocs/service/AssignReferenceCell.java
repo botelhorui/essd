@@ -60,11 +60,7 @@ public class AssignReferenceCell extends AccessBubbleDocsService {
 		cell.setContent(rc);
 
 		//Transform the ReferenceContent to result String
-		reference = null;
-		rc = (ReferenceContent) cell.getContent();
-		reference = rc.getReferenceCell();
-
-		result = reference.getLine() + ";" + reference.getColumn();
+		result = cell.getContent().returnValueAsString();
 	}
 
 	public final String getResult() {
