@@ -39,7 +39,7 @@ public class TestRequestAuthorizationClient extends TestClient {
 	@Test(expected=AuthReqFailed_Exception.class)
 	public void authenticationPasswordDoesntMatch() throws Exception {
 
-		client.createUser( USERNAME , NEW_EMAIL );
+		//client.createUser( USERNAME , NEW_EMAIL );
 		
 		String password = "1234567";
 		byte[] to_bytes = password.getBytes();
