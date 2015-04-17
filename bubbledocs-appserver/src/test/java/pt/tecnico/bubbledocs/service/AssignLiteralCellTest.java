@@ -17,6 +17,7 @@ import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.bubbledocs.exception.SpreadSheetIdUnknown;
 import pt.tecnico.bubbledocs.exception.UserHasNotWriteAccessException;
 import pt.tecnico.bubbledocs.exception.InvalidLiteralValueException;
+import pt.tecnico.bubbledocs.exception.CellProtectedException;
 
 public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 	
@@ -51,6 +52,10 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 	private static final int testCellColumn = 3;
 	private static final String testCellString = testCellRow + ";" + testCellColumn;
 	
+	private static final int protectedCellRow = 4;
+	private static final int protectedCellColumn = 3;
+	private static final String protectedCellString = protectedCellRow + ";" + protectedCellColumn;
+	
 	private static final String invalidUser = "NotARealUser";
 	private static final int fakeSheetId = 555556;
 	private static final String fakeCellString = "99;45";
@@ -82,6 +87,8 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 		 */
 		User gold = getUserFromUsername(goldUsername);
 		SpreadSheet testSpread = createSpreadSheet(gold, sheetName, sheetRows, sheetColumns);
+		
+		testSpread.getCellFromString(protectedCellString).setIsProtected(true);
 		
 		sheetId = testSpread.getId();
 		
@@ -257,6 +264,17 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 		 */
 
 		AssignLiteralCell service = new AssignLiteralCell(goldToken, sheetId, testCellString, fakeValueString);
+		service.execute();
+	}
+	
+	@Test(expected = CellProtectedException.class)
+	public void cellProtectedError() {
+
+		/* Error case 7:
+		 *  - Trying to write to a protected cell.
+		 */
+
+		AssignLiteralCell service = new AssignLiteralCell(goldToken, sheetId, protectedCellString, testValueOneString);
 		service.execute();
 	}
 	

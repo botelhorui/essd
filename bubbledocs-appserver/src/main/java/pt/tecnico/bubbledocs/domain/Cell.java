@@ -4,6 +4,7 @@ import org.jdom2.Element;
 
 import pt.tecnico.bubbledocs.exception.importXMLException;
 import pt.tecnico.bubbledocs.exception.InvalidLiteralValueException;
+import pt.tecnico.bubbledocs.exception.CellProtectedException;
 import java.lang.NumberFormatException;
 
 public class Cell extends Cell_Base {
@@ -34,7 +35,11 @@ public class Cell extends Cell_Base {
 		
 	}
 	
-	public void setLiteralContent(int value){
+	public void setLiteralContent(int value) throws CellProtectedException{
+		if (this.getIsProtected()){
+			throw new CellProtectedException();
+		}
+		
 		LiteralContent lit = new LiteralContent(value);
 		setContent(lit);
 	}
@@ -51,7 +56,11 @@ public class Cell extends Cell_Base {
 		setLiteralContent(v);
 	}
 	
-	public void setReferenceContent(Cell targetCell){
+	public void setReferenceContent(Cell targetCell) throws CellProtectedException{	
+		if (this.getIsProtected()){
+			throw new CellProtectedException();
+		}
+		
 		ReferenceContent ref = new ReferenceContent(targetCell);
 		setContent(ref);
 	}

@@ -16,6 +16,7 @@ import pt.tecnico.bubbledocs.exception.PositionOutOfBoundsException;
 import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.bubbledocs.exception.SpreadSheetIdUnknown;
 import pt.tecnico.bubbledocs.exception.UserHasNotWriteAccessException;
+import pt.tecnico.bubbledocs.exception.CellProtectedException;
 
 
 public class AssignReferenceCellTest extends BubbleDocsServiceTest {
@@ -52,6 +53,8 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 	private static final int c4 = 21;
 	private static final int l5 = 3;
 	private static final int c5 = 3;
+	private static final int l6 = 4;
+	private static final int c6 = 4;
 
 	// the valid cell id & referenced cell id
 	private static final String cell = l1 + ";" + c1;
@@ -61,6 +64,7 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 	// the invalid cell id &  referenced cell id
 	private static final String invalidCell = l3 + ";" + c3;
 	private static final String invalidReference = l4 + ";" + c4;
+	private static final String protectedCell = l6 + ";" + c6;
 
 	private static final String SPREADNAME = "testsheet";
 	private static final int lines = 10;
@@ -86,6 +90,7 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 		User jp_user = getUserFromUsername(USERNAME);
 
 		SpreadSheet spreadsheet = createSpreadSheet(jp_user, SPREADNAME, lines, columns);
+		spreadsheet.getCellFromString(protectedCell).setIsProtected(true);
 		spread_id = spreadsheet.getId();
 
 	}
@@ -273,6 +278,21 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 		AssignReferenceCell service = new AssignReferenceCell( jp , spread_id , cell , invalidReference );
 		service.execute();
 
+	}
+	
+	@Test(expected = CellProtectedException.class)
+	public void cellProtected() {
+
+		// protected cell id = protectedCell
+
+		// valid referenced cell id = reference
+
+		// valid spreadsheet = spread_id
+
+		// user exists & is in session & has permission to write = jp
+
+		AssignReferenceCell service = new AssignReferenceCell( jp , spread_id , protectedCell , reference );
+		service.execute();
 	}
 
 }
