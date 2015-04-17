@@ -2,6 +2,7 @@ package pt.tecnico.bubbledocs.domain;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.jdom2.output.XMLOutputter;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
 
@@ -9,6 +10,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.StringTokenizer;
 
 import pt.tecnico.bubbledocs.domain.User;
@@ -202,18 +204,16 @@ public class SpreadSheet extends SpreadSheet_Base{
 	}
 	
 	
-	public byte[] serializeSpreadSheet() throws IOException{
+	public byte[] spreadtoBytes() throws IOException {
 		
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		ObjectOutput out = null;
-		
-	
-			out = new ObjectOutputStream(bos);
-			out.writeObject(this);
-		
-		
-		return bos.toByteArray();
-		
+		XMLOutputter xml = new XMLOutputter();
+        
+        	
+        	Document jdomDoc = this.export();
+        	
+            byte[] bytes = xml.outputString(jdomDoc).getBytes("UTF-8");
+       
+            return bytes;
 		
 	}
 	
