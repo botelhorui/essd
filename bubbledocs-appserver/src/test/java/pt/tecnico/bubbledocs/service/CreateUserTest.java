@@ -13,6 +13,7 @@ import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.bubbledocs.exception.EmptyUsernameException;
 import pt.tecnico.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
+import pt.tecnico.bubbledocs.exception.CharacterLimitException;
 
 import mockit.Expectations;
 import mockit.Mocked;
@@ -33,6 +34,7 @@ public class CreateUserTest extends BubbleDocsServiceTest {
 	private static final String USERNAME_DOES_NOT_EXIST2 = "no-one2";
 	private static final String EMAIL = "no.one@yahoo.com";
 	private static final String INVALID_EMAIL = "superinvalid.com";
+	private static final String INVALID_USERNAME = "supercalifragilisticexpialidocious";
 
 	@Mocked
 	private IDRemoteServices remoteService;
@@ -96,6 +98,15 @@ public class CreateUserTest extends BubbleDocsServiceTest {
 	public void emptyUsername() {
 		
 		CreateUser service = new CreateUser(rootToken, "", "José Ferreira", EMAIL);
+		
+		service.execute();
+	
+	}
+	
+	@Test(expected = CharacterLimitException.class)
+	public void characterLimit() {
+		
+		CreateUser service = new CreateUser(rootToken, INVALID_USERNAME, "Mary Poppins", EMAIL);
 		
 		service.execute();
 	

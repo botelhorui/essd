@@ -6,6 +6,7 @@ import pt.tecnico.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
+import pt.tecnico.bubbledocs.exception.CharacterLimitException;
 
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.User;
@@ -35,11 +36,19 @@ public class CreateUser extends LoggedBubbleDocsService {
     
 	}
 	
-	protected void checkEmail(String email) throws BubbleDocsException {
+	protected void validateFields(String username, String email) throws BubbleDocsException {
     	
     	BubbleDocs bd = BubbleDocs.getInstance();
-    	bd.checkEmail(email);	
-    
+    	bd.checkEmail(email);
+    	
+    	if(username.equals("")){
+			throw new EmptyUsernameException();
+    	}
+    	
+    	if((username.length() < 3) || (username.length() > 8)){
+    		throw new CharacterLimitException();
+    	}
+    	
 	}
 
 	@Override
@@ -47,12 +56,9 @@ public class CreateUser extends LoggedBubbleDocsService {
 		
 		BubbleDocs bd = BubbleDocs.getInstance();
 		User user = bd.getUserByToken(this.token);
-		
-		if(username.equals(""))
-			throw new EmptyUsernameException();
-		
+
 		validateUser(this.token);
-		checkEmail(this.email);
+		validateFields(this.username, this.email);
 		
 		try {
 			
