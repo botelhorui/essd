@@ -27,11 +27,20 @@ public class CreateUser extends LoggedBubbleDocsService {
 	
 	@Override
 	protected void validateUser(String token) throws BubbleDocsException{
-    	super.validateUser(token);
+    	
+		super.validateUser(token);
     	
     	BubbleDocs bd = BubbleDocs.getInstance();
     	bd.checkIfRoot(token);	
-    }
+    
+	}
+	
+	protected void checkEmail(String email) throws BubbleDocsException {
+    	
+    	BubbleDocs bd = BubbleDocs.getInstance();
+    	bd.checkEmail(email);	
+    
+	}
 
 	@Override
 	protected void dispatch() throws BubbleDocsException {
@@ -43,6 +52,7 @@ public class CreateUser extends LoggedBubbleDocsService {
 			throw new EmptyUsernameException();
 		
 		validateUser(this.token);
+		checkEmail(this.email);
 		
 		try {
 			

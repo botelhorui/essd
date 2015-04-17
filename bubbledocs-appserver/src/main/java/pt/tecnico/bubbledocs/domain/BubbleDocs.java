@@ -1,5 +1,7 @@
 package pt.tecnico.bubbledocs.domain;
 
+import java.lang.String;
+
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.joda.time.DateTime;
@@ -12,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.bubbledocs.exception.UnknownBubbleDocsUserException;
 import pt.tecnico.bubbledocs.exception.DuplicateUsernameException;
+import pt.tecnico.bubbledocs.exception.DuplicateEmailException;
+import pt.tecnico.bubbledocs.exception.InvalidEmailException;
 import pt.tecnico.bubbledocs.exception.UserIsNotOwnerException;
 import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 import pt.tecnico.bubbledocs.service.remote.StoreRemoteServices;
@@ -60,6 +64,18 @@ public class BubbleDocs extends BubbleDocs_Base {
 		for(User u: getUserSet()){
 
 			if(u.getUsername().equals(username)){
+				return u;
+			}
+		}
+
+		return null;
+	}
+	
+	public User getUserByEmail(String email){
+
+		for(User u: getUserSet()){
+
+			if(u.getEmail().equals(email)){
 				return u;
 			}
 		}
@@ -147,7 +163,7 @@ public class BubbleDocs extends BubbleDocs_Base {
 		}
 		return ss;
 	}
-	
+
 	public boolean isUserInSession(String token){
 		User u = getUserByToken(token);
 		if(u == null)
@@ -169,10 +185,10 @@ public class BubbleDocs extends BubbleDocs_Base {
 
 		if(token.length() > 0)
 			username = token.substring(0, token.length()-1);
-		
+
 		return username;
 	}
-	
+
 	public User getUserByToken(String token){
 		for(User u : getUserSet()){
 			Session s = u.getSession();
@@ -187,7 +203,7 @@ public class BubbleDocs extends BubbleDocs_Base {
 			u.setSession(new Session());
 		u.getSession().renewLassAccess();	
 	}
-	
+
 	public void renewSessionDuration(String token){
 		getUserByToken(token).getSession().renewLassAccess();
 	}
@@ -210,28 +226,44 @@ public class BubbleDocs extends BubbleDocs_Base {
 			}
 		}		
 	}
-	
+
 	public void validateUser(String token) throws BubbleDocsException {
 
 		if (!isUserInSession(token)){
 			throw new UserNotInSessionException();
 		}
-		
+
 		renewSessionDuration(token);
-		
+
 	}
-	
+
 	public void checkIfRoot(String token) throws BubbleDocsException {
-		
+
 		User u = getUserByToken(token);
 		if(!(u.getUsername().equals("root"))){
 			throw new UnauthorizedOperationException();
 		}
+
+	}
+
+	public void checkEmail(String email) throws BubbleDocsException {
+
+		User u = getUserByEmail(email);
+		
+		if(u != null)
+			
+			throw new DuplicateEmailException();
+		
+		String[] strings = email.split("@", -1);
+		
+		if( strings.length != 2 ) 
+			
+			throw new InvalidEmailException();
 		
 	}
-	
+
 	public SpreadSheet getSpreadsheetById(int id){
-		
+
 		SpreadSheet sheet = null;
 		for(SpreadSheet spread: getSpreadSheetSet()){
 			if(spread.getId() == id){
@@ -239,13 +271,13 @@ public class BubbleDocs extends BubbleDocs_Base {
 				break;
 			}
 		}
-		
+
 		if(sheet == null){
 			throw new SpreadSheetIdUnknown();
 		}
-		
+
 		return sheet;
-		
+
 	}
-		
+
 }

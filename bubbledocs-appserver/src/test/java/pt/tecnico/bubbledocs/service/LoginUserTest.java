@@ -26,6 +26,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
 
 	private String jp; // the token for user jp
 	private String root; // the token for user root
+	
 	@Mocked
 	private IDRemoteServices remoteService;
 
@@ -36,7 +37,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
 
 	@Override
 	public void populate4Test() {
-		createUser(USERNAME, null, "João Pereira");
+		createUser(USERNAME, "João Pereira", null);
 	}
 
 	// returns the time of the last access for the user with token userToken.
