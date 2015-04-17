@@ -202,18 +202,15 @@ public class SpreadSheet extends SpreadSheet_Base{
 	}
 	
 	
-	public byte[] serializeSpreadSheet(){
+	public byte[] serializeSpreadSheet() throws IOException{
 		
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		ObjectOutput out = null;
 		
-		try {
+	
 			out = new ObjectOutputStream(bos);
 			out.writeObject(this);
-		} catch (IOException e2) {
-			
-			e2.printStackTrace();
-		}
+		
 		
 		return bos.toByteArray();
 		
