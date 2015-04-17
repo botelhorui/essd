@@ -38,7 +38,7 @@ public class ExportDocument extends AccessBubbleDocsService {
 	protected void dispatch() throws BubbleDocsException, UnavailableServiceException {
 		
 		BubbleDocs bd = BubbleDocs.getInstance();
-		StoreRemoteServices remote = new StoreRemoteServices();
+		
 		
 		SpreadSheet s = bd.getSpreadsheetById(docId);
 		
@@ -49,7 +49,7 @@ public class ExportDocument extends AccessBubbleDocsService {
 		docXML = s.export();		
 		
 		try {
-			remote.storeDocument(username, null, s.spreadtoBytes());
+			bd.StoreRemoteServices.storeDocument(username, null, s.spreadtoBytes());
 		} catch (Exception e) {
 			
 			throw new UnavailableServiceException();

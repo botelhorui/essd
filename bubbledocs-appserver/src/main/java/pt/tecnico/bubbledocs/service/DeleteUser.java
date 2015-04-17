@@ -32,12 +32,11 @@ public class DeleteUser extends LoggedBubbleDocsService {
 	@Override
 	protected void dispatch() throws BubbleDocsException, UnavailableServiceException {
 		
-		IDRemoteServices service = new IDRemoteServices();
+		
 		BubbleDocs bd = BubbleDocs.getInstance();
+		validateUser(this.token);
 		User user = bd.getUserByToken(this.token);
 		User userToDelete = bd.getUserByUsername(this.username);
-		
-		validateUser(this.token);
 		
 		if(userToDelete == null)
 			throw new LoginBubbleDocsException();
@@ -49,7 +48,7 @@ public class DeleteUser extends LoggedBubbleDocsService {
 		
 		try {
 			
-			service.removeUser(user.getName());
+			bd.IDRemoteServices.removeUser(user.getName());
 		} catch (Exception e) {
 			
 			throw new UnavailableServiceException();
