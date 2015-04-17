@@ -18,7 +18,6 @@ Repositório:
 ## Serviço SD-ID
 
 ### Instruções de instalação 
-*(Como colocar o projecto a funcionar numa mÃ¡quina do laboratÃ³rio)*
 
 [0] Iniciar sistema operativo
 
@@ -27,29 +26,34 @@ Windows
 [1] Iniciar servidores de apoio
 
 JUDDI:
-> .../
+> %CATALINA_HOME%\bin\startup
 
 [2] Criar pasta temporária
 
-> cd ...
-> mkdir ...
+> cd \
+
+> mkdir temp
 
 [3] Obter versão entregue
 
-> git clone ... 
-*(comandos git para obter a versÃ£o entregue - tag)*
+> cd \temp
+
+> git clone -b SD-ID_R_1 https://github.com/tecnico-softeng-distsys-2015/A_10_08_50-project/
 
 
 [4] Construir e executar **servidor**
 
-> cd ...
+> cd \temp\A_10_08_50-project\sd-id
+
 > mvn clean package 
-> mvn exec:java
+
+> mvn exec:java -Dexec.args="http://localhost:8081 SD-ID http://localhost:8080/id-ws/endpoint"
 
 
 [5] Construir **cliente**
 
-> cd ...
+> cd \temp\A_10_08_50-project\sd-id-cli
+
 > mvn clean package
 
 ...
