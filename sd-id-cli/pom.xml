@@ -104,7 +104,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<mainclass>pt.ulisboa.tecnico.sdis.id.ws.impl.SDIdClientMain</mainclass>
+		<mainclass>pt.ulisboa.tecnico.sdis.id.ws.cli.SDIdClientMain</mainclass>
 		<uddi.url>http://localhost:8081</uddi.url>
 		<ws.name>SD-Id</ws.name>
 		<ws.url>http://localhost:8080/id-ws/endpoint</ws.url>
