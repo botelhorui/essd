@@ -17,7 +17,7 @@ import uddi.UDDINaming;
 import javax.xml.ws.WebServiceException;
 import javax.xml.registry.JAXRException;
 
-public class SDIdCommunicationClientTest {
+public class TestSDIdCommunicationClient {
 
 	private static final String USERNAME = "USERNAME";
 	private static final String EMAIL = "EMAIL";
