@@ -14,6 +14,7 @@ import pt.tecnico.bubbledocs.exception.EmptyUsernameException;
 import pt.tecnico.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.bubbledocs.exception.CharacterLimitException;
+import pt.tecnico.bubbledocs.exception.InvalidUsernameException;
 
 import mockit.Expectations;
 import mockit.Mocked;
@@ -35,6 +36,7 @@ public class CreateUserTest extends BubbleDocsServiceTest {
 	private static final String EMAIL = "no.one@yahoo.com";
 	private static final String INVALID_EMAIL = "superinvalid.com";
 	private static final String INVALID_USERNAME = "supercalifragilisticexpialidocious";
+	private static final String REMOTE_INVALID_USERNAME = "NoLikeU";
 
 	@Mocked
 	private IDRemoteServices remoteService;
@@ -94,10 +96,17 @@ public class CreateUserTest extends BubbleDocsServiceTest {
 	
 	}
 
-	@Test(expected = EmptyUsernameException.class)
-	public void emptyUsername() {
+	@Test(expected = InvalidUsernameException.class)
+	public void InvalidUsername() {
 		
-		CreateUser service = new CreateUser(rootToken, "", "José Ferreira", EMAIL);
+		CreateUser service = new CreateUser(rootToken, REMOTE_INVALID_USERNAME, "José Ferreira", EMAIL);
+		
+		new Expectations() {
+			{
+				remoteService.createUser( REMOTE_INVALID_USERNAME , "José Ferreira", EMAIL );
+				result = new InvalidUsernameException();
+			}
+		};
 		
 		service.execute();
 	
@@ -138,6 +147,14 @@ public class CreateUserTest extends BubbleDocsServiceTest {
 		CreateUser service2 = new CreateUser(rootToken, USERNAME_DOES_NOT_EXIST2, "José Ferreira", EMAIL);
 		
 		service.execute();
+		
+		new Expectations() {
+			{
+				remoteService.createUser( USERNAME_DOES_NOT_EXIST2 , "José Ferreira", EMAIL );
+				result = new DuplicateEmailException();
+			}
+		};
+		
 		service2.execute();
 	
 	}
@@ -146,6 +163,13 @@ public class CreateUserTest extends BubbleDocsServiceTest {
 	public void invalidEmail() {
 		
 		CreateUser service = new CreateUser(rootToken, USERNAME_DOES_NOT_EXIST, "José Ferreira", INVALID_EMAIL);
+		
+		new Expectations() {
+			{
+				remoteService.createUser( USERNAME_DOES_NOT_EXIST , "José Ferreira", INVALID_EMAIL );
+				result = new InvalidEmailException();
+			}
+		};
 		
 		service.execute();
 	}

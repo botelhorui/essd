@@ -26,14 +26,9 @@ public class CreateUser extends RootBubbleDocsService {
 		this.token = token;
 	}
 	
-	protected void validateFields(String username, String email) throws BubbleDocsException {
+	protected void validateFields(String username) throws BubbleDocsException {
     	
     	BubbleDocs bd = BubbleDocs.getInstance();
-    	bd.checkEmail(email);
-    	
-    	if(username.equals("")){
-			throw new EmptyUsernameException();
-    	}
     	
     	if((username.length() < 3) || (username.length() > 8)){
     		throw new CharacterLimitException();
@@ -47,7 +42,7 @@ public class CreateUser extends RootBubbleDocsService {
 		BubbleDocs bd = BubbleDocs.getInstance();
 
 		validateUser(this.token);
-		validateFields(this.username, this.email);
+		validateFields(this.username);
 		
 		try {
 			
