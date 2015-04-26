@@ -26,4 +26,8 @@ public abstract class BinaryFunction extends BinaryFunction_Base {
     
     public abstract int getValue();
     
+    public String returnValueAsString(){
+    	return Integer.toString(getValue());
+    }
+    
 }

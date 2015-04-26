@@ -5,7 +5,10 @@ import org.jdom2.Element;
 import pt.tecnico.bubbledocs.exception.importXMLException;
 import pt.tecnico.bubbledocs.exception.InvalidLiteralValueException;
 import pt.tecnico.bubbledocs.exception.CellProtectedException;
+import pt.tecnico.bubbledocs.exception.PositionOutOfBoundsException;
 import java.lang.NumberFormatException;
+
+import java.util.StringTokenizer;
 
 public class Cell extends Cell_Base {
     
@@ -32,6 +35,64 @@ public class Cell extends Cell_Base {
 		}
 		
 		super.setContent(c);
+		
+	}
+	
+	public void setBinaryFunctionContent(String expression) throws CellProtectedException, PositionOutOfBoundsException{
+		if (this.getIsProtected()){
+			throw new CellProtectedException();
+		}
+		
+		String type = expression.substring(0, 4);
+		
+		StringTokenizer st = new StringTokenizer(expression.substring(5, (expression.length() - 1)), ",;", false);
+		int value = 0;
+		int cellRow = 0;
+		int cellColumn = 0;
+		
+		if (st.countTokens() != 3){
+			throw new PositionOutOfBoundsException();
+		}
+		
+		try{
+			value = Integer.parseInt(st.nextToken());
+		} catch (NumberFormatException e) {
+			throw new PositionOutOfBoundsException();
+		}
+		
+		try{
+			cellRow = Integer.parseInt(st.nextToken());
+		} catch (NumberFormatException e) {
+			throw new PositionOutOfBoundsException();
+		}
+		
+		try{
+			cellColumn = Integer.parseInt(st.nextToken());
+		} catch (NumberFormatException e) {
+			throw new PositionOutOfBoundsException();
+		}
+		
+		LiteralArgument la = new LiteralArgument(value);
+
+		SpreadSheet sheet = this.getSpreadSheet();
+		Cell referenceCell = sheet.getCell(cellRow, cellColumn);
+		
+		ReferenceArgument ra = new ReferenceArgument(referenceCell);
+		
+		switch(type){
+			case "=ADD":
+				setBFAdd(la, ra);
+				break;
+			case "=SUB":
+				setBFSub(la, ra);
+				break;
+			case "=MUL":
+				setBFMul(la, ra);
+				break;
+			case "=DIV":
+				setBFDiv(la, ra);
+				break;
+		}
 		
 	}
 	

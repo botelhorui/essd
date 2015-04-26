@@ -28,7 +28,14 @@ public class ReferenceArgument extends ReferenceArgument_Base {
 	public int getValue() {
 		
 		return getReferenceCell().getValue();
+	
 	}
+	
+	public String returnValueAsString(){
+    	Cell c = getReferenceCell();
+    	String s = c.getLine() + ";" + c.getColumn();
+    	return s;
+    }
     
     
     

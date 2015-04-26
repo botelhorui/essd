@@ -30,4 +30,8 @@ public class LiteralArgument extends LiteralArgument_Base {
     	super.delete();
     }
     
+    public String returnValueAsString(){
+    	return Integer.toString(getValue());	
+    }
+    
 }
