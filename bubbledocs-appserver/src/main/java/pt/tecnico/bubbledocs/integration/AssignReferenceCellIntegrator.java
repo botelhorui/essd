@@ -5,12 +5,12 @@ import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 
 
 
-public class CreateUserIntegrator {
+public class AssignReferenceCellIntegrator {
 	
+
+
 	
-	
-	
-	protected void dispatch() throws BubbleDocsException {
+	void dispatch() throws BubbleDocsException {
 		//TODO
 	
 	}	
