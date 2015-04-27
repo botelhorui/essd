@@ -18,7 +18,12 @@ public class GetUserInfoService extends BubbleDocsService{
 	protected void dispatch() throws BubbleDocsException {
 		BubbleDocs bd = BubbleDocs.getInstance();
 		User user = bd.getUserByUsername(username);
-		userDTO = new UserDTO(user);	
+		if(user!=null){
+			userDTO = new UserDTO(user);
+		}else{
+			userDTO = null;
+		}
+			
 	}
 	
 	UserDTO getResult(){
