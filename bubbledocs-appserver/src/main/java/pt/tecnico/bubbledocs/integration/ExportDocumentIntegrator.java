@@ -2,13 +2,7 @@ package pt.tecnico.bubbledocs.integration;
 
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 
-
-
-
-public class CreateUserIntegrator {
-	
-	
-	
+public class ExportDocumentIntegrator {
 	
 	protected void dispatch() throws BubbleDocsException {
 		//TODO

@@ -2,12 +2,7 @@ package pt.tecnico.bubbledocs.integration;
 
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 
-
-
-
-public class CreateUserIntegrator {
-	
-	
+public class RenewPasswordIntegrator {
 	
 	
 	protected void dispatch() throws BubbleDocsException {

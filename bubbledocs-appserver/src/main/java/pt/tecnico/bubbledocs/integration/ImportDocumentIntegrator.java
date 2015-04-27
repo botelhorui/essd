@@ -2,12 +2,8 @@ package pt.tecnico.bubbledocs.integration;
 
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 
+public class ImportDocumentIntegrator {
 
-
-
-public class CreateUserIntegrator {
-	
-	
 	
 	
 	protected void dispatch() throws BubbleDocsException {
@@ -18,5 +14,5 @@ public class CreateUserIntegrator {
 	public final String getResult() {
 		//TODO
 	}
-
+	
 }

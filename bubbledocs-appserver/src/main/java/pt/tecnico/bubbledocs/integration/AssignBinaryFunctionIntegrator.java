@@ -5,7 +5,8 @@ import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 
 
 
-public class CreateUserIntegrator {
+public class AssignBinaryFunctionIntegrator {
+	
 	
 	
 	
