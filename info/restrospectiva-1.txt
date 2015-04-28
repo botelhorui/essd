@@ -1,0 +1,51 @@
+Week from the 20 April to the 26th of April, end result:
+
+| Group Member | M  | T  | W  | T  | F  | S  | S  | Planned tasks| Implemented tasks|
+|--------------|----|----|----|----|----|----|----|--------------| ---------------- |
+| João Baptista| 0  | 0  |  0 |  0 |  0 | 0  |  2 |    #53       |  #53             |
+| Maria Silva  | 0  | 1  |  0 |  0 |  1 | 0  |  0 |  #60 , #67   |  #67             |
+| Nuno Sousa   | 0  |  0 |  0 |  0 |  0 | 0  |  0 |    #59       |  -               |
+| Pedro Caeiro | 0  |  0 |  0 |  0 |  0 | 0  |  2 |    #55       |  #55             |
+| Rui Botelho  | 0  |  0 |  0 |  0 |  0 | 0  |  0 |    #54       |  -               |
+
+
++---------
+| Notas   |
+  --------+
+
+A primeira semana de trabalho não correu totalmente de acordo com o nosso plano inicial, visível em «restrospectiva-0».
+
+Dos cinco membros do grupo, não houve um único elemento que não tivesse de alterar o planeamento original
+para esta semana. Dois elementos concretizaram totalmente as tarefas planeadas para a semana, tendo demorado o
+tempo previsto; no entanto, estas foram concretizadas num dia diferente do previsto. Um membro concretizou uma das tarefas
+propostas, esta novamente no tempo previsto, não tendo sido possível concretizar a segunda por esta estar dependente
+de uma outra tarefa pertencente a outro elemento do grupo que não tinha sido ainda concretizada. Os dois restantes membros 
+ficaram impossibilitados de realizar as suas tarefas nesta semana devido a razões pessoais, sendo o plano compensar com
+trabalho adicional nesta semana que entra.
+
+Quanto às tarefas concretizadas, o tempo reservado para cada uma delas foi suficiente. Dito isto, o tempo real para a
+concretização da tarefa #53 (Create AssignBinaryFunctionToCell Service) acabou por ser superior ao esperado, simplesmente
+por necessitar da alteração do funcionamento de várias classes do domínio, assim como a implementação
+de diversos métodos nas mesmas que permitissem a criação de funções, funções essas que desde a primeira entrega não tinham
+sido de todo modificados. É de realçar no entanto que, apesar de ser superior ao previsto, o tempo real não excedeu o tempo
+reservado para a tarefa.
+
+
+-------------- [//] ---------------
+
+Week from the 27th April to the 3rd of May*:
+
+
+| Group Member | M  | T  | W  | T  | F  | S  | S  |  Planned tasks   | Implemented tasks|
+|--------------|----|----|----|----|----|----|----|------------------| ---------------- |
+| João Baptista| -  | -  |  2 |  - |  - | -  |  2 |#62, #68, #71, #73|  -               |
+| Maria Silva  | 1  | 2  |  2 |  - |  - | -  |  - | #60, #63, #64    |  -               |
+| Nuno Sousa   | 2  |  - |  - |  - |  - | 2  |  - |  #59, #78        |  -               |
+| Pedro Caeiro | -  |  - |  - |  - |  1 | 2  |  - | #52, #56, #76    |  -               |
+| Rui Botelho  | 1  |  2 |  - |  - |  - |  1 |  - | #54, #75, #77    |  -               |
+
+
+*É passível que ainda ocorram mudanças a esta tabela após a aula de 28/04 -- caso tenhamos uma listagem
+dos erros da entrega passada, serão feitos issues referentes à sua correcção que serão posteriormente
+distribuídos no mesmo dia.
+
