@@ -18,43 +18,49 @@ public class CreateUser extends RootBubbleDocsService {
 	private String username;
 	private String email;
 	private String name;
-	
+
 	public CreateUser(String token, String username, String name, String email) {
 		this.username = username;
 		this.email = email;
 		this.name = name;
 		this.token = token;
 	}
-	
+
+	public String getUsername() {
+
+		return username;
+	}
+
+	public String getName() {
+
+		return name;
+	}
+
+	public String getEmail() {
+
+		return email;
+	}
+
 	protected void validateFields(String username) throws BubbleDocsException {
-    	
-    	BubbleDocs bd = BubbleDocs.getInstance();
-    	
-    	if((username.length() < 3) || (username.length() > 8)){
-    		throw new CharacterLimitException();
-    	}
-    	
+
+		BubbleDocs bd = BubbleDocs.getInstance();
+
+		if((username.length() < 3) || (username.length() > 8)){
+			throw new CharacterLimitException();
+		}
+
 	}
 
 	@Override
 	protected void dispatch() throws BubbleDocsException {
-		
+
 		BubbleDocs bd = BubbleDocs.getInstance();
 
+		// FIX ME 
 		validateUser(this.token);
 		validateFields(this.username);
-		
-		try {
-			
-			bd.IDRemoteServices.createUser(this.username, this.name, this.email);
-			
-		} catch (RemoteInvocationException e) {
-			
-			throw new UnavailableServiceException();
-			
-		}
-		
+
 		bd.createUser(this.username, this.name, this.email);
-		
+
 	}
 }

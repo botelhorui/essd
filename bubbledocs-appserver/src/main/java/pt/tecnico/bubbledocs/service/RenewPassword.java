@@ -16,19 +16,8 @@ public class RenewPassword extends LoggedBubbleDocsService {
 
 	@Override
 	protected void dispatch() throws BubbleDocsException {
-		BubbleDocs bd = BubbleDocs.getInstance();
-		User user = bd.getUserByToken(this._token);
 		
 		validateUser(this._token);
-		
-		try {
-			//remote renew password
-			bd.IDRemoteServices.renewPassword(user.getUsername());
-			user.setPassword(null);
-			
-		} catch (RemoteInvocationException e) {
-			throw new UnavailableServiceException();
-		}
 		
 	}
 

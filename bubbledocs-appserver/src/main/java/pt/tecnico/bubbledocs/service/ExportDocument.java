@@ -39,7 +39,6 @@ public class ExportDocument extends AccessBubbleDocsService {
 		
 		BubbleDocs bd = BubbleDocs.getInstance();
 		
-		
 		SpreadSheet s = bd.getSpreadsheetById(docId);
 		
 		validateUser(token);
@@ -47,13 +46,6 @@ public class ExportDocument extends AccessBubbleDocsService {
 		String username = bd.getUsernameFromToken(token);
 		
 		docXML = s.export();		
-		
-		try {
-			bd.StoreRemoteServices.storeDocument(username, null, s.spreadtoBytes());
-		} catch (Exception e) {
-			
-			throw new UnavailableServiceException();
-		}
 		
 	}
 }

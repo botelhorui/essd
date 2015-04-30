@@ -25,6 +25,8 @@ public class DeleteUser extends RootBubbleDocsService {
 	protected void dispatch() throws BubbleDocsException, UnavailableServiceException {
 		
 		
+		// NOTE: NOT SURE IF VALIDATIONS ARE REDUNDANT
+		
 		BubbleDocs bd = BubbleDocs.getInstance();
 		validateUser(this.token);
 		User user = bd.getUserByToken(this.token);
@@ -37,14 +39,6 @@ public class DeleteUser extends RootBubbleDocsService {
 			throw new LoginBubbleDocsException();
 		
 		userToDelete.delete();
-		
-		try {
-			
-			bd.IDRemoteServices.removeUser(user.getName());
-		} catch (Exception e) {
-			
-			throw new UnavailableServiceException();
-		}
 		
 	}
 

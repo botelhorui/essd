@@ -28,21 +28,9 @@ public class LoginUser extends BubbleDocsService {
 		if(u==null){
 			throw new LoginBubbleDocsException();
 		}
+		
 		bd.cleanInvalidSessions();
-		try {
-			//remote login
-			bd.IDRemoteServices.loginUser(username, password);
-			// save copy
-			u.setPassword(password);
-		} catch (RemoteInvocationException e) {
-			//local login
-			if(u.getPassword()==null)
-				throw new UnavailableServiceException();
-			
-			if(!u.getPassword().equals(password)){
-				throw new LoginBubbleDocsException();
-			}
-		}		
+		
 		bd.renewSessionDuration(u);
 		bd.renewToken(u);
 		token=u.getSession().getToken();
