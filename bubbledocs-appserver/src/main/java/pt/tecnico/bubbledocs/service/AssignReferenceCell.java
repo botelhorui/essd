@@ -45,7 +45,6 @@ public class AssignReferenceCell extends AccessBubbleDocsService {
 		//Fetch user and check if he has write permission for the SpreadSheet
 		checkWritePermission(token, spread);
 
-
 		//Fetch Cell from SpreadSheet
 		Cell cell = spread.getCellFromString(sCellId);
 

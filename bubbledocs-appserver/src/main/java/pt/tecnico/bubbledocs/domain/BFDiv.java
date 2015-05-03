@@ -30,7 +30,7 @@ public class BFDiv extends BFDiv_Base {
     	if (b == 0){
     		throw new DivisionByZeroException();
     	} else {
-    		return a/b;
+    		return b/a;
     	}
     	
     }

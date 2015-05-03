@@ -25,7 +25,7 @@ public class BFSub extends BFSub_Base {
     public int getValue(){
     	int a = getLeftArgument().getValue(); 
     	int b = getRightArgument().getValue();
-    	return a-b;
+    	return b-a;
     }
     
 }
