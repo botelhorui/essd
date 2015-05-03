@@ -29,9 +29,6 @@ public class LiteralArgument extends LiteralArgument_Base {
     public void delete(){
     	super.delete();
     }
-    
-    public String returnValueAsString(){
-    	return Integer.toString(getValue());	
-    }
+   
     
 }

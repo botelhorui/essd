@@ -14,6 +14,7 @@ public class AssignLiteralCellIntegrator extends BubbleDocsIntegrator {
 		
 	}
 	
+	@Override
 	protected void dispatch() throws BubbleDocsException {
 		
 		service.execute();

@@ -30,8 +30,4 @@ public class LiteralContent extends LiteralContent_Base {
     	super.delete();
     }
     
-    public String returnValueAsString(){
-    	return Integer.toString(getValue());	
-    }
-    
 }

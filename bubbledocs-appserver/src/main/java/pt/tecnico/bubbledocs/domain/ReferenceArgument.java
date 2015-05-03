@@ -31,7 +31,7 @@ public class ReferenceArgument extends ReferenceArgument_Base {
 	
 	}
 	
-	public String returnValueAsString(){
+    public String returnReferencedCell(){
     	Cell c = getReferenceCell();
     	String s = c.getLine() + ";" + c.getColumn();
     	return s;

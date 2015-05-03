@@ -24,6 +24,8 @@ public abstract class Argument extends Argument_Base {
     
     public abstract int getValue();
     
-    public abstract String returnValueAsString();
+    public String returnValueAsString(){
+    	return Integer.toString(getValue());
+    }
     
 }

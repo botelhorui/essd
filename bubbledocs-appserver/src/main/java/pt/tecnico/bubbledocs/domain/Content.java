@@ -24,6 +24,8 @@ public abstract class Content extends Content_Base {
     
     public abstract int getValue();
     
-    public abstract String returnValueAsString();
+    public String returnValueAsString(){
+    	return Integer.toString(getValue());
+    }
     
 }
