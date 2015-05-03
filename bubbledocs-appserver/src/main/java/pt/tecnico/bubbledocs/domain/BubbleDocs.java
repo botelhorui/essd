@@ -4,12 +4,18 @@ import java.lang.String;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.JDOMException;
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.InputStream;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.bubbledocs.exception.LoginBubbleDocsException;
@@ -132,9 +138,9 @@ public class BubbleDocs extends BubbleDocs_Base {
 
 		String docUsername = owner.getAttributeValue("username");
 
-		if(!docUsername.equals(username)){
-			throw new UserIsNotOwnerException();
-		}
+		//if(!docUsername.equals(username)){
+			//throw new UserIsNotOwnerException();
+		//}
 
 		if(!hasUser(username)){
 			throw new LoginBubbleDocsException();
@@ -273,6 +279,14 @@ public class BubbleDocs extends BubbleDocs_Base {
 
 		return sheet;
 
+	}
+	
+	public Document buildJDOMDocumentFromByteArray(byte[] bXML) throws JDOMException, IOException{
+		SAXBuilder builder = new SAXBuilder();
+		InputStream stream = new ByteArrayInputStream(bXML);
+		Document JDOMdoc = builder.build(stream);
+		
+		return JDOMdoc;
 	}
 
 }
