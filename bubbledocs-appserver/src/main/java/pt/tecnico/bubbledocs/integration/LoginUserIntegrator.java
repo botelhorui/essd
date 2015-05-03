@@ -46,6 +46,10 @@ public class LoginUserIntegrator extends BubbleDocsIntegrator {
 		}		
 		
 		service.execute();
-	}	
+	}
+	
+	public final String getUserToken() {
+		return service.getUserToken();
+	}
 
 }

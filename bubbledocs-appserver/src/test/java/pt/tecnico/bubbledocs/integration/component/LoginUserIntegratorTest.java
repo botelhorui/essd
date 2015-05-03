@@ -1,4 +1,4 @@
-package pt.tecnico.bubbledocs.service;
+package pt.tecnico.bubbledocs.integration.component;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -11,6 +11,8 @@ import org.junit.Test;
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
 
+import pt.tecnico.bubbledocs.integration.LoginUserIntegrator;
+
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exception.LoginBubbleDocsException;
@@ -20,7 +22,7 @@ import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 
 // add needed import declarations
 
-public class LoginUserTest extends BubbleDocsServiceTest {
+public class LoginUserIntegratorTest extends BubbleDocsIntegratorTest {
 
 	private String jp; // the token for user jp
 	private String root; // the token for user root
@@ -48,14 +50,11 @@ public class LoginUserTest extends BubbleDocsServiceTest {
 
 	@Test
 	public void success() {
-		LoginUser service = new LoginUser(USERNAME, PASSWORD);
+		LoginUserIntegrator service = new LoginUserIntegrator(USERNAME, PASSWORD);
 		new Expectations() {{
 			remoteService.loginUser(USERNAME, PASSWORD);
 		}};
 		service.execute();
-		new Verifications() {{
-			remoteService.loginUser(USERNAME, PASSWORD); times=1;
-		}};
 
 		DateTime currentTime = new DateTime();
 		String token = service.getUserToken();
@@ -70,14 +69,11 @@ public class LoginUserTest extends BubbleDocsServiceTest {
 
 	@Test
 	public void successLoginTwice() {
-		LoginUser service = new LoginUser(USERNAME, PASSWORD);
+		LoginUserIntegrator service = new LoginUserIntegrator(USERNAME, PASSWORD);
 		new Expectations() {{
 			remoteService.loginUser(USERNAME, PASSWORD);
 		}};
 		service.execute();
-		new Verifications() {{
-			remoteService.loginUser(USERNAME, PASSWORD); times=1;
-		}};
 
 		String token1 = service.getUserToken();
 
@@ -85,9 +81,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
 			remoteService.loginUser(USERNAME, PASSWORD);
 		}};
 		service.execute();
-		new Verifications() {{
-			remoteService.loginUser(USERNAME, PASSWORD); times=1;
-		}};
+
 
 		String token2 = service.getUserToken();
 
@@ -99,13 +93,13 @@ public class LoginUserTest extends BubbleDocsServiceTest {
 
 	@Test(expected = LoginBubbleDocsException.class)
 	public void loginUserWithLocalCopyWithWrongPassword() {
-		LoginUser service = new LoginUser(USERNAME, PASSWORD);
+		LoginUserIntegrator service = new LoginUserIntegrator(USERNAME, PASSWORD);
 		new Expectations() {{
 			remoteService.loginUser(USERNAME, PASSWORD);
 		}};		
 		service.execute();
 		// local copy is set
-		service = new LoginUser(USERNAME, WRONG_PASSWORD);		
+		service = new LoginUserIntegrator(USERNAME, WRONG_PASSWORD);		
 		new Expectations() {{
 			remoteService.loginUser(USERNAME, WRONG_PASSWORD);
 			result = new LoginBubbleDocsException();
@@ -115,7 +109,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
 
 	@Test(expected = LoginBubbleDocsException.class)
 	public void loginUserWithoutLocalCopyWithWrongPassword() {
-		LoginUser service = new LoginUser(USERNAME, WRONG_PASSWORD);
+		LoginUserIntegrator service = new LoginUserIntegrator(USERNAME, WRONG_PASSWORD);
 
 		new Expectations() {{
 			remoteService.loginUser(USERNAME, WRONG_PASSWORD);
@@ -127,14 +121,11 @@ public class LoginUserTest extends BubbleDocsServiceTest {
 
 	@Test
 	public void loginRemoteServiceDownWithLocalCopy() {
-		LoginUser service = new LoginUser(USERNAME, PASSWORD);
+		LoginUserIntegrator service = new LoginUserIntegrator(USERNAME, PASSWORD);
 		new Expectations() {{
 			remoteService.loginUser(USERNAME, PASSWORD);
 		}};
 		service.execute();
-		new Verifications() {{
-			remoteService.loginUser(USERNAME, PASSWORD); times=1;
-		}};
 
 		//local copy created		
 		new Expectations() {{
@@ -148,7 +139,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
 
 	@Test(expected = UnavailableServiceException.class)
 	public void loginRemoteServiceDownWithLocalCopyWrongPassword() {
-		LoginUser service = new LoginUser(USERNAME, PASSWORD);
+		LoginUserIntegrator service = new LoginUserIntegrator(USERNAME, PASSWORD);
 		new Expectations() {{
 			remoteService.loginUser(USERNAME, PASSWORD);
 			remoteService.loginUser(USERNAME, PASSWORD);
@@ -158,13 +149,13 @@ public class LoginUserTest extends BubbleDocsServiceTest {
 
 		//local copy created		
 
-		service = new LoginUser(USERNAME, WRONG_PASSWORD);
+		service = new LoginUserIntegrator(USERNAME, WRONG_PASSWORD);
 		service.execute();		
 	}
 
 	@Test(expected = UnavailableServiceException.class)
 	public void loginRemoteServiceDownWithoutLocalCopy(){
-		LoginUser service = new LoginUser(USERNAME, PASSWORD);
+		LoginUserIntegrator service = new LoginUserIntegrator(USERNAME, PASSWORD);
 		new Expectations() {{
 			remoteService.loginUser(USERNAME, PASSWORD);
 			result = new RemoteInvocationException();
@@ -175,7 +166,13 @@ public class LoginUserTest extends BubbleDocsServiceTest {
 
 	@Test(expected = LoginBubbleDocsException.class)
 	public void loginUnknownUser() {
-		LoginUser service = new LoginUser(WRONG_USERNAME, PASSWORD);
+		LoginUserIntegrator service = new LoginUserIntegrator(WRONG_USERNAME, PASSWORD);
+		
+		new Expectations() {{
+			remoteService.loginUser(WRONG_USERNAME, PASSWORD);
+			result = new LoginBubbleDocsException();
+		}};
+		
 		service.execute();
 	}
 

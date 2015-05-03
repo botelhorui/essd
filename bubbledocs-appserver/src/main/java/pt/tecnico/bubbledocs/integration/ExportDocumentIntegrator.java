@@ -52,6 +52,10 @@ public class ExportDocumentIntegrator extends BubbleDocsIntegrator {
 		}
 
 		service.execute();
-	}	
+	}
+	
+	public Document getDocXML() {
+		return service.getDocXML();
+	}
 
 }

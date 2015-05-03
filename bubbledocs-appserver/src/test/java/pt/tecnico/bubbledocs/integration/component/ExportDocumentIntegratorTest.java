@@ -1,10 +1,12 @@
-package pt.tecnico.bubbledocs.service;
+package pt.tecnico.bubbledocs.integration.component;
 
 import mockit.Expectations;
 import mockit.Mocked;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
+
+import pt.tecnico.bubbledocs.integration.ExportDocumentIntegrator;
 
 import pt.tecnico.bubbledocs.domain.Argument;
 import pt.tecnico.bubbledocs.domain.BinaryFunction;
@@ -26,7 +28,7 @@ import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.bubbledocs.service.remote.StoreRemoteServices;
 import static org.junit.Assert.*;
 
-public class ExportDocumentTest extends BubbleDocsServiceTest {
+public class ExportDocumentIntegratorTest extends BubbleDocsIntegratorTest {
 	
 	private String ruiToken; // the token for the user rui
 	private String iurToken; // the token for the user iur
@@ -128,7 +130,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 	@Test
     public void successOwner() throws InterruptedException {
 		BubbleDocs bd = BubbleDocs.getInstance();		
-		ExportDocument serv = new ExportDocument(ruiToken, s1.getId());
+		ExportDocumentIntegrator serv = new ExportDocumentIntegrator(ruiToken, s1.getId());
 		
 		DateTime start = bd.getUserByToken(ruiToken).getSession().getLastAccess();	
 		serv.execute();	
@@ -142,7 +144,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 	@Test
     public void successWriter() throws InterruptedException {
 		BubbleDocs bd = BubbleDocs.getInstance();		
-		ExportDocument serv = new ExportDocument(iurToken, s1.getId());
+		ExportDocumentIntegrator serv = new ExportDocumentIntegrator(iurToken, s1.getId());
 		DateTime start = bd.getUserByToken(iurToken).getSession().getLastAccess();	
 		serv.execute();	
 		DateTime end = bd.getUserByToken(iurToken).getSession().getLastAccess();
@@ -154,7 +156,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 	
 	@Test
     public void successTwice() {
-		ExportDocument serv = new ExportDocument(ruiToken, s1.getId());
+		ExportDocumentIntegrator serv = new ExportDocumentIntegrator(ruiToken, s1.getId());
 		serv.execute();	
 		BubbleDocs bd = BubbleDocs.getInstance();
 		SpreadSheet s2 = bd.importSheet(serv.getDocXML(), USERNAME);
@@ -167,7 +169,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 	
 	@Test(expected = SpreadSheetIdUnknown.class)
 	public void exportUnknownSpreadSheetId(){
-		ExportDocument serv = new ExportDocument(ruiToken, 15);
+		ExportDocumentIntegrator serv = new ExportDocumentIntegrator(ruiToken, 15);
 		serv.execute();
 	}
 	
@@ -175,14 +177,14 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 	public void exportNoReadPermission(){
 		createUser("botelho", "botelho", NAME);
 		String token = addUserToSession("botelho");
-		ExportDocument serv = new ExportDocument(token, s1.getId());
+		ExportDocumentIntegrator serv = new ExportDocumentIntegrator(token, s1.getId());
 		serv.execute();				
 	}
 	
 	@Test(expected = UserNotInSessionException.class)
 	public void exportInvalidToken(){
 		createUser("botelho", PASSWORD, NAME);
-		ExportDocument serv = new ExportDocument("botelho-0", s1.getId());
+		ExportDocumentIntegrator serv = new ExportDocumentIntegrator("botelho-0", s1.getId());
 		serv.execute();		
 	}
 	
@@ -194,7 +196,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 			service.storeDocument(anyString, anyString, document); result = new RemoteInvocationException();
 		}};
 		
-		ExportDocument serv = new ExportDocument(ruiToken, s1.getId());
+		ExportDocumentIntegrator serv = new ExportDocumentIntegrator(ruiToken, s1.getId());
 		serv.execute();		
 	}
 	

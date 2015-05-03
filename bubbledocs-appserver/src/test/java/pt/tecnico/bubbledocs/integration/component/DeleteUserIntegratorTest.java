@@ -1,4 +1,4 @@
-package pt.tecnico.bubbledocs.service;
+package pt.tecnico.bubbledocs.integration.component;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertNotNull;
@@ -7,6 +7,8 @@ import mockit.Expectations;
 import mockit.Mocked;
 
 import org.junit.Test;
+
+import pt.tecnico.bubbledocs.integration.DeleteUserIntegrator;
 
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exception.RemoteInvocationException;
@@ -19,7 +21,7 @@ import pt.tecnico.bubbledocs.service.remote.StoreRemoteServices;
 
 // add needed import declarations
 
-public class DeleteUserTest extends BubbleDocsServiceTest {
+public class DeleteUserIntegratorTest extends BubbleDocsIntegratorTest {
 
     private static final String USERNAME_TO_DELETE = "smf";
     private static final String USERNAME = "ars";
@@ -43,7 +45,7 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
     public void success() {
     	
     	User user = getUserFromUsername(USERNAME_TO_DELETE);    	
-        DeleteUser service = new DeleteUser(root, USERNAME_TO_DELETE);
+        DeleteUserIntegrator service = new DeleteUserIntegrator(root, USERNAME_TO_DELETE);
         service.execute();
         User deleted = getUserFromUsername(USERNAME_TO_DELETE);   	
         
@@ -60,6 +62,7 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
         success();
     }
 
+    
     /*
      * accessUsername exists, is in session and is root toDeleteUsername exists
      * and is in session Test if user and session are both deleted
@@ -71,36 +74,42 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
 	assertNull("Removed user but not removed from session", getUserFromSession(token));
     }
 
+    
     @Test(expected = LoginBubbleDocsException.class)
     public void userToDeleteDoesNotExist() {
-        new DeleteUser(root, USERNAME_DOES_NOT_EXIST).execute();
+        new DeleteUserIntegrator(root, USERNAME_DOES_NOT_EXIST).execute();
     }
 
+    
     @Test(expected = UnauthorizedOperationException.class)
     public void notRootUser() {
         String ars = addUserToSession(USERNAME);
-        new DeleteUser(ars, USERNAME_TO_DELETE).execute();
+        new DeleteUserIntegrator(ars, USERNAME_TO_DELETE).execute();
     }
 
+    
     @Test(expected = UserNotInSessionException.class)
     public void rootNotInSession() {
         removeUserFromSession(root);
 
-        new DeleteUser(root, USERNAME_TO_DELETE).execute();
+        new DeleteUserIntegrator(root, USERNAME_TO_DELETE).execute();
     }
 
+    
     @Test(expected = UserNotInSessionException.class)
     public void notInSessionAndNotRoot() {
         String ars = addUserToSession(USERNAME);
         removeUserFromSession(ars);
 
-        new DeleteUser(ars, USERNAME_TO_DELETE).execute();
+        new DeleteUserIntegrator(ars, USERNAME_TO_DELETE).execute();
     }
 
+    
     @Test(expected = UserNotInSessionException.class)
     public void accessUserDoesNotExist() {
-        new DeleteUser(USERNAME_DOES_NOT_EXIST, USERNAME_TO_DELETE).execute();
+        new DeleteUserIntegrator(USERNAME_DOES_NOT_EXIST, USERNAME_TO_DELETE).execute();
     }
+    
     
     @Test(expected = UnavailableServiceException.class)
     public void remoteServiceFault(@Mocked final IDRemoteServices service) {

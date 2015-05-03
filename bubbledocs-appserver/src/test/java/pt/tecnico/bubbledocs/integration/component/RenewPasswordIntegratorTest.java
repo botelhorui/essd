@@ -1,4 +1,4 @@
-package pt.tecnico.bubbledocs.service;
+package pt.tecnico.bubbledocs.integration.component;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertFalse;
@@ -11,6 +11,8 @@ import mockit.Verifications;
 
 import org.joda.time.DateTime;
 
+import pt.tecnico.bubbledocs.integration.RenewPasswordIntegrator;
+
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
@@ -20,7 +22,7 @@ import pt.tecnico.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
 
-public class RenewPasswordTest extends BubbleDocsServiceTest{
+public class RenewPasswordIntegratorTest extends BubbleDocsIntegratorTest{
 	private String moonToken;
 	private static final String USERNAME = "moon";
 	private static final String PASSWORD = "diamond";
@@ -48,7 +50,7 @@ public class RenewPasswordTest extends BubbleDocsServiceTest{
 		 * - Session time updated
 		 */
 		BubbleDocs bd = BubbleDocs.getInstance();
-		RenewPassword rp = new RenewPassword(moonToken);
+		RenewPasswordIntegrator rp = new RenewPasswordIntegrator(moonToken);
 		User moon = bd.getUserByToken(moonToken);
 		new Expectations() {
 			{
@@ -72,7 +74,7 @@ public class RenewPasswordTest extends BubbleDocsServiceTest{
 
 	@Test(expected = LoginBubbleDocsException.class)
 	public void userDoesNotExistError(){
-		RenewPassword rp = new RenewPassword(moonToken);
+		RenewPasswordIntegrator rp = new RenewPasswordIntegrator(moonToken);
 		new Expectations() {
 			{
 				IDRemoteService.renewPassword(USERNAME);
@@ -84,7 +86,7 @@ public class RenewPasswordTest extends BubbleDocsServiceTest{
 
 	@Test(expected = UnavailableServiceException.class)
 	public void UnavailableServiceError(){
-		RenewPassword rp = new RenewPassword(moonToken);
+		RenewPasswordIntegrator rp = new RenewPasswordIntegrator(moonToken);
 		new Expectations() {
 			{
 				IDRemoteService.renewPassword(USERNAME);
