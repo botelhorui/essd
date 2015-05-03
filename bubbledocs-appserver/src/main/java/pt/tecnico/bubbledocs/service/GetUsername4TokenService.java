@@ -8,6 +8,7 @@ public class GetUsername4TokenService extends BubbleDocsService{
 	
 	public GetUsername4TokenService(String token) {
 		this._token = token;
+		_username = null;
 	}
 	
 	@Override
