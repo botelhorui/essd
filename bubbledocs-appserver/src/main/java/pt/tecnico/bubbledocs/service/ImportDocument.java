@@ -3,6 +3,7 @@ package pt.tecnico.bubbledocs.service;
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
 
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
+import pt.tecnico.bubbledocs.exception.ImportDocumentException;
 
 import org.jdom2.Document;
 import java.io.IOException;
@@ -11,26 +12,12 @@ import org.jdom2.JDOMException;
 
 public class ImportDocument extends AccessBubbleDocsService {
 	private String _token;
-	private int _spreadId;
 	private byte[] _bXML;
 	
 	
-	public ImportDocument(String token, int docId){
+	public ImportDocument(String token, byte[] bXML){
 		this._token = token;
-		this._spreadId = docId;
-	}
-	
-	public void setByteXML(byte[] bXML){
 		this._bXML = bXML;
-	}
-	
-	public String getSpreadId(){
-		String s = Integer.toString(_spreadId);
-		return s;
-	}
-	
-	public void validateUser(String token){
-		super.validateUser(token);
 	}
 	
 	@Override
@@ -40,9 +27,9 @@ public class ImportDocument extends AccessBubbleDocsService {
 		try{
 			JDOMdoc = bd.buildJDOMDocumentFromByteArray(_bXML);
 		}catch(JDOMException e){
-			
+			throw new ImportDocumentException();
 		}catch(IOException e){
-			
+			throw new ImportDocumentException();
 		}
 		
 		String username = bd.getUsernameFromToken(_token);

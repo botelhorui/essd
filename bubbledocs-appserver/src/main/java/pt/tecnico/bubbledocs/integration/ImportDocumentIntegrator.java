@@ -9,38 +9,44 @@ import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
 
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
 
+//Tirar servicos remotos do dominio
+//Possivelmente passar a validacao do user para o getUsername4Token()
+//tirar cenas do construtor e passar para dispatch
+//Criar ImportDocumentException
+//criar package local
 
 public class ImportDocumentIntegrator extends BubbleDocsIntegrator {
 	
 	private ImportDocument importService;
 	private GetUsername4TokenService usernameService;
+	private StoreRemoteServices storeService;
 	
 	private String _token;
 	private String _spreadId;
 	private byte[] _document;
 	
-	public ImportDocumentIntegrator(String token, int docId) {
+	public ImportDocumentIntegrator(String token, int docId){
 		_token = token;
-		usernameService = new GetUsername4TokenService(token);
-		importService = new ImportDocument(token, docId);
-		_spreadId = importService.getSpreadId();
+		_spreadId = Integer.toString(docId);
 	}
 	
 	@Override
 	protected void dispatch() throws BubbleDocsException {
-		importService.validateUser(_token);
+		usernameService = new GetUsername4TokenService(_token);
+		storeService = new StoreRemoteServices();
 		
-		BubbleDocs bd = BubbleDocs.getInstance();
+		//Gets username and validates user
+		String username = usernameService.getUsername();
 		
 		try {	
-			_document = bd.StoreRemoteServices.loadDocument(usernameService.getUsername(), _spreadId);
+			_document = storeService.loadDocument(username, _spreadId);
 			
 		} catch (RemoteInvocationException e) {
 			throw new UnavailableServiceException();
 
 		}
 		
-		importService.setByteXML(_document);
+		importService = new ImportDocument(_token, _document);
 		
 		importService.execute();
 	
