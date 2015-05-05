@@ -112,6 +112,11 @@
             <artifactId>jdom2</artifactId>
             <version>${version.org.jdom.jdom}</version>
         </dependency>
+        <dependency>
+        	<groupId>pt.tecnico.ulisboa.essd</groupId>
+        	<artifactId>sd-store-cli</artifactId>
+        	<version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <repositories>

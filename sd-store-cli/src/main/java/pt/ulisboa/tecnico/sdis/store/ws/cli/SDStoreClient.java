@@ -63,6 +63,9 @@ public class SDStoreClient implements SDStore {
 	public void store(DocUserPair docUserPair, byte[] contents)
 			throws CapacityExceeded_Exception, DocDoesNotExist_Exception,
 			UserDoesNotExist_Exception {
+		
+		
+		
 		port.store(docUserPair, contents);
 
 	}
