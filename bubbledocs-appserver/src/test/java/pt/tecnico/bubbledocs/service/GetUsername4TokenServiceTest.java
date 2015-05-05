@@ -20,10 +20,18 @@ public class GetUsername4TokenServiceTest extends BubbleDocsServiceTest{
 	private static final String USERNAME = "sun";
 	private static final String NAME = "sun#";
 	private static final String EMAIL = "sun@sun.com";
+	
+	// the not in session user
+	private static final String USERNAME1 = "moon";
+	private static final String NAME1 = "moon#";
+	private static final String EMAIL1 = "moon@moon.com";
+	
+	
 			
 	@Override
 	public void populate4Test() {
 		createUser(USERNAME, NAME, EMAIL);
+		createUser(USERNAME1, NAME1, EMAIL1);
 		
 		sun = addUserToSession(USERNAME);
 	}
@@ -40,13 +48,10 @@ public class GetUsername4TokenServiceTest extends BubbleDocsServiceTest{
 		assertEquals("Service is returning a different username.", user, USERNAME);
 	}
 	
-	@Test
-	public void success2() {
-		GetUsername4TokenService service = new GetUsername4TokenService("");
+	@Test(expected = UserNotInSessionException.class)
+	public void userNotInSession() {
+		GetUsername4TokenService service = new GetUsername4TokenService("moon");
 		service.execute();
-		String user = service.getUsername();
-		
-		assertNull("If there the token is empty the username returned should be null.", user);
 	}
 	
 }

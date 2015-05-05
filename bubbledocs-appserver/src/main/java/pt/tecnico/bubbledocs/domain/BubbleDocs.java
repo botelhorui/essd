@@ -183,9 +183,11 @@ public class BubbleDocs extends BubbleDocs_Base {
 
 	public String getUsernameFromToken(String token){
 		String username = null;
+		
+		User u = this.getUserByToken(token);
 
-		if(token.length() > 0)
-			username = token.substring(0, token.length()-1);
+		if(u != null)
+			username = u.getUsername(); 
 
 		return username;
 	}

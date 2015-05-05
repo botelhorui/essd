@@ -3,7 +3,7 @@ package pt.tecnico.bubbledocs.service;
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 
-public class GetUsername4TokenService extends BubbleDocsService{
+public class GetUsername4TokenService extends LoggedBubbleDocsService{
 	private String _token, _username;
 	
 	public GetUsername4TokenService(String token) {
@@ -13,6 +13,9 @@ public class GetUsername4TokenService extends BubbleDocsService{
 	
 	@Override
     protected void dispatch() throws BubbleDocsException{
+		
+		validateUser(_token);
+		
 		BubbleDocs bd = BubbleDocs.getInstance();
 		
 		_username = bd.getUsernameFromToken(_token);
