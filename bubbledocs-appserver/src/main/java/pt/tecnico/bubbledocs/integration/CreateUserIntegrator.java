@@ -5,11 +5,13 @@ import pt.tecnico.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.bubbledocs.service.CreateUser;
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
+import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 
 public class CreateUserIntegrator extends BubbleDocsIntegrator {
 
 	private CreateUser service;
-
+	private IDRemoteServices idService;
+	
 	public CreateUserIntegrator(String token, String username, String name, String email) {
 
 		service = new CreateUser(token,username,name,email);
@@ -19,11 +21,11 @@ public class CreateUserIntegrator extends BubbleDocsIntegrator {
 	@Override
 	protected void dispatch() throws BubbleDocsException {
 
-		BubbleDocs bd = BubbleDocs.getInstance();
+		idService = new IDRemoteServices();
 
 		try {
 
-			bd.IDRemoteServices.createUser(service.getUsername(), service.getName(), service.getEmail());
+			idService.createUser(service.getUsername(), service.getName(), service.getEmail());
 
 		} catch (RemoteInvocationException e) {
 

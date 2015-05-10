@@ -33,8 +33,6 @@ import pt.tecnico.bubbledocs.exception.SpreadSheetIdUnknown;
 public class BubbleDocs extends BubbleDocs_Base {
 	private static final Logger logger = LoggerFactory.getLogger(FenixFramework.class);
 	private static final int LEASE_HOURS = 2;
-	public static final IDRemoteServices IDRemoteServices = new IDRemoteServices();
-	public static final StoreRemoteServices StoreRemoteServices = new StoreRemoteServices();
 
 	private BubbleDocs() {        
 		FenixFramework.getDomainRoot().setBubbleDocs(this);            

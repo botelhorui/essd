@@ -5,12 +5,14 @@ import pt.tecnico.bubbledocs.service.DeleteUser;
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
+import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 
 
 public class DeleteUserIntegrator extends BubbleDocsIntegrator {
 
 	private DeleteUser service;
 	private String toDeleteUsername;
+	private IDRemoteServices idService;
 
 	public DeleteUserIntegrator(String token, String toDeleteUsername) {
 
@@ -21,12 +23,12 @@ public class DeleteUserIntegrator extends BubbleDocsIntegrator {
 
 	@Override
 	protected void dispatch() throws BubbleDocsException {
-
-		BubbleDocs bd = BubbleDocs.getInstance();
+		
+		idService = new IDRemoteServices();
 		
 		try {
 
-			bd.IDRemoteServices.removeUser(toDeleteUsername);
+			idService.removeUser(toDeleteUsername);
 
 		} catch (Exception e) {
 

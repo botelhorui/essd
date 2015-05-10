@@ -6,29 +6,38 @@ import pt.tecnico.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.service.RenewPassword;
+import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
+import pt.tecnico.bubbledocs.service.GetUsername4TokenService;
 
-public class RenewPasswordIntegrator extends BubbleDocsIntegrator {
+public class RenewPasswordIntegrator extends BubbleDocsIntegrator{
 	
 	private RenewPassword service;
-	private String token;
+	private String _token;
+	private IDRemoteServices idService;
+	private GetUsername4TokenService usernameService;
 	
 	public RenewPasswordIntegrator(String token) {
 		
 		service = new RenewPassword(token);
-		this.token = token;
+		this._token = token;
 		
 	}
 	
 	@Override
 	protected void dispatch() throws BubbleDocsException {
-
-		BubbleDocs bd = BubbleDocs.getInstance();
-		User user = bd.getUserByToken(token);
+		usernameService = new GetUsername4TokenService(_token);
+		idService = new IDRemoteServices();
+		
+		//NAO SE PODE USAR OBJETOS DO DOMINIO!
+		//BubbleDocs bd = BubbleDocs.getInstance();
+		//User user = bd.getUserByToken(token);
+		String username = usernameService.getUsername();
 		
 		try {
 			//remote renew password
-			bd.IDRemoteServices.renewPassword(user.getUsername());
-			user.setPassword(null);
+			idService.renewPassword(username);
+			//NO DOMAIN OBJECTS
+			//user.setPassword(null);
 			
 		} catch (RemoteInvocationException e) {
 			
