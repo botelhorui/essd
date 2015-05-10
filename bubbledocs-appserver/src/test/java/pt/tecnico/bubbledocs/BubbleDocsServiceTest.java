@@ -84,15 +84,27 @@ public class BubbleDocsServiceTest {
 	}
 
 	// put a user into session and returns the token associated to it
-	// TODO
-	public String addUserToSession(String username) {
+	// Deprecated -- stays here for reference until the project is reviewed in its entirety.
+/*	public String addUserToSession(String username) {
 		BubbleDocs bd = BubbleDocs.getInstance();
 		User u = bd.getUserByUsername(username);
 		String password = u.getPassword();
 		LoginUser service = new LoginUser(username, password);
 		service.execute();
 		return service.getUserToken();
+	}*/
+	
+	
+	public String addUserToSession(String username) {
+		
+		BubbleDocs bd = BubbleDocs.getInstance();
+		User u = bd.getUserByUsername(username);
+		bd.renewSessionDuration(u);
+		bd.renewToken(u);
+		return u.getSession().getToken();
+		
 	}
+	
 
 	// remove a user from session given its token
 	public void removeUserFromSession(String token) {
