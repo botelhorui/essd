@@ -5,6 +5,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
+import pt.tecnico.bubbledocs.BubbleDocsServiceTest;
+
 import org.junit.Test;
 import org.joda.time.DateTime;
 import pt.tecnico.bubbledocs.domain.BubbleDocs;

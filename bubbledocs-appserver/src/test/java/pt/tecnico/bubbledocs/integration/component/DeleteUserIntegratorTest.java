@@ -9,6 +9,7 @@ import mockit.Mocked;
 import org.junit.Test;
 
 import pt.tecnico.bubbledocs.integration.DeleteUserIntegrator;
+import pt.tecnico.bubbledocs.BubbleDocsServiceTest;
 
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exception.RemoteInvocationException;
@@ -21,7 +22,7 @@ import pt.tecnico.bubbledocs.service.remote.StoreRemoteServices;
 
 // add needed import declarations
 
-public class DeleteUserIntegratorTest extends BubbleDocsIntegratorTest {
+public class DeleteUserIntegratorTest extends BubbleDocsServiceTest {
 
     private static final String USERNAME_TO_DELETE = "smf";
     private static final String USERNAME = "ars";

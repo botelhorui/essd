@@ -1,4 +1,4 @@
-package pt.tecnico.bubbledocs.integration.component;
+package pt.tecnico.bubbledocs;
 
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
@@ -6,16 +6,17 @@ import javax.transaction.SystemException;
 import org.junit.After;
 import org.junit.Before;
 
+import pt.tecnico.bubbledocs.service.LoginUser;
+
 import pt.ist.fenixframework.FenixFramework;
 import pt.ist.fenixframework.core.WriteOnReadError;
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
-import pt.tecnico.bubbledocs.service.LoginUser;
 
 // add needed import declarations
 
-public class BubbleDocsIntegratorTest {
+public class BubbleDocsServiceTest {
 
 	@Before
 	public void setUp() throws Exception {
@@ -44,7 +45,7 @@ public class BubbleDocsIntegratorTest {
 
 	// auxiliary methods that access the domain layer and are needed in the test classes
 	// for defining the initial state and checking that the service has the expected behavior
-	User createUser(String username, String name, String email) {
+	public User createUser(String username, String name, String email) {
 		BubbleDocs bd = BubbleDocs.getInstance();
 		return bd.createUser(username, name, email);  
 	}
@@ -77,13 +78,14 @@ public class BubbleDocsIntegratorTest {
 	}
 
 	// returns the user registered in the application whose username is equal to username
-	User getUserFromUsername(String username) {
+	public User getUserFromUsername(String username) {
 		BubbleDocs bd = BubbleDocs.getInstance();
 		return bd.getUserByUsername(username);
 	}
 
 	// put a user into session and returns the token associated to it
-	String addUserToSession(String username) {
+	// TODO
+	public String addUserToSession(String username) {
 		BubbleDocs bd = BubbleDocs.getInstance();
 		User u = bd.getUserByUsername(username);
 		String password = u.getPassword();
@@ -93,14 +95,14 @@ public class BubbleDocsIntegratorTest {
 	}
 
 	// remove a user from session given its token
-	void removeUserFromSession(String token) {
+	public void removeUserFromSession(String token) {
 		BubbleDocs bd = BubbleDocs.getInstance();
 		User u = bd.getUserByToken(token);
 		u.getSession().delete();
 	}
 
 	// return the user registered in session whose token is equal to token
-	User getUserFromSession(String token) {
+	public User getUserFromSession(String token) {
 		BubbleDocs bd = BubbleDocs.getInstance();
 		return bd.getUserByToken(token);
 	}

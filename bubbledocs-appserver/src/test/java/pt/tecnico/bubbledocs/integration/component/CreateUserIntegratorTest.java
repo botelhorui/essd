@@ -3,6 +3,7 @@ package pt.tecnico.bubbledocs.integration.component;
 import static org.junit.Assert.assertEquals;
 
 import pt.tecnico.bubbledocs.integration.CreateUserIntegrator;
+import pt.tecnico.bubbledocs.BubbleDocsServiceTest;
 
 import org.junit.Test;
 
@@ -24,7 +25,7 @@ import mockit.Verifications;
 
 import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 
-public class CreateUserIntegratorTest extends BubbleDocsIntegratorTest {
+public class CreateUserIntegratorTest extends BubbleDocsServiceTest {
 
 	// the tokens
 	private String rootToken;

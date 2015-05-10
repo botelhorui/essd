@@ -4,6 +4,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Assert;
 import org.junit.Test;
 
+import pt.tecnico.bubbledocs.BubbleDocsServiceTest;
+
 import pt.tecnico.bubbledocs.service.dto.UserDTO;
 
 public class GetUserInfoServiceTest extends BubbleDocsServiceTest{

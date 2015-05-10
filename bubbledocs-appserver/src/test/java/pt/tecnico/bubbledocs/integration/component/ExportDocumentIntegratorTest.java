@@ -7,6 +7,7 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 
 import pt.tecnico.bubbledocs.integration.ExportDocumentIntegrator;
+import pt.tecnico.bubbledocs.BubbleDocsServiceTest;
 
 import pt.tecnico.bubbledocs.domain.Argument;
 import pt.tecnico.bubbledocs.domain.BinaryFunction;
@@ -28,7 +29,7 @@ import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.bubbledocs.service.remote.StoreRemoteServices;
 import static org.junit.Assert.*;
 
-public class ExportDocumentIntegratorTest extends BubbleDocsIntegratorTest {
+public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest {
 	
 	private String ruiToken; // the token for the user rui
 	private String iurToken; // the token for the user iur

@@ -12,6 +12,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Seconds;
 
 import pt.tecnico.bubbledocs.integration.LoginUserIntegrator;
+import pt.tecnico.bubbledocs.BubbleDocsServiceTest;
 
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.User;
@@ -22,7 +23,7 @@ import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 
 // add needed import declarations
 
-public class LoginUserIntegratorTest extends BubbleDocsIntegratorTest {
+public class LoginUserIntegratorTest extends BubbleDocsServiceTest {
 
 	private String jp; // the token for user jp
 	private String root; // the token for user root

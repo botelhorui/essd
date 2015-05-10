@@ -3,6 +3,8 @@ package pt.tecnico.bubbledocs.service;
 import org.junit.Assert;
 import org.junit.Test;
 
+import pt.tecnico.bubbledocs.BubbleDocsServiceTest;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
