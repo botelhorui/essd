@@ -48,6 +48,7 @@ public class LoginUserIntegratorTest extends BubbleDocsServiceTest {
 		User u = bd.getUserByToken(token);
 		return u.getSession().getLastAccess();
 	}
+	
 
 	@Test
 	public void success() {
