@@ -39,4 +39,24 @@ public class LoginUser extends BubbleDocsService {
 	public final String getUserToken() {
 		return token;
 	}
+	
+	public void setUserPassword(String username, String password) {
+		
+		BubbleDocs bd = BubbleDocs.getInstance();
+		
+		User u = bd.getUserByUsername(username);
+		
+		u.setPassword(password);
+		
+	}
+	
+	public String checkUserPassword(String username) {
+		
+		BubbleDocs bd = BubbleDocs.getInstance();
+		
+		User u = bd.getUserByUsername(username);
+		
+		return u.getPassword();
+		
+	}
 }

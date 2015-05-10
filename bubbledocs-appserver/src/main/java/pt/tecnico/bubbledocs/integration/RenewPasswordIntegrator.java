@@ -28,16 +28,13 @@ public class RenewPasswordIntegrator extends BubbleDocsIntegrator{
 		usernameService = new GetUsername4TokenService(_token);
 		idService = new IDRemoteServices();
 		
-		//NAO SE PODE USAR OBJETOS DO DOMINIO!
-		//BubbleDocs bd = BubbleDocs.getInstance();
-		//User user = bd.getUserByToken(token);
 		String username = usernameService.getUsername();
 		
 		try {
 			//remote renew password
 			idService.renewPassword(username);
-			//NO DOMAIN OBJECTS
-			//user.setPassword(null);
+			
+			service.setUserPassword(username, null);
 			
 		} catch (RemoteInvocationException e) {
 			

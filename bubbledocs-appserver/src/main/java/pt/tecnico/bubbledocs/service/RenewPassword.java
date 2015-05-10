@@ -20,5 +20,15 @@ public class RenewPassword extends LoggedBubbleDocsService {
 		validateUser(this._token);
 		
 	}
+	
+	public void setUserPassword(String username, String password) {
+		
+		BubbleDocs bd = BubbleDocs.getInstance();
+		
+		User u = bd.getUserByUsername(username);
+		
+		u.setPassword(password);
+		
+	}
 
 }

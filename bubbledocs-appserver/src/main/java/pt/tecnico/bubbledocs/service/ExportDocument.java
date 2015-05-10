@@ -7,6 +7,8 @@ import java.io.ObjectOutputStream;
 
 import org.jdom2.Document;
 
+import java.io.IOException;
+
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
@@ -46,6 +48,28 @@ public class ExportDocument extends AccessBubbleDocsService {
 		String username = bd.getUsernameFromToken(token);
 		
 		docXML = s.export();		
+		
+	}
+	
+	public byte[] getSpreadsheetBytesById(int docId) {
+		
+		BubbleDocs bd = BubbleDocs.getInstance();
+		
+		SpreadSheet s = bd.getSpreadsheetById(docId);
+		
+		byte[] bytes;
+		
+		try {
+			
+			bytes = s.spreadtoBytes();
+		
+		} catch (IOException e) {
+			
+			throw new SpreadSheetIdUnknown();
+			
+		}
+		
+		return bytes;
 		
 	}
 }

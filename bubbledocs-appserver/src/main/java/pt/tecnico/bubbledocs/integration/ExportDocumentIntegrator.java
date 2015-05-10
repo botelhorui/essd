@@ -1,19 +1,15 @@
 package pt.tecnico.bubbledocs.integration;
 
+import org.jdom2.Document;
+
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
+import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.service.ExportDocument;
 import pt.tecnico.bubbledocs.service.remote.StoreRemoteServices;
 import pt.tecnico.bubbledocs.service.GetUsername4TokenService;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-
-import org.jdom2.Document;
 
 public class ExportDocumentIntegrator extends BubbleDocsIntegrator {
 
@@ -33,11 +29,11 @@ public class ExportDocumentIntegrator extends BubbleDocsIntegrator {
 
 	@Override
 	protected void dispatch() throws BubbleDocsException {
+		
 		usernameService = new GetUsername4TokenService(_token);
 		storeService = new StoreRemoteServices();
 
-		//NAO PODE HAVER METODOS DO DOMINIO
-		//SpreadSheet s = bd.getSpreadsheetById(docId);
+		byte[] s = service.getSpreadsheetBytesById(docId);
 
 		// ???
 		// not sure if this is still supposed to be used in the remote call
@@ -45,11 +41,12 @@ public class ExportDocumentIntegrator extends BubbleDocsIntegrator {
 		checkReadPermission(token, s);*/
 		
 		//Gets username and validates user
+		
 		String username = usernameService.getUsername();
 		
 		try {
-			//Spread s can't exist here - no domain objects!
-			//storeService.storeDocument(username, null, s.spreadtoBytes());
+			
+			storeService.storeDocument(username, null, s);
 
 		} catch (Exception e) {
 
@@ -61,7 +58,9 @@ public class ExportDocumentIntegrator extends BubbleDocsIntegrator {
 	}
 	
 	public Document getDocXML() {
+		
 		return service.getDocXML();
+	
 	}
 
 }

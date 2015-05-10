@@ -29,27 +29,21 @@ public class LoginUserIntegrator extends BubbleDocsIntegrator {
 	@Override
 	protected void dispatch() throws BubbleDocsException {
 		
-		//BubbleDocs bd = BubbleDocs.getInstance();
-		
-		//NAO SE PODE USAR OBJETOS DO DOMINIO!!
-		//User u = bd.getUserByUsername(username);
-		
 		try {
+			
 			//remote login
 			idService.loginUser(username, password);
-			// save copy
-			// NAO SE PODE USAR OBJETOS DO DOMINIO!
-			//u.setPassword(password);
+			
+			service.setUserPassword(username, password);
+			
 		} catch (RemoteInvocationException e) {
 			
-			//NAO SE PODE USAR OBJETOS DO DOMINIO!!
 			//local login
-			//if(u.getPassword()==null)
-				//throw new UnavailableServiceException();
+			if(service.checkUserPassword(username) == null)
+				throw new UnavailableServiceException();
 			
-			//if(!u.getPassword().equals(password)){
-				//throw new LoginBubbleDocsException();
-			//}
+			if(!service.checkUserPassword(username).equals(password))
+				throw new LoginBubbleDocsException();
 		}		
 		
 		service.execute();
