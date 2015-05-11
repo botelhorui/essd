@@ -29,6 +29,8 @@ public class LoginUserIntegrator extends BubbleDocsIntegrator {
 	@Override
 	protected void dispatch() throws BubbleDocsException {
 		
+		idService = new IDRemoteServices();
+		
 		try {
 			
 			//remote login

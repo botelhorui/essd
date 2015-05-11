@@ -25,8 +25,12 @@ public class RenewPasswordIntegrator extends BubbleDocsIntegrator{
 	
 	@Override
 	protected void dispatch() throws BubbleDocsException {
+		
 		usernameService = new GetUsername4TokenService(_token);
+		
 		idService = new IDRemoteServices();
+		
+		usernameService.execute();
 		
 		String username = usernameService.getUsername();
 		
