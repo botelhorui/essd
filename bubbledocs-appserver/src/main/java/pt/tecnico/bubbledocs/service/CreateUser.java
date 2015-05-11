@@ -41,16 +41,6 @@ public class CreateUser extends RootBubbleDocsService {
 		return email;
 	}
 
-	protected void validateFields(String username) throws BubbleDocsException {
-
-		BubbleDocs bd = BubbleDocs.getInstance();
-
-		if((username.length() < 3) || (username.length() > 8)){
-			throw new CharacterLimitException();
-		}
-
-	}
-
 	@Override
 	protected void dispatch() throws BubbleDocsException {
 

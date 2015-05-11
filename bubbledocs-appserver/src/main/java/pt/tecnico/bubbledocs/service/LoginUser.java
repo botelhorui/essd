@@ -7,6 +7,7 @@ import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
+import pt.tecnico.bubbledocs.exception.InvalidUsernameException;
 
 // add needed import declarations
 
@@ -28,9 +29,9 @@ public class LoginUser extends BubbleDocsService {
 		if(u==null){
 			throw new LoginBubbleDocsException();
 		}
-		
+
 		bd.cleanInvalidSessions();
-		
+
 		bd.renewSessionDuration(u);
 		bd.renewToken(u);
 		token=u.getSession().getToken();
@@ -39,24 +40,28 @@ public class LoginUser extends BubbleDocsService {
 	public final String getUserToken() {
 		return token;
 	}
-	
-	public void setUserPassword(String username, String password) {
-		
+
+	public void setUserPassword(String username, String password) throws InvalidUsernameException{
+
 		BubbleDocs bd = BubbleDocs.getInstance();
-		
+
 		User u = bd.getUserByUsername(username);
-		
+
 		u.setPassword(password);
-		
+
 	}
-	
-	public String checkUserPassword(String username) {
-		
+
+	public String checkUserPassword(String username) throws InvalidUsernameException {
+
 		BubbleDocs bd = BubbleDocs.getInstance();
-		
+
 		User u = bd.getUserByUsername(username);
-		
-		return u.getPassword();
-		
+
+		String password; 
+
+		password = u.getPassword();
+
+		return password;
+
 	}
 }

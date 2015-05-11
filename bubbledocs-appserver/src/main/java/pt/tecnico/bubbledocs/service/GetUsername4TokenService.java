@@ -19,6 +19,7 @@ public class GetUsername4TokenService extends LoggedBubbleDocsService{
 		BubbleDocs bd = BubbleDocs.getInstance();
 		
 		_username = bd.getUsernameFromToken(_token);
+		
     }
 	
 	public String getUsername() {
