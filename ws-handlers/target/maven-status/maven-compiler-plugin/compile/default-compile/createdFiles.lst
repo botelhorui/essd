@@ -1,0 +1,8 @@
+pt\ulisboa\tecnico\sdis\store\ws\util\MiniLogger.class
+pt\ulisboa\tecnico\sdis\store\ws\handlers\Tag.class
+example\ws\handler\LoggingHandler.class
+example\ws\handler\HeaderHandler.class
+example\ws\handler\MessageContextHandler.class
+pt\ulisboa\tecnico\sdis\store\ws\handlers\VersionHandler.class
+pt\ulisboa\tecnico\sdis\store\ws\handlers\MessageContextHandler.class
+pt\ulisboa\tecnico\sdis\store\ws\handlers\LoggingHandler.class

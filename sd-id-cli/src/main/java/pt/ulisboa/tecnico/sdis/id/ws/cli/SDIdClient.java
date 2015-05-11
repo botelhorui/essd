@@ -5,7 +5,7 @@ import javax.xml.ws.*;
 
 import java.util.Map;
 
-import uddi.UDDINaming;
+import example.ws.uddi.UDDINaming;
 import pt.ulisboa.tecnico.sdis.id.ws.*; // classes generated from WSDL
 
 /**

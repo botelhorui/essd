@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 
 import javax.xml.ws.Endpoint;
 
-import uddi.UDDINaming;
+import example.ws.uddi.UDDINaming;
 
 
 public class SDStoreMain {

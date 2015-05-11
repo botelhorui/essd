@@ -18,7 +18,7 @@ import javax.xml.ws.*;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.soap.AddressingFeature.Responses;
 
-import uddi.UDDINaming;
+import example.ws.uddi.UDDINaming;
 import pt.ulisboa.tecnico.sdis.store.ws.*; // classes generated from WSDL
 import pt.ulisboa.tecnico.sdis.store.ws.handlers.VersionHandler;
 import pt.ulisboa.tecnico.sdis.store.ws.handlers.Tag;

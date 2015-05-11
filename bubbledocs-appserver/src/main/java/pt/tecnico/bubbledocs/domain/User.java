@@ -1,10 +1,10 @@
 package pt.tecnico.bubbledocs.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
-
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.bubbledocs.exception.DuplicateUsernameException;
 import pt.tecnico.bubbledocs.exception.UserHasNotWriteAccessException;
@@ -73,11 +73,12 @@ public class User extends User_Base {
     //Editar para devolver null em vez de excepcao. nao faz sentido.
     
     public List<SpreadSheet> getOwnedSpreadSheetsByName(String name){
-    	
-    	List<SpreadSheet> spreadSheets = getOwnedSpreadSet().stream()
-    			.filter(ds -> ds.getName().equals(name))
-    			.collect(Collectors.toList());
-    	
+    	List<SpreadSheet> spreadSheets = new ArrayList<SpreadSheet>();
+    	for(SpreadSheet s: getOwnedSpreadSet()){
+    		if(s.getName().equals(name)){
+    			spreadSheets.add(s);
+    		}
+    	}   	
     	return spreadSheets;
     }
     

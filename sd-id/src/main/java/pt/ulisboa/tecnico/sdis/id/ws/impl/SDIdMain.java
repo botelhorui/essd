@@ -2,7 +2,7 @@ package pt.ulisboa.tecnico.sdis.id.ws.impl;
 
 import javax.xml.ws.Endpoint;
 
-import uddi.UDDINaming;
+import example.ws.uddi.UDDINaming;
 
 
 public class SDIdMain {
