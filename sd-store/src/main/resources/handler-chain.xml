@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<handler-chains xmlns="http://java.sun.com/xml/ns/javaee">
+    <handler-chain>
+		<handler>
+			<handler-class>
+				pt.ulisboa.tecnico.sdis.store.ws.handlers.MessageContextHandler
+			</handler-class>
+		</handler>
+        <handler>
+            <handler-class>pt.ulisboa.tecnico.sdis.store.ws.handlers.VersionHandler</handler-class>
+        </handler>
+        <handler>
+            <handler-class>pt.ulisboa.tecnico.sdis.store.ws.handlers.LoggingHandler</handler-class>
+        </handler>
+    </handler-chain>
+</handler-chains>

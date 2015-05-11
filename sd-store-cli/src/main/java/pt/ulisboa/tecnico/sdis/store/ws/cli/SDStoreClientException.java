@@ -1,7 +1,7 @@
 package pt.ulisboa.tecnico.sdis.store.ws.cli;
 
 
-public class SDStoreClientException extends Exception {
+public class SDStoreClientException extends RuntimeException {
 
     public SDStoreClientException() {
     }

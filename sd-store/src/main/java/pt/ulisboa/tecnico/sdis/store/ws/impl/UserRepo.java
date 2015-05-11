@@ -13,61 +13,55 @@ import pt.ulisboa.tecnico.sdis.store.ws.DocAlreadyExists_Exception;
 import pt.ulisboa.tecnico.sdis.store.ws.DocDoesNotExist;
 import pt.ulisboa.tecnico.sdis.store.ws.DocDoesNotExist_Exception;
 import pt.ulisboa.tecnico.sdis.store.ws.UserDoesNotExist_Exception;
+import pt.ulisboa.tecnico.sdis.store.ws.handlers.Tag;
 
 
 
 public class UserRepo {
-	private int repoSize = 0, maxsize=10*1024;
-	private Map<String, byte[]> docs = new HashMap<String, byte[]>();
+	private int repoSize = 0;
+	private Map<String, SDDoc> docs = new HashMap<String, SDDoc>();
 	private String userId;
-	
+
 	public UserRepo(String userId) {
 		this.userId=userId;
 	}
 
 	public void createDoc(String name) throws DocAlreadyExists_Exception{
-
 		if(docs.containsKey(name)){
-
 			throw new DocAlreadyExists_Exception("name "+name+" is already in use.", new DocAlreadyExists());
-
 		} else {
-
-			docs.put(name, new byte[0]);
-
+			docs.put(name, new SDDoc());
 		}
 	}
 
-	public void storeDoc(String name, byte[] content) throws CapacityExceeded_Exception, DocDoesNotExist_Exception, UserDoesNotExist_Exception{
-		
+	public void storeDoc(String name, byte[] content) throws CapacityExceeded_Exception, DocDoesNotExist_Exception, UserDoesNotExist_Exception{		
 		if(!docs.containsKey(name)){
 			throw new DocDoesNotExist_Exception("doc with name '"+name+"' doesn't exist in "+userId+" repo.", new DocDoesNotExist());
 		}
-		int nsize = repoSize - docs.get(name).length + content.length ;
-		
-		if (nsize > maxsize) {
-			throw new CapacityExceeded_Exception("New document data exceed repository capacity", new CapacityExceeded());
-			
-		} else {
-			docs.put(name, content);
-			repoSize = nsize;
-
-		}
+		docs.get(name).setData(content);		
 	}
 
 	public byte[] getDocument(String docId){
-		return docs.get(docId);
+		return docs.get(docId).getData();
 	}
-	
+
 	public List<String> listDocs(){
 		return new ArrayList<String>(docs.keySet());
 	}
 
 	public byte[] loadDoc(String documentId) throws DocDoesNotExist_Exception {
 		if(docs.containsKey(documentId)){
-			return docs.get(documentId);
+			return docs.get(documentId).getData();
 		}else{
 			throw new DocDoesNotExist_Exception("doc with name '"+documentId+"' doesn't exist in "+userId+" repo.", new DocDoesNotExist());
 		}
+	}
+	
+	public Tag getDocVersion(String documentId) throws DocDoesNotExist_Exception{
+		if(docs.containsKey(documentId)){
+			return docs.get(documentId).getVersion();
+		}else{
+			throw new DocDoesNotExist_Exception("doc with name '"+documentId+"' doesn't exist in "+userId+" repo.", new DocDoesNotExist());
+		}	
 	}
 }

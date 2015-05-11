@@ -26,7 +26,7 @@ import pt.ulisboa.tecnico.sdis.store.ws.UserDoesNotExist_Exception;
 import pt.ulisboa.tecnico.sdis.store.ws.cli.SDStoreClient;
 import uddi.UDDINaming;
 
-public class TestSDStoreClientContract {
+public class TestSDStoreClientContractIT {
 
 	SDStoreClient impl;
 	@Mocked UDDINaming uddiNaming;
@@ -54,7 +54,7 @@ public class TestSDStoreClientContract {
 			uddiNaming.lookup(anyString); result="http://localhost:8080/store-ws/endpoint";
 		}};
 				
-		impl = new SDStoreClient("http://localhost:8081", "SD-Store");
+		impl = new SDStoreClient("http://localhost:8081", "SD-Store",1,1,1,1);
 		impl.createDoc(p);
 	}
 	
