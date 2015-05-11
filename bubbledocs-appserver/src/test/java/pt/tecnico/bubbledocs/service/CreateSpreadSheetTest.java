@@ -21,16 +21,16 @@ public class CreateSpreadSheetTest extends BubbleDocsServiceTest {
 	private String ars; // the token for user ars
 	private String root; // the token for user root
 
-	private static final String USERNAME = "jp";
-	private static final String PASSWORD = "jp";
+	private static final String USERNAME = "sjp";
+	private static final String EMAIL = "sjp@ist.utl.pt";
 	private static final String USERNAME2 = "ars";
-    private static final String PASSWORD2 = "ars";
+    private static final String EMAIL2 = "ars@ist.utl.pt";
 	private static final String ROOT_USERNAME = "root";
 	
 	@Override
     public void populate4Test() {
-		createUser(USERNAME,PASSWORD,"João Pereira");
-		createUser(USERNAME2,PASSWORD2,"Armenio Rol Silva");
+		createUser(USERNAME,"João Pereira",EMAIL);
+		createUser(USERNAME2,"Armenio Rol Silva",EMAIL2);
 		root = addUserToSession(ROOT_USERNAME);
         jp = addUserToSession(USERNAME);
         ars = addUserToSession(USERNAME2);

@@ -31,14 +31,15 @@ public class LoginUserIntegratorTest extends BubbleDocsServiceTest {
 	@Mocked
 	private IDRemoteServices remoteService;
 
-	private static final String USERNAME = "jp";
-	private static final String PASSWORD = "jp#";
+	private static final String USERNAME = "sjp";
+	private static final String PASSWORD = "sjp#";
+	private static final String EMAIL = "sjp@ist.utl.pt";
 	private static final String WRONG_USERNAME = "jp2";
 	private static final String WRONG_PASSWORD = "jp2";
 
 	@Override
 	public void populate4Test() {
-		createUser(USERNAME, "João Pereira", null);
+		createUser(USERNAME, "João Pereira", EMAIL);
 	}
 
 	// returns the time of the last access for the user with token userToken.

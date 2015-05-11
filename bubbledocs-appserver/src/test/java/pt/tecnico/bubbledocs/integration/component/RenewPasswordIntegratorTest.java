@@ -26,7 +26,7 @@ import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
 public class RenewPasswordIntegratorTest extends BubbleDocsServiceTest{
 	private String moonToken;
 	private static final String USERNAME = "moon";
-	private static final String PASSWORD = "diamond";
+	private static final String EMAIL = "diamond@pinkfloyd.com";
 	private static final String NAME = "Shine";
 
 
@@ -35,7 +35,7 @@ public class RenewPasswordIntegratorTest extends BubbleDocsServiceTest{
 	//Setup
 	public void populate4Test(){
 		//Create user
-		createUser(USERNAME, PASSWORD, NAME);
+		createUser(USERNAME, NAME, EMAIL);
 
 		//Log in user
 		moonToken = addUserToSession(USERNAME);

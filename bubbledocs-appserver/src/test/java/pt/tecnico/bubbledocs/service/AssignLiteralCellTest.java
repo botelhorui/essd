@@ -35,9 +35,9 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 	private static final String goldUsername = "Gold";
 	private static final String greenUsername = "Green";
 	
-	private static final String redPassword = "cinnabar";
-	private static final String goldPassword = "goldenrod";
-	private static final String greenPassword = "viridian";
+	private static final String redEmail = "cinnabar@kanto.pk";
+	private static final String goldEmail = "goldenrod@kanto.pk";
+	private static final String greenEmail = "viridian@kanto.pk";
 	
 	private static final int testValueOne = 3;
 	private static final String testValueOneString = "3";
@@ -72,9 +72,9 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 		/*
 		 * Creates users.
 		 */
-		createUser(redUsername, redPassword, redName);
-		createUser(goldUsername, goldPassword, goldName);
-		createUser(greenUsername, greenPassword, greenName);
+		createUser(redUsername, redName, redEmail);
+		createUser(goldUsername, goldName, goldEmail);
+		createUser(greenUsername, greenName, greenEmail);
 		
 		/*
 		 * Logs them in.

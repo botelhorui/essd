@@ -39,17 +39,17 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest {
 	
 	
 	private static final String USERNAME = "rui";
-	private static final String PASSWORD = "rui";
+	private static final String EMAIL = "rui@ist.utl.pt";
 	private static final String NAME = "Rui";
 	
 	private static final String USERNAME2 = "iur";
-	private static final String PASSWORD2 = "iur";
+	private static final String EMAIL2 = "iur@pt.utl.ist";
 	private static final String NAME2 = "Iur";
 	
 	@Override
 	public void populate4Test() {
-		rui = createUser(USERNAME, PASSWORD, NAME);
-		iur = createUser(USERNAME2, PASSWORD2, NAME2);
+		rui = createUser(USERNAME, NAME, EMAIL);
+		iur = createUser(USERNAME2, NAME2, EMAIL2);
 		
 		ruiToken = addUserToSession(USERNAME);
 		iurToken = addUserToSession(USERNAME2);
@@ -176,7 +176,7 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest {
 	
 	@Test(expected = UserHasNotReadAccessException.class)
 	public void exportNoReadPermission(){
-		createUser("botelho", "botelho", NAME);
+		createUser("botelho", NAME, EMAIL);
 		String token = addUserToSession("botelho");
 		ExportDocumentIntegrator serv = new ExportDocumentIntegrator(token, s1.getId());
 		serv.execute();				
@@ -184,7 +184,7 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest {
 	
 	@Test(expected = UserNotInSessionException.class)
 	public void exportInvalidToken(){
-		createUser("botelho", PASSWORD, NAME);
+		createUser("botelho", NAME, EMAIL);
 		ExportDocumentIntegrator serv = new ExportDocumentIntegrator("botelho-0", s1.getId());
 		serv.execute();		
 	}

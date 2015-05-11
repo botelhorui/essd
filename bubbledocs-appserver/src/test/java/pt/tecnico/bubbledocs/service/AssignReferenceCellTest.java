@@ -31,16 +31,16 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 	private String uu = "uu"; // the token for the unknown user
 
 	// the perfect user
-	private static final String USERNAME = "jp";
-	private static final String PASSWORD = "jp#";
+	private static final String USERNAME = "sjp";
+	private static final String EMAIL = "sjp@ist.utl.pt";
 
 	// the no session user
 	private static final String USERNAME2 = "ars";
-	private static final String PASSWORD2 = "ars#";
+	private static final String EMAIL2 = "ars@ist.utl.pt";
 
 	// the no write permission user
 	private static final String USERNAME3 = "nwp";
-	private static final String PASSWORD3 = "nwp#";
+	private static final String EMAIL3 = "nwp@ist.utl.pt";
 
 	// the root user
 	private static final String ROOT_USERNAME = "root";
@@ -78,9 +78,9 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 	@Override
 	public void populate4Test() {
 
-		createUser(USERNAME,PASSWORD,"Joao Pereira");
-		createUser(USERNAME2,PASSWORD2,"Armenio Rol Silva");
-		createUser(USERNAME3,PASSWORD3,"Jaquim Ambrosio");
+		createUser(USERNAME,"Joao Pereira",EMAIL);
+		createUser(USERNAME2,"Armenio Rol Silva",EMAIL2);
+		createUser(USERNAME3,"Jaquim Ambrosio",EMAIL3);
 
 		//root = addUserToSession(ROOT_USERNAME);
 		jp = addUserToSession(USERNAME);

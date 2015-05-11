@@ -26,7 +26,7 @@ public class DeleteUserIntegratorTest extends BubbleDocsServiceTest {
 
     private static final String USERNAME_TO_DELETE = "smf";
     private static final String USERNAME = "ars";
-    private static final String PASSWORD = "ars";
+    private static final String EMAIL = "ars@ist.utl.pt";
     private static final String ROOT_USERNAME = "root";
     private static final String USERNAME_DOES_NOT_EXIST = "no-one";
     private static final String SPREADSHEET_NAME = "spread";
@@ -36,7 +36,7 @@ public class DeleteUserIntegratorTest extends BubbleDocsServiceTest {
 
     @Override
     public void populate4Test() {
-        createUser(USERNAME, PASSWORD, "António Rito Silva");
+        createUser(USERNAME, "António Rito Silva", EMAIL);
         User smf = createUser(USERNAME_TO_DELETE, "smf", "Sérgio Fernandes");
         createSpreadSheet(smf, USERNAME_TO_DELETE, 20, 20);
 

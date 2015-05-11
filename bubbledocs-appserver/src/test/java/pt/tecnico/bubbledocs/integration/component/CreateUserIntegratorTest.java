@@ -32,7 +32,7 @@ public class CreateUserIntegratorTest extends BubbleDocsServiceTest {
 	private String arsToken;
 
 	private static final String USERNAME = "ars";
-	private static final String PASSWORD = "ars";
+	private static final String ORIGINAL_EMAIL = "ars@ist.utl.pt";
 	private static final String ROOT_USERNAME = "root";
 	private static final String USERNAME_DOES_NOT_EXIST = "no-one";
 	private static final String USERNAME_DOES_NOT_EXIST2 = "no-one2";
@@ -48,7 +48,7 @@ public class CreateUserIntegratorTest extends BubbleDocsServiceTest {
 	@Override
 	public void populate4Test() {
 
-		createUser(PASSWORD,USERNAME,"António Rito Silva");
+		createUser(USERNAME,"António Rito Silva",ORIGINAL_EMAIL);
 		rootToken = addUserToSession(ROOT_USERNAME);
 		arsToken = addUserToSession(USERNAME);
 	}
