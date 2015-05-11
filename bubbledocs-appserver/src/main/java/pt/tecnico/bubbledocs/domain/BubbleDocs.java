@@ -19,6 +19,7 @@ import java.io.IOException;
 
 import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.bubbledocs.exception.LoginBubbleDocsException;
+import pt.tecnico.bubbledocs.exception.CharacterLimitException;
 import pt.tecnico.bubbledocs.exception.DuplicateUsernameException;
 import pt.tecnico.bubbledocs.exception.DuplicateEmailException;
 import pt.tecnico.bubbledocs.exception.InvalidEmailException;
@@ -262,6 +263,17 @@ public class BubbleDocs extends BubbleDocs_Base {
 			throw new InvalidEmailException();
 		
 	}
+	
+	
+	// BUSINESS RULE #2
+	public void validateUsername(String username) throws CharacterLimitException {
+		
+		if((username.length() < 3) || (username.length() > 8)){
+			throw new CharacterLimitException();
+		}
+		
+	}
+		
 
 	public SpreadSheet getSpreadsheetById(int id){
 

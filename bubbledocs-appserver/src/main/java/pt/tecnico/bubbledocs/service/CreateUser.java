@@ -58,7 +58,7 @@ public class CreateUser extends RootBubbleDocsService {
 
 		// FIX ME 
 		validateUser(this.token);
-		validateFields(this.username);
+		bd.validateUsername(this.username);
 
 		bd.createUser(this.username, this.name, this.email);
 

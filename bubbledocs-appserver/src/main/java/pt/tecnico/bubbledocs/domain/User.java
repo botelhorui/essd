@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 
+import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.bubbledocs.exception.DuplicateUsernameException;
 import pt.tecnico.bubbledocs.exception.UserHasNotWriteAccessException;
 import pt.tecnico.bubbledocs.exception.UserIsNotOwnerException;
@@ -55,9 +56,13 @@ public class User extends User_Base {
     
 	
     @Override
-    public void setUsername(String username) throws DuplicateUsernameException {
+    public void setUsername(String username) throws BubbleDocsException {
     	
-    	if (BubbleDocs.getInstance().hasUser(username)){
+    	BubbleDocs bd = BubbleDocs.getInstance();
+    	
+    	bd.validateUsername(username);
+    	
+    	if (bd.hasUser(username)){
     		throw new DuplicateUsernameException();
     	}
 	
