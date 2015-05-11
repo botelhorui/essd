@@ -9,10 +9,12 @@
     <name>Bubble Docs</name>
 
     <modules>
+        <module>sd-library</module>
         <module>bubbledocs-appserver</module>
 		<module>sd-store-cli</module>
 		<module>sd-id-cli</module>
-		<module>sd-library</module>
+        <module>sd-store</module>
+		<module>sd-id</module>
         <!-- Add modules here... -->
     </modules>
 

@@ -117,6 +117,10 @@
 		<mainclass>pt.ulisboa.tecnico.sdis.store.ws.cli.SDStoreClientMain</mainclass>
 		<uddi.url>http://localhost:8081</uddi.url>
 		<ws.name>SD-Store</ws.name>
+		<clientId>1</clientId>
+		<N>1</N>
+		<RT>1</RT>
+		<WT>1</WT>
 	</properties>
 
 	<build>
@@ -170,7 +174,12 @@
 					<arguments>
 						<argument>${uddi.url}</argument>
 						<argument>${ws.name}</argument>
+						<argument>${clientId}</argument>
+						<argument>${N}</argument>
+						<argument>${RT}</argument>
+						<argument>${WT}</argument>
 					</arguments>
+					<!--  <cleanupDaemonThreads>false</cleanupDaemonThreads> -->
 				</configuration>
 			</plugin>
 			<plugin>
