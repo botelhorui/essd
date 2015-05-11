@@ -10,16 +10,16 @@ public class SDDoc {
 		data = new byte[0];
 		version = new Tag(0,0);
 	}
-	public byte[] getData() {
+	public synchronized byte[] getData() {
 		return data;
 	}
-	public void setData(byte[] data) {
+	public synchronized void setData(byte[] data) {
 		this.data = data;
 	}
-	public Tag getVersion() {
+	public synchronized Tag getVersion() {
 		return version;
 	}
-	public void setVersion(int Tag) {
+	public synchronized void setVersion(int Tag) {
 		this.version = version;
 	}
 	
