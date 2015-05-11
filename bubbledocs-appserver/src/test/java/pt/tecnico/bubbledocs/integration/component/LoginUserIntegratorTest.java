@@ -39,7 +39,9 @@ public class LoginUserIntegratorTest extends BubbleDocsServiceTest {
 
 	@Override
 	public void populate4Test() {
+		
 		createUser(USERNAME, "João Pereira", EMAIL);
+	
 	}
 
 	// returns the time of the last access for the user with token userToken.
@@ -173,6 +175,20 @@ public class LoginUserIntegratorTest extends BubbleDocsServiceTest {
 		
 		new Expectations() {{
 			remoteService.loginUser(WRONG_USERNAME, PASSWORD);
+			result = new LoginBubbleDocsException();
+		}};
+		
+		service.execute();
+	}
+	
+	
+	// case : remote service doesn't know the username but the local one does?
+	@Test(expected = LoginBubbleDocsException.class)
+	public void remoteServiceLoginUnknownUser() {
+		LoginUserIntegrator service = new LoginUserIntegrator(USERNAME, PASSWORD);
+		
+		new Expectations() {{
+			remoteService.loginUser(USERNAME, PASSWORD);
 			result = new LoginBubbleDocsException();
 		}};
 		

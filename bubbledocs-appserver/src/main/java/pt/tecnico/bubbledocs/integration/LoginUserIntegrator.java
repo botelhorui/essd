@@ -31,8 +31,7 @@ public class LoginUserIntegrator extends BubbleDocsIntegrator {
 		
 		idService = new IDRemoteServices();
 		
-		try {
-			
+		try {			
 			//remote login
 			idService.loginUser(username, password);
 			
