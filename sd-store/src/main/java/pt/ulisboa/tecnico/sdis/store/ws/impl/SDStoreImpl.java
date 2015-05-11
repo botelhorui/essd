@@ -82,7 +82,7 @@ public class SDStoreImpl implements SDStore {
 	
 	
 	@Override
-	public synchronized void createDoc(DocUserPair docUserPair)
+	public void createDoc(DocUserPair docUserPair)
 			throws DocAlreadyExists_Exception {		
 		if( docUserPair.getDocumentId().equals("reset") ){			
 			userRepos.clear();
@@ -101,7 +101,7 @@ public class SDStoreImpl implements SDStore {
 	}
 
 	@Override
-	public synchronized List<String> listDocs(String userId)
+	public List<String> listDocs(String userId)
 			throws UserDoesNotExist_Exception {		
 		println("Listing docs");
 		if(userRepos.containsKey(userId)){
@@ -114,7 +114,7 @@ public class SDStoreImpl implements SDStore {
 	
 
 	@Override
-	public synchronized void store(DocUserPair docUserPair, byte[] contents)
+	public void store(DocUserPair docUserPair, byte[] contents)
 			throws CapacityExceeded_Exception, DocDoesNotExist_Exception,
 			UserDoesNotExist_Exception {		
 		println("Storing doc:"+docUserPair.getUserId()+","+docUserPair.getDocumentId());
@@ -129,7 +129,7 @@ public class SDStoreImpl implements SDStore {
 	
 
 	@Override
-	public synchronized byte[] load(DocUserPair docUserPair)
+	public byte[] load(DocUserPair docUserPair)
 			throws DocDoesNotExist_Exception, UserDoesNotExist_Exception {		
 		println("Loading docs");
 		if(userRepos.containsKey(docUserPair.getUserId())){
