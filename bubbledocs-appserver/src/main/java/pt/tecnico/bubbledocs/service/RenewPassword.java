@@ -28,15 +28,8 @@ public class RenewPassword extends LoggedBubbleDocsService {
 		
 		User u = bd.getUserByUsername(username);
 		
-		try {
-			
-			u.setPassword(password);
+		u.setPassword(password);
 		
-		} catch (Exception e) {
-			
-			throw new InvalidUsernameException();
-			
-		} 
 	}
 
 }

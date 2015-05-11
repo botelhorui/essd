@@ -47,15 +47,7 @@ public class LoginUser extends BubbleDocsService {
 
 		User u = bd.getUserByUsername(username);
 
-		try { 
-
-			u.setPassword(password);
-
-		} catch (Exception e) {
-
-			throw new InvalidUsernameException();
-
-		}
+		u.setPassword(password);
 
 	}
 
@@ -67,15 +59,7 @@ public class LoginUser extends BubbleDocsService {
 
 		String password; 
 
-		try { 
-
-			password = u.getPassword();
-
-		} catch (Exception e) {
-
-			throw new InvalidUsernameException();
-
-		}
+		password = u.getPassword();
 
 		return password;
 
