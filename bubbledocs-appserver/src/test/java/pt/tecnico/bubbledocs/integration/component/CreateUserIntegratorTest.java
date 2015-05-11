@@ -183,7 +183,7 @@ public class CreateUserIntegratorTest extends BubbleDocsServiceTest {
 				result = new RemoteInvocationException();
 			}
 		};
-		
+	
 		service.execute();
 		
 	}

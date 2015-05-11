@@ -61,10 +61,6 @@ public class User extends User_Base {
     	BubbleDocs bd = BubbleDocs.getInstance();
     	
     	bd.validateUsername(username);
-    	
-    	if (bd.hasUser(username)){
-    		throw new DuplicateUsernameException();
-    	}
 	
     	super.setUsername(username);
     	

@@ -98,17 +98,6 @@ public class BubbleDocs extends BubbleDocs_Base {
 		return false;
 	}
 
-	@Override
-	public void addUser(pt.tecnico.bubbledocs.domain.User user) throws DuplicateUsernameException {
-		// TODO if the user is BubbleDocs already has the user User, should it throw exception?
-		if(hasUser(user.getUsername())){
-			throw new DuplicateUsernameException();
-		}
-
-		super.addUser(user);
-	}
-
-
 	public void removeUser(String username) {
 		User u = getUserByUsername(username);
 		super.removeUser(u);
@@ -116,13 +105,9 @@ public class BubbleDocs extends BubbleDocs_Base {
 	}
 
 
-	public User createUser(String username,String password,String name) throws DuplicateUsernameException{
+	public User createUser(String username,String name,String email){
 
-		if(hasUser(username)){
-			throw new DuplicateUsernameException();
-		}
-
-		User u = new User(username, password, name);
+		User u = new User(username, name, email);
 		addUser(u);
 		return u;
 	}
