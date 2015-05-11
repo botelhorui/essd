@@ -2,9 +2,9 @@ package pt.tecnico.bubbledocs.integration;
 
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 
-public class GetSheetContentIntegrator extends BubbleDocsIntegrator {
+public class GetSpreadSheetContent extends BubbleDocsIntegrator {
 	
-	public GetSheetContentIntegrator(String name, int spread_id) {
+	public GetSpreadSheetContent(String name, int spread_id) {
 		// TODO Auto-generated constructor stub
 	}
 

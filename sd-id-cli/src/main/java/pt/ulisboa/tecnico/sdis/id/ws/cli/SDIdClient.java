@@ -48,26 +48,22 @@ public class SDIdClient implements SDId {
 
 	// SDId webservice
 	
-	@Override
 	public void createUser(String userId, String emailAddress)
 			throws EmailAlreadyExists_Exception, InvalidEmail_Exception,
 			InvalidUser_Exception, UserAlreadyExists_Exception{
 		port.createUser(userId, emailAddress);
 	}
 	
-	@Override
 	public void renewPassword(String userId)
 	        throws UserDoesNotExist_Exception{
 		port.renewPassword(userId);
 	}
 	
-	@Override
 	public void removeUser(String userId)
 			throws UserDoesNotExist_Exception{
 		port.removeUser(userId);
 	}
 	
-	@Override
 	public byte[] requestAuthentication(String userId, byte[] reserved)
 	        throws AuthReqFailed_Exception{
 		return port.requestAuthentication(userId, reserved);

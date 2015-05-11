@@ -7,8 +7,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
-import javax.xml.registry.JAXRException;
-
 import mockit.Expectations;
 import mockit.Mocked;
 
@@ -29,10 +27,8 @@ import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.bubbledocs.exception.CannotLoadDocumentException;
 import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
-import pt.tecnico.bubbledocs.integration.GetSheetContentIntegrator;
 import pt.tecnico.bubbledocs.integration.ImportDocumentIntegrator;
 import pt.tecnico.bubbledocs.service.remote.StoreRemoteServices;
-import uddi.UDDINaming;
 
 public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest {
 	
