@@ -13,7 +13,7 @@ import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exception.SpreadSheetIdUnknown;
 import pt.tecnico.bubbledocs.exception.UserHasNotReadAccessException;
 import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
-import pt.tecnico.bubbledocs.integration.GetSpreadSheetContent;
+
 
 public class GetSpreadSheetContentTest extends BubbleDocsServiceTest {
 	
