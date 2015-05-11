@@ -46,7 +46,7 @@ public class ExportDocumentIntegrator extends BubbleDocsIntegrator {
 		
 		try {
 			
-			storeService.storeDocument(username, null, s);
+			storeService.storeDocument(username, Integer.toString(docId), s);
 
 		} catch (Exception e) {
 
