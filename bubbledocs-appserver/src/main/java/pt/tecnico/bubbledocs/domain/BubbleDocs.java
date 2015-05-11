@@ -269,6 +269,7 @@ public class BubbleDocs extends BubbleDocs_Base {
 	public void validateUsername(String username) throws CharacterLimitException {
 		
 		if((username.length() < 3) || (username.length() > 8)){
+			
 			throw new CharacterLimitException();
 		}
 		

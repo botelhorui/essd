@@ -23,6 +23,7 @@ public class ImportDocumentIntegrator extends BubbleDocsIntegrator {
 	
 	private String _token;
 	private String _spreadId;
+	private int _docId;
 	private byte[] _document;
 	
 	public ImportDocumentIntegrator(String token, int docId){
@@ -49,6 +50,14 @@ public class ImportDocumentIntegrator extends BubbleDocsIntegrator {
 		importService = new ImportDocument(_token, _document);
 		
 		importService.execute();
+		_docId = importService.get_docId();
 	
-	}	
+	}
+
+	public int get_docId() {
+		return _docId;
+	}
+
+	
+	
 }

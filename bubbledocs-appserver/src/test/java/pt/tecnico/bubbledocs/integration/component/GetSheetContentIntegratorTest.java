@@ -29,7 +29,7 @@ public class GetSheetContentIntegratorTest extends BubbleDocsServiceTest {
 		private String ars; // the token for user ars
 		private String nwp; // the token for user nwp
 		// the perfect user
-		private static final String USERNAME = "jp";
+		private static final String USERNAME = "joaop";
 		private static final String PASSWORD = "jp#";
 
 		// the no session user
