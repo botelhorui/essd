@@ -29,7 +29,7 @@ public class UserCredentials {
 	}
 	
 	public static void main(String[] args) {
-		UserCredentials rar = new UserCredentials("ola".getBytes(),"ate já".getBytes(),"adeus".getBytes());
+		UserCredentials rar = new UserCredentials("ola".getBytes(),"ate ja".getBytes(),"adeus".getBytes());
 		System.out.println(new String(rar.encode()));
 	}
 	
