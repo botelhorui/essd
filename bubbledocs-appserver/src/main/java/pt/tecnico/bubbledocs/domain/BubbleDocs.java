@@ -51,7 +51,8 @@ public class BubbleDocs extends BubbleDocs_Base {
 	private User getUserRoot() {		
 		User root = null;
 		if(!hasUser("root")){
-			root = createUser("root", "root", "Super User");
+			root = createUser("root", "Super User", null);
+			root.setPassword("root");
 		}else{
 			root = getUserByUsername("root");
 		}

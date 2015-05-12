@@ -31,6 +31,7 @@ public class ExportDocumentIntegrator extends BubbleDocsIntegrator {
 	protected void dispatch() throws BubbleDocsException {
 		
 		usernameService = new GetUsername4TokenService(_token);
+		usernameService.execute();
 		storeService = new StoreRemoteServices();
 
 		byte[] s = service.getSpreadsheetBytesById(docId);
