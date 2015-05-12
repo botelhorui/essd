@@ -38,9 +38,19 @@ public class GetSpreadSheetContent extends AccessBubbleDocsService {
 		//We create the matrix
 		this._result = new String[lines+1][columns+1];
 		
+		// Lastly, we fill the matrix with the values of every cell with content
+		fillMatrix(sheet, lines, columns);
+	
+	}
+	
+	public String[][] getResult(){
+		return this._result;
+	}
+	
+	public void fillMatrix(SpreadSheet sheet, int lines, int columns){
 		Cell c;
 		Content t;
-		// Lastly, we fill the matrix with the values of every cell with content
+		
 		for(int i=1; i<=lines; i++){
 			for(int j=1; j<=columns; j++){
 				c = sheet.getCell(i,j);
@@ -57,10 +67,6 @@ public class GetSpreadSheetContent extends AccessBubbleDocsService {
 			}
 		}
 	
-	}
-	
-	public String[][] getResult(){
-		return this._result;
 	}
 
 }
