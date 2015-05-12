@@ -1,6 +1,8 @@
 package pt.tecnico.bubbledocs.integration.component;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 import pt.tecnico.bubbledocs.integration.CreateUserIntegrator;
 import pt.tecnico.bubbledocs.BubbleDocsServiceTest;
@@ -74,6 +76,31 @@ public class CreateUserIntegratorTest extends BubbleDocsServiceTest {
 		assertEquals(USERNAME_DOES_NOT_EXIST, user.getUsername());
 		assertEquals(EMAIL, user.getEmail());
 		assertEquals("José Ferreira", user.getName());
+	}
+	
+	@Test
+	public void rollbackTest() {
+			
+		CreateUserIntegrator service = new CreateUserIntegrator( rootToken, USERNAME_DOES_NOT_EXIST, "José Ferreira", EMAIL );
+
+		// Expectations : Expected behaviour when class is called with specific arguments
+		new Expectations() {{
+			
+			remoteService.createUser( USERNAME_DOES_NOT_EXIST, "José Ferreira", EMAIL );
+			result = new RemoteInvocationException();
+		
+		}};
+		
+		try{
+			service.execute();
+		} catch (UnavailableServiceException e) {
+			User user = getUserFromUsername(USERNAME_DOES_NOT_EXIST);
+			assertNull("Error: Local user was not deleted.", user);
+			return;
+		}
+		
+		fail("Error: Service did not throw expected exception.");
+	
 	}
 
 	
