@@ -20,6 +20,8 @@ public class SDIdImpl implements SDId{
 
 	private ArrayList<UserAccount> _users = new ArrayList<UserAccount>();
 	
+	private String _sStoreKey = "LgzxjQVHcp3FQdTyfh78LDI0/GXaWT4ioj4vPJ/om0M=";
+	
 	public SDIdImpl(){
 		populateDomain();
 	}

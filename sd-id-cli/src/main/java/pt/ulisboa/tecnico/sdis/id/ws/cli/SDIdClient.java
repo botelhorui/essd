@@ -21,7 +21,6 @@ public class SDIdClient implements SDId {
 
 	/** WS service */
 	SDId_Service service = null;
-
 	/** WS port (interface) */
 	SDId port = null;
 
