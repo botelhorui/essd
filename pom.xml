@@ -10,6 +10,8 @@
 	<name>Distributed Bubbledocs</name>
 
 	<modules>
+		<module>sd-xml</module>
+		<module>sd-crypto</module>
 		<module>sd-id</module>
 		<module>sd-id-cli</module>
 		<module>sd-store</module>
