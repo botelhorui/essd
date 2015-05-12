@@ -16,7 +16,7 @@ import pt.ulisboa.tecnico.sdis.store.ws.DocUserPair;
 import pt.ulisboa.tecnico.sdis.store.ws.SDStore;
 import pt.ulisboa.tecnico.sdis.store.ws.SDStore_Service;
 import pt.ulisboa.tecnico.sdis.store.ws.cli.SDStoreClient;
-import uddi.UDDINaming;
+import example.ws.uddi.UDDINaming;
 
 public class TestSDStoreClientCommunicationIT {
 	

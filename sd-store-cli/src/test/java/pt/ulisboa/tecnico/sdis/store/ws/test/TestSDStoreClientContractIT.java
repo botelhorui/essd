@@ -24,7 +24,7 @@ import pt.ulisboa.tecnico.sdis.store.ws.DocDoesNotExist_Exception;
 import pt.ulisboa.tecnico.sdis.store.ws.DocUserPair;
 import pt.ulisboa.tecnico.sdis.store.ws.UserDoesNotExist_Exception;
 import pt.ulisboa.tecnico.sdis.store.ws.cli.SDStoreClient;
-import uddi.UDDINaming;
+import example.ws.uddi.UDDINaming;
 
 public class TestSDStoreClientContractIT {
 
