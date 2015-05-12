@@ -76,7 +76,7 @@ public class BubbleDocs extends BubbleDocs_Base {
 
 		return null;
 	}
-	
+
 	public User getUserByEmail(String email){
 
 		for(User u: getUserSet()){
@@ -124,7 +124,7 @@ public class BubbleDocs extends BubbleDocs_Base {
 		String docUsername = owner.getAttributeValue("username");
 
 		//if(!docUsername.equals(username)){
-			//throw new UserIsNotOwnerException();
+		//throw new UserIsNotOwnerException();
 		//}
 
 		if(!hasUser(username)){
@@ -168,7 +168,7 @@ public class BubbleDocs extends BubbleDocs_Base {
 
 	public String getUsernameFromToken(String token){
 		String username = null;
-		
+
 		User u = this.getUserByToken(token);
 
 		if(u != null)
@@ -237,30 +237,30 @@ public class BubbleDocs extends BubbleDocs_Base {
 	public void checkEmail(String email) throws BubbleDocsException {
 
 		User u = getUserByEmail(email);
-		
+
 		if(u != null)
-			
+
 			throw new DuplicateEmailException();
-		
+
 		String[] strings = email.split("@", -1);
-		
+
 		if( strings.length != 2 ) 
-			
+
 			throw new InvalidEmailException();
-		
+
 	}
-	
-	
+
+
 	// BUSINESS RULE #2
 	public void validateUsername(String username) throws CharacterLimitException {
-		
+
 		if((username.length() < 3) || (username.length() > 8)){
-			
+
 			throw new CharacterLimitException();
 		}
-		
+
 	}
-		
+
 
 	public SpreadSheet getSpreadsheetById(int id){
 
@@ -279,13 +279,24 @@ public class BubbleDocs extends BubbleDocs_Base {
 		return sheet;
 
 	}
-	
+
 	public Document buildJDOMDocumentFromByteArray(byte[] bXML) throws JDOMException, IOException{
 		SAXBuilder builder = new SAXBuilder();
 		InputStream stream = new ByteArrayInputStream(bXML);
 		Document JDOMdoc = builder.build(stream);
-		
+
 		return JDOMdoc;
+	}
+
+	public void delete() {		
+
+		for(User u: getUserSet()){		
+			u.delete();		
+		}		
+
+		this.setRoot(null);
+
+		deleteDomainObject();		
 	}
 
 }
