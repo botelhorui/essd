@@ -27,8 +27,7 @@ import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.bubbledocs.exception.CannotLoadDocumentException;
 import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
-import pt.tecnico.bubbledocs.integration.ImportDocumentIntegrator;
-import pt.tecnico.bubbledocs.service.remote.StoreRemoteServices;
+import pt.tecnico.bubbledocs.service.ImportDocument;
 
 public class ImportDocumentServiceTest extends BubbleDocsServiceTest {
 	
@@ -56,8 +55,6 @@ public class ImportDocumentServiceTest extends BubbleDocsServiceTest {
 			private int spread_id;
 			private byte[] originalDocument;
 			private SpreadSheet spreadsheet;
-			
-			@Mocked StoreRemoteServices storeService;
 			
 			
 			private boolean sameSpreadSheet(SpreadSheet s1,SpreadSheet s2){
@@ -159,7 +156,7 @@ public class ImportDocumentServiceTest extends BubbleDocsServiceTest {
 			public void userNotInSession() {
 
 				
-				ImportDocumentIntegrator service = new ImportDocumentIntegrator(ars, spread_id);
+				ImportDocument service = new ImportDocument(ars, originalDocument);
 				service.execute();
 
 			}

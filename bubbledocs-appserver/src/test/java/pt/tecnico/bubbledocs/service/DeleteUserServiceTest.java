@@ -10,7 +10,7 @@ import mockit.Mocked;
 
 import org.junit.Test;
 
-import pt.tecnico.bubbledocs.integration.DeleteUserIntegrator;
+import pt.tecnico.bubbledocs.service.DeleteUser;
 import pt.tecnico.bubbledocs.BubbleDocsServiceTest;
 
 import pt.tecnico.bubbledocs.domain.User;
@@ -48,7 +48,7 @@ public class DeleteUserServiceTest extends BubbleDocsServiceTest {
     public void success() {
     	
     	User user = getUserFromUsername(USERNAME_TO_DELETE);    	
-        DeleteUserIntegrator service = new DeleteUserIntegrator(root, USERNAME_TO_DELETE);
+        DeleteUser service = new DeleteUser(root, USERNAME_TO_DELETE);
         service.execute();
         User deleted = getUserFromUsername(USERNAME_TO_DELETE);   	
         
@@ -80,14 +80,14 @@ public class DeleteUserServiceTest extends BubbleDocsServiceTest {
     
     @Test(expected = LoginBubbleDocsException.class)
     public void userToDeleteDoesNotExist() {
-        new DeleteUserIntegrator(root, USERNAME_DOES_NOT_EXIST).execute();
+        new DeleteUser(root, USERNAME_DOES_NOT_EXIST).execute();
     }
 
     
     @Test(expected = UnauthorizedOperationException.class)
     public void notRootUser() {
         String ars = addUserToSession(USERNAME);
-        new DeleteUserIntegrator(ars, USERNAME_TO_DELETE).execute();
+        new DeleteUser(ars, USERNAME_TO_DELETE).execute();
     }
 
     
@@ -95,7 +95,7 @@ public class DeleteUserServiceTest extends BubbleDocsServiceTest {
     public void rootNotInSession() {
         removeUserFromSession(root);
 
-        new DeleteUserIntegrator(root, USERNAME_TO_DELETE).execute();
+        new DeleteUser(root, USERNAME_TO_DELETE).execute();
     }
 
     
@@ -104,13 +104,13 @@ public class DeleteUserServiceTest extends BubbleDocsServiceTest {
         String ars = addUserToSession(USERNAME);
         removeUserFromSession(ars);
 
-        new DeleteUserIntegrator(ars, USERNAME_TO_DELETE).execute();
+        new DeleteUser(ars, USERNAME_TO_DELETE).execute();
     }
 
     
     @Test(expected = UserNotInSessionException.class)
     public void accessUserDoesNotExist() {
-        new DeleteUserIntegrator(USERNAME_DOES_NOT_EXIST, USERNAME_TO_DELETE).execute();
+        new DeleteUser(USERNAME_DOES_NOT_EXIST, USERNAME_TO_DELETE).execute();
     }
     
 }
