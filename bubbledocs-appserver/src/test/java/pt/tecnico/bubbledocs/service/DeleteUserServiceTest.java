@@ -35,9 +35,6 @@ public class DeleteUserServiceTest extends BubbleDocsServiceTest {
 
     // the tokens for user root
     private String root;
-    
-    @Mocked
-	private IDRemoteServices remoteService;
 
     @Override
     public void populate4Test() {

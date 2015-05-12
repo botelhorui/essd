@@ -287,5 +287,16 @@ public class BubbleDocs extends BubbleDocs_Base {
 		
 		return JDOMdoc;
 	}
+	
+	public void delete() {
+		
+		for(User u: getUserSet()){
+			u.delete();
+		}
+		
+		this.setRoot(null);
+		
+		deleteDomainObject();
+	}
 
 }

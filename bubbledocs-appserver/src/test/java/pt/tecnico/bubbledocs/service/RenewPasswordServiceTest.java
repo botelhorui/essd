@@ -29,9 +29,6 @@ public class RenewPasswordServiceTest extends BubbleDocsServiceTest{
 	private static final String EMAIL = "diamond@pinkfloyd.com";
 	private static final String NAME = "Shine";
 
-
-	@Mocked	private IDRemoteServices IDRemoteService;
-
 	//Setup
 	public void populate4Test(){
 		//Create user

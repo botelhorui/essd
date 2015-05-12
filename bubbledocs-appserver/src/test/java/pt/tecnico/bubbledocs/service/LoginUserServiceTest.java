@@ -28,9 +28,6 @@ public class LoginUserServiceTest extends BubbleDocsServiceTest {
 	private String jp; // the token for user jp
 	private String root; // the token for user root
 	
-	@Mocked
-	private IDRemoteServices remoteService;
-
 	private static final String USERNAME = "sjp";
 	private static final String PASSWORD = "sjp#";
 	private static final String EMAIL = "sjp@ist.utl.pt";
