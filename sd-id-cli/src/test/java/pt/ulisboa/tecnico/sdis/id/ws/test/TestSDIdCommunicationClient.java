@@ -13,7 +13,7 @@ import pt.ulisboa.tecnico.sdis.id.ws.*; // classes generated from WSDL
 import pt.ulisboa.tecnico.sdis.id.ws.SDId;
 import pt.ulisboa.tecnico.sdis.id.ws.cli.SDIdClient;
 import pt.ulisboa.tecnico.sdis.id.ws.cli.SDIdClientException;
-import uddi.UDDINaming;
+import example.ws.uddi.UDDINaming;
 import javax.xml.ws.WebServiceException;
 import javax.xml.registry.JAXRException;
 
