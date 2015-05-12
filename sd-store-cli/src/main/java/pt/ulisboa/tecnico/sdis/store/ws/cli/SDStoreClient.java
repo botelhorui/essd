@@ -158,7 +158,7 @@ public class SDStoreClient implements SDStore {
 			seconds = (double)elapsed/1e9f;
 			if(seconds > TIMEOUT){
 				// TODO throw exception RemoteServiceException
-				throw new RuntimeException("SDStoreClient getting maxVersion timeout");
+				throw new SDStoreClientException("SDStoreClient getting maxVersion timeout");
 			}
 			for(Iterator<Response<LoadResponse>> it = loadResponses.iterator();it.hasNext();){
 				Response<LoadResponse> r = it.next();				
