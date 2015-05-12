@@ -47,17 +47,6 @@ public class DeleteUserIntegratorTest extends BubbleDocsServiceTest {
 
         root = addUserToSession(ROOT_USERNAME);
     };
-
-    public void success() {
-    	
-    	User user = getUserFromUsername(USERNAME_TO_DELETE);    	
-        DeleteUserIntegrator service = new DeleteUserIntegrator(root, USERNAME_TO_DELETE);
-        service.execute();
-        User deleted = getUserFromUsername(USERNAME_TO_DELETE);   	
-        
-        assertNull("user was not deleted", deleted);
-        assertNull("Spreadsheet was not deleted", getSpreadSheet(SPREADSHEET_NAME));
-    }
     
     @Test
     public void rollbackTest(){
@@ -84,78 +73,6 @@ public class DeleteUserIntegratorTest extends BubbleDocsServiceTest {
 		}
 		
 		fail("Error: Service did not throw expected exception.");
-    }
-
-    /*
-     * accessUsername exists, is in session and is root toDeleteUsername exists
-     * and is not in session
-     */
-    @Test
-    public void successToDeleteIsNotInSession() {
-        success();
-    }
-
-    
-    /*
-     * accessUsername exists, is in session and is root toDeleteUsername exists
-     * and is in session Test if user and session are both deleted
-     */
-    @Test
-    public void successToDeleteIsInSession() {
-        String token = addUserToSession(USERNAME_TO_DELETE);
-        success();
-	assertNull("Removed user but not removed from session", getUserFromSession(token));
-    }
-
-    
-    @Test(expected = LoginBubbleDocsException.class)
-    public void userToDeleteDoesNotExist() {
-        new DeleteUserIntegrator(root, USERNAME_DOES_NOT_EXIST).execute();
-    }
-
-    
-    @Test(expected = UnauthorizedOperationException.class)
-    public void notRootUser() {
-        String ars = addUserToSession(USERNAME);
-        new DeleteUserIntegrator(ars, USERNAME_TO_DELETE).execute();
-    }
-
-    
-    @Test(expected = UserNotInSessionException.class)
-    public void rootNotInSession() {
-        removeUserFromSession(root);
-
-        new DeleteUserIntegrator(root, USERNAME_TO_DELETE).execute();
-    }
-
-    
-    @Test(expected = UserNotInSessionException.class)
-    public void notInSessionAndNotRoot() {
-        String ars = addUserToSession(USERNAME);
-        removeUserFromSession(ars);
-
-        new DeleteUserIntegrator(ars, USERNAME_TO_DELETE).execute();
-    }
-
-    
-    @Test(expected = UserNotInSessionException.class)
-    public void accessUserDoesNotExist() {
-        new DeleteUserIntegrator(USERNAME_DOES_NOT_EXIST, USERNAME_TO_DELETE).execute();
-    }
-    
-    
-    @Test(expected = UnavailableServiceException.class)
-    public void remoteServiceFault() {
-        
-    	DeleteUserIntegrator service = new DeleteUserIntegrator(root, USERNAME_TO_DELETE);
-    	
-    	new Expectations(){{
-			remoteService.removeUser(anyString); 
-			result = new RemoteInvocationException();
-		}};
-    	
-        service.execute();
-    	
     }
     
 }

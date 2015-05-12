@@ -27,7 +27,7 @@ import mockit.Verifications;
 
 import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 
-public class CreateUserIntegratorTest extends BubbleDocsServiceTest {
+public class CreateUserServiceTest extends BubbleDocsServiceTest {
 
 	// the tokens
 	private String rootToken;
@@ -136,6 +136,33 @@ public class CreateUserIntegratorTest extends BubbleDocsServiceTest {
 	
 	}
 	
+	@Test(expected = CharacterLimitException.class)
+	public void characterLimit() {
+		
+		CreateUserIntegrator service = new CreateUserIntegrator(rootToken, INVALID_USERNAME, "Mary Poppins", EMAIL);
+		
+		service.execute();
+	
+	}
+
+	@Test(expected = UnauthorizedOperationException.class)
+	public void unauthorizedUserCreation() {
+		
+		CreateUserIntegrator service = new CreateUserIntegrator(arsToken, USERNAME_DOES_NOT_EXIST, "José Ferreira", EMAIL);
+		
+		service.execute();
+	}
+
+	@Test(expected = UserNotInSessionException.class)
+	public void accessUsernameNotExist() {
+		
+		removeUserFromSession(rootToken);
+		
+		CreateUserIntegrator service = new CreateUserIntegrator(rootToken, USERNAME_DOES_NOT_EXIST, "José Ferreira", EMAIL);
+		
+		service.execute();
+	
+	}
 	
 	@Test(expected = DuplicateEmailException.class)
 	public void duplicateEmail() {

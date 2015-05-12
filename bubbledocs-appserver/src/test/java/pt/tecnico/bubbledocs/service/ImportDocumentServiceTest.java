@@ -30,7 +30,7 @@ import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.bubbledocs.integration.ImportDocumentIntegrator;
 import pt.tecnico.bubbledocs.service.remote.StoreRemoteServices;
 
-public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest {
+public class ImportDocumentServiceTest extends BubbleDocsServiceTest {
 	
 	
 	// the tokens
@@ -152,102 +152,14 @@ public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest {
 				}
 				
 			}
+						
 			
-			
-			@Test
-			public void success() {
-				
-				
-				BubbleDocs bd = BubbleDocs.getInstance();
+			@Test(expected = UserNotInSessionException.class)
+
+			public void userNotInSession() {
 
 				
-				
-				
-				new Expectations(){{
-					new StoreRemoteServices();
-					storeService.loadDocument(USERNAME, Integer.toString(spread_id)); result = originalDocument;
-				}};
-				
-				ImportDocumentIntegrator service = new ImportDocumentIntegrator(jp, spread_id);
-				service.execute();
-				
-				
-				SpreadSheet result = bd.getSpreadsheetById(service.get_docId());
-
-				
-				
-				assertTrue("Cell content doesnt match", sameSpreadSheet(result, spreadsheet));
-				assertEquals("Cell content doesnt match", result.getOwner(), spreadsheet.getOwner());
-				assertFalse("Cell content doesnt match", result.getId() == spreadsheet.getId());
-				assertNull("Cell content doesnt match", result.getReaderUserSet());
-				assertNull("Cell content doesnt match", result.getWriterUserSet());
-				
-				
-			}
-			
-			@Test
-			public void successTwice() {
-				
-				
-				BubbleDocs bd = BubbleDocs.getInstance();
-
-				
-				
-				
-				
-				new Expectations(){{
-					new StoreRemoteServices();
-					storeService.loadDocument(USERNAME, Integer.toString(spread_id)); result = originalDocument;
-					
-					new StoreRemoteServices();
-					storeService.loadDocument(USERNAME, Integer.toString(spread_id)); result = originalDocument;
-				}};
-				
-				ImportDocumentIntegrator service = new ImportDocumentIntegrator(jp, spread_id);
-				service.execute();
-				
-				service = new ImportDocumentIntegrator(jp, spread_id);
-				service.execute();
-				
-				
-				SpreadSheet result = bd.getSpreadsheetById(service.get_docId());
-
-				
-				
-				assertTrue("Cell content doesnt match", sameSpreadSheet(result, spreadsheet));
-				assertEquals("Cell content doesnt match", result.getOwner(), spreadsheet.getOwner());
-				assertFalse("Cell content doesnt match", result.getId() == spreadsheet.getId());
-				assertNull("Cell content doesnt match", result.getReaderUserSet());
-				assertNull("Cell content doesnt match", result.getWriterUserSet());
-				
-				
-			}
-			
-			
-			@Test(expected = CannotLoadDocumentException.class)
-
-			public void userHasNoRights() {
-				
-				new Expectations(){{
-					new StoreRemoteServices();
-					storeService.loadDocument(anyString, anyString); result = new CannotLoadDocumentException();
-				}};
-				
-				ImportDocumentIntegrator service = new ImportDocumentIntegrator(nwp, spread_id);
-				service.execute();
-
-			}
-			
-			@Test(expected = CannotLoadDocumentException.class)
-
-			public void docWasntExported() {
-				
-				new Expectations(){{
-					new StoreRemoteServices();
-					storeService.loadDocument(anyString, anyString); result = new CannotLoadDocumentException();
-				}};
-				
-				ImportDocumentIntegrator service = new ImportDocumentIntegrator(nwp, spread_id);
+				ImportDocumentIntegrator service = new ImportDocumentIntegrator(ars, spread_id);
 				service.execute();
 
 			}

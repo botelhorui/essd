@@ -29,7 +29,7 @@ import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.bubbledocs.service.remote.StoreRemoteServices;
 import static org.junit.Assert.*;
 
-public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest {
+public class ExportDocumentServiceTest extends BubbleDocsServiceTest {
 	
 	private String ruiToken; // the token for the user rui
 	private String iurToken; // the token for the user iur
@@ -127,16 +127,65 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest {
 		}	
 		return true;
 	}
-	
-	@Test(expected = UnavailableServiceException.class)
-	public void remoteServiceFault(@Mocked final StoreRemoteServices service){
-		
-		new Expectations(){{
-			byte[] document=null;
-			service.storeDocument(anyString, anyString, document); result = new RemoteInvocationException();
-		}};
-		
+
+	@Test
+    public void successOwner() throws InterruptedException {
+		BubbleDocs bd = BubbleDocs.getInstance();		
 		ExportDocumentIntegrator serv = new ExportDocumentIntegrator(ruiToken, s1.getId());
+		
+		DateTime start = bd.getUserByToken(ruiToken).getSession().getLastAccess();	
+		serv.execute();	
+		DateTime end = bd.getUserByToken(ruiToken).getSession().getLastAccess();
+		assertFalse("The session lease is not renewed", end == start);
+		SpreadSheet s2 = bd.importSheet(serv.getDocXML(), USERNAME);
+		assertTrue("The imported spreadSheet from the exported SpreadSheet are diferent", sameSpreadSheet(s1, s2));	
+				
+	}
+	
+	@Test
+    public void successWriter() throws InterruptedException {
+		BubbleDocs bd = BubbleDocs.getInstance();		
+		ExportDocumentIntegrator serv = new ExportDocumentIntegrator(iurToken, s1.getId());
+		DateTime start = bd.getUserByToken(iurToken).getSession().getLastAccess();	
+		serv.execute();	
+		DateTime end = bd.getUserByToken(iurToken).getSession().getLastAccess();
+		assertFalse("The session lease is not renewed", end == start);
+		SpreadSheet s2 = bd.importSheet(serv.getDocXML(), USERNAME);
+		assertTrue("The imported spreadSheet from the exported SpreadSheet are diferent", sameSpreadSheet(s1, s2));	
+				
+	}
+	
+	@Test
+    public void successTwice() {
+		ExportDocumentIntegrator serv = new ExportDocumentIntegrator(ruiToken, s1.getId());
+		serv.execute();	
+		BubbleDocs bd = BubbleDocs.getInstance();
+		SpreadSheet s2 = bd.importSheet(serv.getDocXML(), USERNAME);
+		serv.execute();
+		SpreadSheet s3 = bd.importSheet(serv.getDocXML(), USERNAME);
+		assertTrue("Original SpreadSheet is diferent from the one imported from XML", sameSpreadSheet(s1, s2));		
+		assertTrue("Original SpreadSheet is diferent from the one imported from XML", sameSpreadSheet(s1, s3));	
+		assertTrue("Original SpreadSheet is diferent from the one imported from XML", sameSpreadSheet(s2, s3));	
+	}
+	
+	@Test(expected = SpreadSheetIdUnknown.class)
+	public void exportUnknownSpreadSheetId(){
+		ExportDocumentIntegrator serv = new ExportDocumentIntegrator(ruiToken, 15);
+		serv.execute();
+	}
+	
+	@Test(expected = UserHasNotReadAccessException.class)
+	public void exportNoReadPermission(){
+		createUser("botelho", NAME, EMAIL);
+		String token = addUserToSession("botelho");
+		ExportDocumentIntegrator serv = new ExportDocumentIntegrator(token, s1.getId());
+		serv.execute();				
+	}
+	
+	@Test(expected = UserNotInSessionException.class)
+	public void exportInvalidToken(){
+		createUser("botelho", NAME, EMAIL);
+		ExportDocumentIntegrator serv = new ExportDocumentIntegrator("botelho-0", s1.getId());
 		serv.execute();		
 	}
 	
