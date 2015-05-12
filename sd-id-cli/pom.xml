@@ -39,6 +39,16 @@
             <artifactId>ws-handlers</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>pt.ulisboa.tecnico.essd</groupId>
+            <artifactId>ws-xml</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+           <dependency>
+            <groupId>pt.ulisboa.tecnico.essd</groupId>
+            <artifactId>ws-crypto</artifactId>
+            <version>${project.version}</version>
+        </dependency>        
     </dependencies>
 
     <build>

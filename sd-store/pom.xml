@@ -43,7 +43,16 @@
             <artifactId>uddi-naming</artifactId>
             <version>${project.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>pt.ulisboa.tecnico.essd</groupId>
+            <artifactId>ws-xml</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+           <dependency>
+            <groupId>pt.ulisboa.tecnico.essd</groupId>
+            <artifactId>ws-crypto</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!-- JMockit - must appear before JUnit -->
         <dependency>
             <groupId>org.jmockit</groupId>
