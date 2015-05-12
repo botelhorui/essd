@@ -386,7 +386,74 @@ public class UDDINaming {
 		}    	
 		return ret;
 	}
+	public void removeServiceBinding(String orgName,String url) throws JAXRException{
+		autoConnect();
+		try {
+			removeServiceBindingImpl(orgName,url);
+		} finally {
+			autoDisconnect();
+		}
+	}
+	
+	private void removeServiceBindingImpl(String orgName,String url) throws JAXRException{
+		Collection<String> findQualifiers = new ArrayList<String>();
+		findQualifiers.add(FindQualifier.SORT_BY_NAME_DESC);
 
+		Collection<String> namePatterns = new ArrayList<String>();
+		namePatterns.add(orgName);
+
+		// Search existing
+		BulkResponse response = bqm.findOrganizations(findQualifiers,
+				namePatterns, null, null, null, null);
+		@SuppressWarnings("unchecked")
+		Collection<Organization> orgs = response.getCollection();
+		Organization org = null;
+		boolean found = false;
+		for (Organization org1 : orgs)
+			if (org1.getName().getValue().equals(orgName)){
+				found=true;
+				org=org1;
+				break;
+			}
+		Service service=null;		
+		if(found){   
+			if (debugFlag) {
+				System.out.println("Found service "+orgName);
+				System.out.printf("Organization has %d services %n",org.getServices().size());
+			}
+			service= (Service) org.getServices().iterator().next();
+			if(debugFlag){
+				System.out.printf("Service has %d service bindings%n",service.getServiceBindings().size());
+			}
+			String bindingDescription = orgName+"servicebinding";
+			ServiceBinding serviceBinding = blcm.createServiceBinding();
+			serviceBinding.setDescription(blcm
+					.createInternationalString(bindingDescription));
+			serviceBinding.setValidateURI(false);
+			// Define the Web Service endpoint address here
+			serviceBinding.setAccessURI(url);
+			if (serviceBinding != null) {
+				// Add serviceBinding to service
+				service.removeServiceBinding(serviceBinding);
+			}  
+			if(debugFlag){
+				System.out.printf("(After)Service has %d service bindings%n",service.getServiceBindings().size());
+			}
+			// register new organization/service/serviceBinding
+			orgs = new ArrayList<Organization>();
+			orgs.add(org);
+			response = blcm.saveOrganizations(orgs);
+
+			if(!(response.getStatus() == JAXRResponse.STATUS_SUCCESS)){
+				throw new JAXRException(String.format("When deleting %s ServiceBinding, failed to remove it from organization %s",url,orgName));
+			}			
+
+		}else{
+			throw new JAXRException(String.format("When deleting %s ServiceBinding, failed to find organization %s",url,orgName));
+			//throw new 
+		} 
+	}
+	
 	private  void addServiceBindingImpl(String orgName,String url) throws JAXRException{
 		Collection<String> findQualifiers = new ArrayList<String>();
 		findQualifiers.add(FindQualifier.SORT_BY_NAME_DESC);

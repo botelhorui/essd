@@ -80,7 +80,7 @@ public class SDStoreMain {
 			try{
 				if(uddiNaming!=null){
 					//Delete from UDDI
-					uddiNaming.unbind(wsName);
+					uddiNaming.removeServiceBinding(wsName, url);
 					printf("Deleted '%s' from UDDI%n",wsName);
 				}
 			}catch(Exception e){
