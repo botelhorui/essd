@@ -1,4 +1,4 @@
-package pt.tecnico.bubbledocs.integration.component;
+package pt.tecnico.bubbledocs.service;
 
 import mockit.Expectations;
 import mockit.Mocked;
