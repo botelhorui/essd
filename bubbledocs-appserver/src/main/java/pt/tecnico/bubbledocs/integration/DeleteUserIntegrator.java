@@ -37,6 +37,8 @@ public class DeleteUserIntegrator extends BubbleDocsIntegrator {
 		
 		service.execute();
 		
+		System.out.println(userInfo.getUsername() + " | " + userInfo.getName() + " | " + userInfo.getEmail());
+		
 		try {
 
 			idService.removeUser(toDeleteUsername);
@@ -44,6 +46,7 @@ public class DeleteUserIntegrator extends BubbleDocsIntegrator {
 		} catch (Exception e) {
 			CreateUser rollback = new CreateUser(rootToken, userInfo.getUsername(), userInfo.getName(), userInfo.getEmail());
 			rollback.execute();
+			
 			throw new UnavailableServiceException();
 		}
 

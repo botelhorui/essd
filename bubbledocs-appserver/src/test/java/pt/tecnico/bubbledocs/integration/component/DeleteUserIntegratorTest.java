@@ -2,7 +2,9 @@ package pt.tecnico.bubbledocs.integration.component;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import mockit.Expectations;
 import mockit.Mocked;
 
@@ -33,11 +35,14 @@ public class DeleteUserIntegratorTest extends BubbleDocsServiceTest {
 
     // the tokens for user root
     private String root;
+    
+    @Mocked
+	private IDRemoteServices remoteService;
 
     @Override
     public void populate4Test() {
         createUser(USERNAME, "António Rito Silva", EMAIL);
-        User smf = createUser(USERNAME_TO_DELETE, "smf", "Sérgio Fernandes");
+        User smf = createUser(USERNAME_TO_DELETE, "Sérgio Fernandes", "smf@ist.utl.pt");
         createSpreadSheet(smf, USERNAME_TO_DELETE, 20, 20);
 
         root = addUserToSession(ROOT_USERNAME);
@@ -52,6 +57,33 @@ public class DeleteUserIntegratorTest extends BubbleDocsServiceTest {
         
         assertNull("user was not deleted", deleted);
         assertNull("Spreadsheet was not deleted", getSpreadSheet(SPREADSHEET_NAME));
+    }
+    
+    @Test
+    public void rollbackTest(){
+    	DeleteUserIntegrator dui = new DeleteUserIntegrator(root, USERNAME_TO_DELETE);
+    	User user = getUserFromUsername(USERNAME_TO_DELETE);
+    	String originalUsername = user.getUsername();
+    	String originalName = user.getName();
+    	String originalEmail = user.getEmail();
+    	
+    	new Expectations(){{
+			remoteService.removeUser(USERNAME_TO_DELETE); 
+			result = new RemoteInvocationException();
+		}};
+		
+		try{
+			dui.execute();
+		} catch (UnavailableServiceException e) {
+			User deletedUser = getUserFromUsername(USERNAME_TO_DELETE);
+			assertNotNull("Error: Local user was not recreated.", deletedUser);
+			assertEquals("Error: Usernames do not match.", originalUsername, deletedUser.getUsername());
+			assertEquals("Error: Names do not match.", originalName, deletedUser.getName());
+			assertEquals("Error: Emails do not match.", originalEmail, deletedUser.getEmail());
+			return;
+		}
+		
+		fail("Error: Service did not throw expected exception.");
     }
 
     /*
@@ -113,13 +145,16 @@ public class DeleteUserIntegratorTest extends BubbleDocsServiceTest {
     
     
     @Test(expected = UnavailableServiceException.class)
-    public void remoteServiceFault(@Mocked final IDRemoteServices service) {
+    public void remoteServiceFault() {
         
+    	DeleteUserIntegrator service = new DeleteUserIntegrator(root, USERNAME_TO_DELETE);
+    	
     	new Expectations(){{
-			service.removeUser(anyString); result = new UnavailableServiceException();
+			remoteService.removeUser(anyString); 
+			result = new RemoteInvocationException();
 		}};
     	
-		success();
+        service.execute();
     	
     }
     
