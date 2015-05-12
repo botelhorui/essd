@@ -36,13 +36,13 @@ public class GetSpreadSheetContent extends AccessBubbleDocsService {
 		int columns = sheet.getColumns();
 		
 		//We create the matrix
-		this._result = new String[lines][columns];
+		this._result = new String[lines+1][columns+1];
 		
 		Cell c;
 		Content t;
 		// Lastly, we fill the matrix with the values of every cell with content
-		for(int i=0; i<lines; i++){
-			for(int j=0; j<columns; j++){
+		for(int i=1; i<=lines; i++){
+			for(int j=1; j<=columns; j++){
 				c = sheet.getCell(i,j);
 				if(c != null){
 					t = c.getContent();
