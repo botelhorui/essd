@@ -1,0 +1,59 @@
+Week from the 4th of May to the 10th of May, end result: 
+
+Week from the 4th of May to the 10th of May: 
+
+| Group Member | M  | T  | W  | T  | F  | S  | S  |  Planned tasks                                 | Implemented tasks               |
+|--------------|----|----|----|----|----|----|----|------------------------------------------------| ------------------------------- |
+| João Baptista| 1  | -  | -  | -  | -  | -  | 5  |       #69, #71, #80, #95, #99, #103, #104      | #69, #80, #95, #99, #103, #104  |
+| Maria Silva  | -  | -  | -  | -  | -  | 1  | 6  | #63, #64, #70, #79, #82, #91, #100, #101, #102 | #70, #79, #82, #100, #101, #102 |
+| Nuno Sousa   | -  | -  | -  | -  | -  | 4  | -  |            #105, #74, #78, #72                 |       #105, #74, #78, #72       |
+| Pedro Caeiro | 1  | -  | -  | -  | -  | 2  | 4  |               #52, #93, #96, #77               |          #96, #52, #93          |
+| Rui Botelho  | -  | -  | -  | -  | -  | 4  | 2  |                      #85                       |               #85               |
+
+
++---------
+| Notas   |
+  --------+
+
+Foram previstas 25 tarefas para esta semana e 20 foram concluídas na sua totalidade. Tal como na semana anterior, 
+algumas das 5 tarefas que não foram concluídas foram começadas e não foram fechadas devido a razões variadas:
+
+   -   No caso da tarefa #71, mais uma vez, não pode ser concluída na totalidade pela falta da implementação de 
+       alguns testes (outras tarefas), não podendo desse modo descrever na wiki o conteúdo dos mesmos.
+
+   -   As tarefas #63 e #64 não foram possíveis de terminar devido a dúvidas em relação aos rollbacks das transacções. 
+
+   -   As tarefas #77 e #91 não foram implementadas por falta de tempo e devido ao facto de depender do projecto de SD.
+
+Apesar de estarem previstas cerca de 16 tarefas para esta semana, somente 9 foram feitas na sua totalidade. Dito isto, a
+grande maioria das restantes tarefas foi iniciada, não podido ter sido fechada por diversas razões.
+
+Quanto ao alocamento das horas, devido a problemas de comunicação com o grupo, a falta de um membro e o estado de saúde
+fragilizado de outro, acabou novamente por não ser o planeado inicialmente. Dito isto, de uma forma geral o número de
+horas planeado pela maioria do grupo manteve-se o mesmo, apesar de ter sido em dias distintos.
+
+Por último, quanto as horas previstas para cada tarefa. Tal como nas semanas anteriores, o tempo real para cada tarefa
+excedeu ligeiramente o tempo teórico previsto, estando ainda próximo dos valores atribuídos pelas etiquetas no git.
+Este desfazamento é justificado pelo número de alterações necessárias a fazer a nível do domínio graças a modificações
+ou mesmo correcção de pequenos erros de entregas anteriores de forma a possibilitar uma melhor performance das tarefas
+em causa -- alterações essas que à partida não contabilizámos. Para além disso a migração do projecto de SD e o estudo
+das suas respectivas tarefas e algoritmos ocupou mais tempo que aquele que lhe tencionávamos dedicar.
+
+-------------- [//] ---------------
+
+Week from the 11th of May to the 13th of May*:
+
+
+| Group Member | M  | T  | W  | T  | F  | S  | S  |           Planned tasks           | Implemented tasks|
+|--------------|----|----|----|----|----|----|----|-----------------------------------| ---------------- |
+| João Baptista| 6  | 10 | 8  |  - |  - | -  |  - | #71, #97, #98, #106, #107, #109   |  -               |
+| Maria Silva  | 6  | 10 | 8  |  - |  - | -  |  - |      #63, #64, #90 , #91          |  -               |
+| Nuno Sousa   | -  | -  | -  |  - |  - | -  | -  |              #81, #83             |  -               |
+| Pedro Caeiro | 7  | 10 | 10 |  - |  - | -  |  - |                #77, #108          |  -               |
+| Rui Botelho  | -  | -  |  - |  - | -  |  - |  - |                                   |  -               |
+
+
+*É passível que ainda ocorram mudanças a esta tabela após a aula de 12/05 -- este planeamento
+ainda não inclui a listagem das tarefas de SD, assim como não inclui uma série de tarefas novas
+relativas a alterações necessarias aquando da aula de dúvidas de 04/05; Não só isso como a correção 
+de bugs pontuais.
