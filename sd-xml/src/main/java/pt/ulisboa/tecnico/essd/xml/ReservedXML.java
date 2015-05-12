@@ -1,27 +1,28 @@
 package pt.ulisboa.tecnico.essd.xml;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 import java.io.IOException;
 
 public class ReservedXML {
 	
 	private Document _xml;
 	
-	private String _service-name;
+	private String _serviceName;
 	private int _nounce;
 	
 	private XMLOutputter xmlOutput;
 	
-	public ReservedXML (String service-name, int nounce){
+	public ReservedXML (String serviceName, int nounce){
 		
-		_service-name = service-name;
+		_serviceName = serviceName;
 		_nounce = nounce;
 		
 		xmlOutput = new XMLOutputter();
 		xmlOutput.setFormat(Format.getPrettyFormat());
+		xmlOutput.getFormat().setOmitDeclaration(true);
 		
 	}
 	
@@ -32,7 +33,7 @@ public class ReservedXML {
 		doc.setRootElement(reserved);
 		
 		Element sn = new Element("service-name");
-		sn.setText(_service-name);
+		sn.setText(_serviceName);
 		reserved.addContent(sn);
 		
 		Element nounce = new Element("nounce");
