@@ -2,6 +2,7 @@ package pt.tecnico.bubbledocs.integration.component;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -10,6 +11,8 @@ import java.io.IOException;
 import mockit.Expectations;
 import mockit.Mocked;
 
+import org.jdom2.Document;
+import org.jdom2.JDOMException;
 import org.junit.Test;
 
 import pt.tecnico.bubbledocs.BubbleDocsServiceTest;
@@ -66,7 +69,7 @@ public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest {
 				assertTrue(s1.getCreationDate().equals(s2.getCreationDate()));
 				assertTrue(s1.getLines()==s2.getLines());
 				assertTrue(s1.getColumns()==s2.getColumns());
-				for(int i=1;i<=3;i++)
+				for(int i=1;i<=2;i++)
 					for(int j=1;j<=2;j++){
 						Cell c1 = s1.getCell(i, j);
 						Cell c2 = s2.getCell(i, j);
@@ -145,9 +148,13 @@ public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest {
 				spreadsheet = jp_user.createSheet(SPREADNAME, 2, 2);
 				spreadsheet.getCell(1, 1).setLiteralContent(3);
 				spreadsheet.getCell(1, 2).setReferenceContent(spreadsheet.getCell(1, 1));
+				spreadsheet.getCell(2, 1).setLiteralContent(3);
+				spreadsheet.getCell(2, 2).setLiteralContent(3);
+				
 				try {
 					originalDocument = spreadsheet.spreadtoBytes();
 				} catch (IOException e) {
+					
 					e.printStackTrace();
 				}
 				
@@ -155,17 +162,16 @@ public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest {
 			
 			
 			@Test
-			public void success() {
+			public void success() throws JDOMException, IOException {
 				
 				
 				BubbleDocs bd = BubbleDocs.getInstance();
-
 				
 				
 				
 				new Expectations(){{
-					new StoreRemoteServices();
-					storeService.loadDocument(USERNAME, Integer.toString(spread_id)); result = originalDocument;
+					//new StoreRemoteServices();
+					storeService.loadDocument(anyString, anyString); result = originalDocument;
 				}};
 				
 				ImportDocumentIntegrator service = new ImportDocumentIntegrator(jp, spread_id);
@@ -173,14 +179,14 @@ public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest {
 				
 				
 				SpreadSheet result = bd.getSpreadsheetById(service.get_docId());
-
+				
 				
 				
 				assertTrue("Cell content doesnt match", sameSpreadSheet(result, spreadsheet));
 				assertEquals("Cell content doesnt match", result.getOwner(), spreadsheet.getOwner());
 				assertFalse("Cell content doesnt match", result.getId() == spreadsheet.getId());
-				assertNull("Cell content doesnt match", result.getReaderUserSet());
-				assertNull("Cell content doesnt match", result.getWriterUserSet());
+				assertEquals("Cell content doesnt match", result.getReaderUserSet().size(), 1);
+				assertEquals("Cell content doesnt match", result.getWriterUserSet().size(), 1);
 				
 				
 			}
@@ -196,11 +202,11 @@ public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest {
 				
 				
 				new Expectations(){{
-					new StoreRemoteServices();
-					storeService.loadDocument(USERNAME, Integer.toString(spread_id)); result = originalDocument;
+					//new StoreRemoteServices();
+					storeService.loadDocument(anyString, anyString); result = originalDocument;
 					
-					new StoreRemoteServices();
-					storeService.loadDocument(USERNAME, Integer.toString(spread_id)); result = originalDocument;
+					//new StoreRemoteServices();
+					storeService.loadDocument(anyString, anyString); result = originalDocument;
 				}};
 				
 				ImportDocumentIntegrator service = new ImportDocumentIntegrator(jp, spread_id);
@@ -217,8 +223,8 @@ public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest {
 				assertTrue("Cell content doesnt match", sameSpreadSheet(result, spreadsheet));
 				assertEquals("Cell content doesnt match", result.getOwner(), spreadsheet.getOwner());
 				assertFalse("Cell content doesnt match", result.getId() == spreadsheet.getId());
-				assertNull("Cell content doesnt match", result.getReaderUserSet());
-				assertNull("Cell content doesnt match", result.getWriterUserSet());
+				assertEquals("Cell content doesnt match", result.getReaderUserSet().size(), 1);
+				assertEquals("Cell content doesnt match", result.getWriterUserSet().size(), 1);
 				
 				
 			}
