@@ -163,8 +163,7 @@ public class SDStoreClient implements SDStore {
 			aes = new AESCipher();
 			encryptedContents = aes.encrypt(contents, userkey);
 			
-		} catch (NoSuchAlgorithmException | InvalidParameterSpecException
-				| NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
+		} catch (Exception e) {
 			throw new SDStoreClientException("SDStoreClient encryption failed");
 		}
 		
