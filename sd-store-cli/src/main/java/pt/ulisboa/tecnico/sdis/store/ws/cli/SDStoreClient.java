@@ -195,7 +195,6 @@ public class SDStoreClient implements SDStore {
 			elapsed = start - System.nanoTime();
 			seconds = (double)elapsed/1e9f;
 			if(seconds > TIMEOUT){
-				// TODO throw exception RemoteServiceException
 				throw new SDStoreClientException("SDStoreClient getting maxVersion timeout");
 			}
 			for(Iterator<Response<LoadResponse>> it = loadResponses.iterator();it.hasNext();){
@@ -332,7 +331,6 @@ public class SDStoreClient implements SDStore {
 			elapsed = start - System.nanoTime();
 			seconds = (double)elapsed/1e9f;
 			if(seconds > TIMEOUT){
-				// TODO throw exception RemoteServiceException
 				throw new SDStoreClientException("Timeout of waiting for RT replicas to responde");
 			}
 			for(Iterator<Response<LoadResponse>> it = loadResponses.iterator();it.hasNext();){
@@ -409,7 +407,6 @@ public class SDStoreClient implements SDStore {
 			elapsed = start - System.nanoTime();
 			seconds = (double)elapsed/1e9f;
 			if(seconds > TIMEOUT){
-				// TODO throw exception RemoteServiceException
 				throw new SDStoreClientException("SDStoreClient write-back timeout");
 			}
 			for(Iterator<Response<StoreResponse>> it = storeResponses.iterator();it.hasNext();){
@@ -468,7 +465,7 @@ public class SDStoreClient implements SDStore {
 			aes = new AESCipher();
 			eAut = aes.encrypt(bAut, session_key);
 		}	catch (Exception e)	{
-			//TO DO
+			throw new SDStoreClientException("Failed to encrypt authenticator",e);
 		}
 		
 		WebServiceRequest req = new WebServiceRequest(eAut, eTicket);
@@ -499,13 +496,13 @@ public class SDStoreClient implements SDStore {
 			bRep = aes.decrypt(bRep, sessionKey);
 			rep = WebServiceResponse.parse(bRep);
 		} catch (Exception e) {
-			//TO DO -- We should do something here, most likely.
+			throw new SDStoreClientException("Failed to construct WebServiceResponse",e);
 		}
 		
 		String compareTime = rep.getRequestTime();
 		String reqTime = bindingToTime.get(bindingProvider);
 		if(!(reqTime.equals(compareTime))){
-			//TO DO -- Error. Should throw stuff.
+			throw new SDStoreClientException("Received from server wrong nounce sent (requestTime)");
 		}
 		
 		return;
