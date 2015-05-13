@@ -223,6 +223,20 @@ public class SDStoreImpl implements SDStore {
 		}
 		
 		String req_time = auth.getRequestTime();
+		Date reqTime = null;
+		try{
+			reqTime = df.parse(req_time);
+		} catch (Exception e) {
+			//TO DO -- Something will go here. Surely!
+		}
+		Calendar cal2 = Calendar.getInstance();
+		cal2.setTime(reqTime);
+		cal2.add(Calendar.SECOND, 1); //<-- Mudar se necessario
+		Date compareTime = cal2.getTime();
+		
+		if(compareTime.compareTo(currentTime) < 0){
+			//TO DO -- Request time is old. We should do something.
+		}
 		
 		WebServiceResponse rep = new WebServiceResponse(req_time);
 		byte[] bRep = rep.encode();
