@@ -20,16 +20,16 @@ public class UserCredentials {
 	
 	private byte[] sessionKey;
 	private byte[] encryptionKey;
-	private byte[] nounce;
+	private int nounce;
 
-	public UserCredentials(byte[] sk, byte[] ek, byte[] n){
+	public UserCredentials(byte[] sk, byte[] ek, int n){
 		this.sessionKey=sk;
 		this.encryptionKey=ek;
 		this.nounce=n;
 	}
 	
 	public static void main(String[] args) {
-		UserCredentials rar = new UserCredentials("ola".getBytes(),"ate ja".getBytes(),"adeus".getBytes());
+		UserCredentials rar = new UserCredentials("ola".getBytes(),"ate ja".getBytes(), 747);
 		System.out.println(new String(rar.encode()));
 	}
 	
@@ -47,7 +47,7 @@ public class UserCredentials {
 		root.addContent(f2);
 		
 		Element f3 = new Element(FIELD_3);
-		f3.setText(printBase64Binary(nounce));
+		f3.setText(Integer.toString(nounce));
 		root.addContent(f3);
 		
 		XMLOutputter xml = new XMLOutputter();		
@@ -65,7 +65,14 @@ public class UserCredentials {
 		Element f3 = root.getChild(FIELD_3);
 		byte[] bf1 = parseBase64Binary(f1.getText());
 		byte[] bf2 = parseBase64Binary(f2.getText());
-		byte[] bf3 = parseBase64Binary(f3.getText());
+		int bf3 = 0;
+		
+		try{
+			bf3 = Integer.parseInt(f3.getText());
+		} catch (NumberFormatException e){
+			System.out.println(e.getMessage());
+		}
+		
 		return new UserCredentials(bf1,bf2,bf3);
 	}
 
@@ -85,11 +92,11 @@ public class UserCredentials {
 		this.encryptionKey = encryptionKey;
 	}
 
-	public byte[] getNounce() {
+	public int getNounce() {
 		return nounce;
 	}
 
-	public void setNounce(byte[] nounce) {
+	public void setNounce(int nounce) {
 		this.nounce = nounce;
 	}
 
