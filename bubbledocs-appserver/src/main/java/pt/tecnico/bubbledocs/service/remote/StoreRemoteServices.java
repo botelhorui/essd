@@ -20,7 +20,7 @@ public class StoreRemoteServices {
 	public StoreRemoteServices() throws SDStoreClientException{
 		super();
 		try {
-			storeclient = new SDStoreClient("http://localhost:8081", "SD-Store",2 ,3,2,2);
+			storeclient = new SDStoreClient("http://localhost:8081", "SD-Store",1 ,1,1,1);
 		} catch (JAXRException e) {
 			throw new SDStoreClientException();
 			
@@ -63,6 +63,9 @@ public class StoreRemoteServices {
 			document = storeclient.load(pair);
 		} catch (DocDoesNotExist_Exception | UserDoesNotExist_Exception e) {
 			throw new CannotLoadDocumentException();
+		}catch (SDStoreClientException e){
+			RemoteInvocationException t = new RemoteInvocationException(e);
+			throw t;
 		}
 
 		return document; 
