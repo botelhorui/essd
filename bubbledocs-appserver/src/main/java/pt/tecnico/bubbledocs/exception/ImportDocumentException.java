@@ -1,6 +1,14 @@
 package pt.tecnico.bubbledocs.exception;
 
 public class ImportDocumentException extends BubbleDocsException {
+	
+	public ImportDocumentException(){
+		
+	}
+	
+	public ImportDocumentException(Throwable e){
+		initCause(e);
+	}
 
 	/**
 	 *

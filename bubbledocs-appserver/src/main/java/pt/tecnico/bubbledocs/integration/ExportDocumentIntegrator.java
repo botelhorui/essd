@@ -16,6 +16,7 @@ public class ExportDocumentIntegrator extends BubbleDocsIntegrator {
 	private String _token;
 	private StoreRemoteServices storeService;
 	private GetUsername4TokenService usernameService;
+	private byte[] docBytes;
 
 	public ExportDocumentIntegrator(String token, int docId) {
 
@@ -33,7 +34,8 @@ public class ExportDocumentIntegrator extends BubbleDocsIntegrator {
 		storeService = new StoreRemoteServices();
 
 		byte[] s = service.getSpreadsheetBytesById(docId);
-
+		docBytes=s;
+		
 		// ???
 		// not sure if this is still supposed to be used in the remote call
 		/*validateUser(token);
@@ -60,6 +62,10 @@ public class ExportDocumentIntegrator extends BubbleDocsIntegrator {
 		
 		return service.getDocXML();
 	
+	}
+	
+	public byte[] getBytes(){
+		return docBytes;
 	}
 
 }

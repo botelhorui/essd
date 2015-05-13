@@ -43,7 +43,7 @@ public class ImportDocument extends AccessBubbleDocsService {
 		try{
 			JDOMdoc = buildJDOMDocumentFromByteArray(_bXML);
 		}catch(JDOMException e){
-			throw new ImportDocumentException();
+			throw new ImportDocumentException(e);
 		}catch(IOException e){
 			throw new ImportDocumentException();
 		}

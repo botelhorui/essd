@@ -1,5 +1,6 @@
 package pt.tecnico.bubbledocs.service;
 
+import pt.ist.fenixframework.Atomic;
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
@@ -38,6 +39,7 @@ public class LoginUser extends BubbleDocsService {
 		return token;
 	}
 
+	@Atomic
 	public void setUserPassword(String username, String password) throws InvalidUsernameException{
 
 		BubbleDocs bd = BubbleDocs.getInstance();
@@ -48,6 +50,7 @@ public class LoginUser extends BubbleDocsService {
 
 	}
 
+	@Atomic
 	public String checkUserPassword(String username) throws InvalidUsernameException {
 
 		BubbleDocs bd = BubbleDocs.getInstance();

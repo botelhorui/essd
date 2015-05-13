@@ -6,6 +6,7 @@ import pt.tecnico.bubbledocs.service.CreateSpreadSheet;
 public class CreateSpreadsheetIntegrator extends BubbleDocsIntegrator {
 
 	private CreateSpreadSheet service;
+	private int sheetId;
 	
 	public CreateSpreadsheetIntegrator(String token, String name, int rows,int columns) {
 
@@ -17,8 +18,10 @@ public class CreateSpreadsheetIntegrator extends BubbleDocsIntegrator {
 	protected void dispatch() throws BubbleDocsException {
 		
 		service.execute();
-	
+		sheetId=service.getSheetId();
 	}	
 
-	
+	public int getSheetId(){
+		return sheetId;
+	}
 }

@@ -1,8 +1,10 @@
 package pt.tecnico.bubbledocs.service;
 
 import java.io.IOException;
+
 import org.jdom2.Document;
 
+import pt.ist.fenixframework.Atomic;
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
@@ -41,6 +43,7 @@ public class ExportDocument extends AccessBubbleDocsService {
 		
 	}
 	
+	@Atomic
 	public byte[] getSpreadsheetBytesById(int docId) {
 		
 		BubbleDocs bd = BubbleDocs.getInstance();

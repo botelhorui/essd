@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
+import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.bubbledocs.exception.CharacterLimitException;
@@ -46,16 +47,6 @@ public class BubbleDocs extends BubbleDocs_Base {
 			bd.getUserRoot();
 		}		
 		return bd;
-	}
-	
-	public void cenas() {
-		
-		System.out.println("_____________________________________________________");
-		
-		System.out.println("____________________"+ hasUser("root") + "_____________________");
-		
-		System.out.println("_____________________________________________________");
-		
 	}
 
 	private User getUserRoot() {		
@@ -291,7 +282,6 @@ public class BubbleDocs extends BubbleDocs_Base {
 	}
 
 	
-
 	public void delete() {		
 
 		for(User u: getUserSet()){		
