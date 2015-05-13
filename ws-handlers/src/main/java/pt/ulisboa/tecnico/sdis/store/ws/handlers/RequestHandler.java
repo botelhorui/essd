@@ -16,6 +16,8 @@ import javax.xml.ws.handler.MessageContext.Scope;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
+import pt.ulisboa.tecnico.sdis.store.ws.util.MiniLogger;
+
 /**
  *  This SOAPHandler shows how to set/get values from headers in
  *  inbound/outbound SOAP messages.
@@ -49,6 +51,14 @@ public class RequestHandler implements SOAPHandler<SOAPMessageContext> {
         return null;
     }
     
+    public void println(String s){
+		System.out.println(MiniLogger.decorate(RequestHandler.class.getSimpleName(),s));
+	}
+	
+	public void printf(String s, Object... args){
+		System.out.printf(MiniLogger.decorate(RequestHandler.class.getSimpleName(),s), args);
+	}
+    
     /*
      * Checks if the SOAPBody Element matches the given request name.
      */
@@ -61,11 +71,15 @@ public class RequestHandler implements SOAPHandler<SOAPMessageContext> {
 
         try {
             if (outboundElement.booleanValue()) {
-                System.out.println("Writing header in outbound SOAP message...");
+                println("Writing header in outbound SOAP message...");
                 
                 String propertyValue = (String) smc.get(REQUEST_PROPERTY);
-                System.out.printf("%s received '%s'%n", CLASS_NAME, propertyValue);
+                printf("%s received '%s'%n", CLASS_NAME, propertyValue);
 
+        		if(propertyValue==null){
+					println("Message didn't get request property");
+					return true;
+				}
                 // get SOAP envelope
                 SOAPMessage msg = smc.getMessage();
                 SOAPPart sp = msg.getSOAPPart();
@@ -84,10 +98,10 @@ public class RequestHandler implements SOAPHandler<SOAPMessageContext> {
               
                 element.addTextNode(propertyValue);
                 
-                System.out.printf("%s put token '%s' on request message header%n", CLASS_NAME, propertyValue);
+                printf("%s put token '%s' on request message header%n", CLASS_NAME, propertyValue);
 
             } else {
-                System.out.println("Reading header in inbound SOAP message...");
+                println("Reading header in inbound SOAP message...");
                
                 // get SOAP envelope header
                 SOAPMessage msg = smc.getMessage();
@@ -97,7 +111,7 @@ public class RequestHandler implements SOAPHandler<SOAPMessageContext> {
 
                 // check header
                 if (sh == null) {
-                    System.out.println("Header not found.");
+                    println("Header not found.");
                     return true;
                 }
 
@@ -106,7 +120,7 @@ public class RequestHandler implements SOAPHandler<SOAPMessageContext> {
                 Iterator it = sh.getChildElements(name);
                 // check header element
                 if (!it.hasNext()) {
-                    System.out.println("Header element not found.");
+                    println("Header element not found.");
                     return true;
                 }
                 SOAPElement element = (SOAPElement) it.next();
@@ -115,7 +129,7 @@ public class RequestHandler implements SOAPHandler<SOAPMessageContext> {
                 String valueString = element.getValue();
 
                 // print received header
-                System.out.println("Header value is " + valueString);
+                println("Header value is " + valueString);
 
                 // put header in a property context
                 smc.put(RESPONSE_PROPERTY, valueString);
@@ -124,16 +138,16 @@ public class RequestHandler implements SOAPHandler<SOAPMessageContext> {
 			
             }
         } catch (Exception e) {
-            System.out.print("Caught exception in handleMessage: ");
-            System.out.println(e);
-            System.out.println("Continue normal processing...");
+            println("Caught exception in handleMessage: ");
+            println(e.toString());
+            println("Continue normal processing...");
         }
 
         return true;
     }
 
     public boolean handleFault(SOAPMessageContext smc) {
-        System.out.println("Ignoring fault message...");
+        println("Ignoring fault message...");
         return true;
     }
 

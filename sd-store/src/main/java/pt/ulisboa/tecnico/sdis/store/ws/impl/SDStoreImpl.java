@@ -235,7 +235,7 @@ public class SDStoreImpl implements SDStore {
 		}
 		Calendar cal2 = Calendar.getInstance();
 		cal2.setTime(reqTime);
-		cal2.add(Calendar.SECOND, 1); //<-- Mudar se necessario
+		cal2.add(Calendar.SECOND, 4); //<-- Mudar se necessario
 		Date compareTime = cal2.getTime();
 		
 		if(compareTime.compareTo(currentTime) < 0){
@@ -244,8 +244,8 @@ public class SDStoreImpl implements SDStore {
 		
 		WebServiceResponse rep = new WebServiceResponse(req_time);
 		byte[] bRep = rep.encode();
-		byte[] eRep = null;
 		
+		byte[] eRep = null;
 		try{
 			eRep = aes.encrypt(bRep, sessionKey);
 		} catch (Exception e) {
@@ -257,7 +257,7 @@ public class SDStoreImpl implements SDStore {
 	
 	private void sendToHandler(byte[] eRep){
 		
-		MessageContext messageContext = webServiceContext.getMessageContext();
+		MessageContext messageContext = webServiceContext.getMessageContext();		
 		String sRep = DatatypeConverter.printBase64Binary(eRep);
 		messageContext.put(ResponseHandler.RESPONSE_PROPERTY, sRep);
 		

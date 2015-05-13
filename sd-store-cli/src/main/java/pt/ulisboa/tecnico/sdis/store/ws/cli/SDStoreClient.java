@@ -18,7 +18,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import javax.xml.bind.DatatypeConverter;
-
 import javax.annotation.Resource;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -31,7 +30,6 @@ import javax.xml.ws.soap.AddressingFeature.Responses;
 import pt.ulisboa.tecnico.essd.xml.Authenticator;
 import pt.ulisboa.tecnico.essd.xml.WebServiceRequest;
 import pt.ulisboa.tecnico.essd.xml.WebServiceResponse;
-
 import pt.ulisboa.tecnico.essd.crypto.AESCipher;
 import pt.ulisboa.tecnico.essd.crypto.Credentials;
 import pt.ulisboa.tecnico.essd.crypto.CredentialsManager;
@@ -292,6 +290,7 @@ public class SDStoreClient implements SDStore {
 	@Override
 	public byte[] load(DocUserPair docUserPair)
 			throws DocDoesNotExist_Exception, UserDoesNotExist_Exception{		
+		println("Starting load");
 		List<Response<LoadResponse>> loadResponses = new ArrayList<Response<LoadResponse>>();
 		Map<Response<LoadResponse>,BindingProvider> loadResponsesBindingProviders = new HashMap<Response<LoadResponse>, BindingProvider>();
 		Map<BindingProvider, String> bindingToTime = new HashMap<BindingProvider, String>();
@@ -473,6 +472,8 @@ public class SDStoreClient implements SDStore {
 		
 		Map<String, Object> requestContext = bindingProvider.getRequestContext();
 		requestContext.put(RequestHandler.REQUEST_PROPERTY, messageToSend);
+		printf("Put %s %s in requestContext%n",RequestHandler.REQUEST_PROPERTY, messageToSend);
+		
 		
 		return sReq_time;
 		
@@ -488,12 +489,13 @@ public class SDStoreClient implements SDStore {
 		
 		String sRep = (String) responseContext.get(RequestHandler.RESPONSE_PROPERTY);
 		byte[] eRep = DatatypeConverter.parseBase64Binary(sRep);
+		
 		byte[] bRep = null;
 		WebServiceResponse rep = null;
 		
 		try{
 			aes = new AESCipher();
-			bRep = aes.decrypt(bRep, sessionKey);
+			bRep = aes.decrypt(eRep, sessionKey);
 			rep = WebServiceResponse.parse(bRep);
 		} catch (Exception e) {
 			throw new SDStoreClientException("Failed to construct WebServiceResponse",e);

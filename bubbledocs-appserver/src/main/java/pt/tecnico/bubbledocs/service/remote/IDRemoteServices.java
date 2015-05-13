@@ -9,6 +9,8 @@ import pt.tecnico.bubbledocs.exception.InvalidEmailException;
 import pt.tecnico.bubbledocs.exception.InvalidUsernameException;
 import pt.tecnico.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.bubbledocs.exception.RemoteInvocationException;
+import pt.ulisboa.tecnico.essd.crypto.Credentials;
+import pt.ulisboa.tecnico.essd.crypto.CredentialsManager;
 import pt.ulisboa.tecnico.sdis.id.ws.*;
 import pt.ulisboa.tecnico.sdis.id.ws.cli.*;
 
@@ -31,7 +33,6 @@ public class IDRemoteServices {
 		try{
 			String uddiUrl = props.getProperty("uddi.url");
 			String idName = props.getProperty("id.name");
-			System.out.printf("uddi.url:%s id.name:%s%n",uddiUrl,idName);
 			//idClient = new SDIdClient("http://localhost:8081", "SD-ID");
 			idClient = new SDIdClient(uddiUrl,idName);
 		}catch(SDIdClientException e){
@@ -42,7 +43,15 @@ public class IDRemoteServices {
 	}
 	
 	public static void main(String[] args) {
-		new IDRemoteServices();
+		IDRemoteServices id = new IDRemoteServices();
+		id.loginUser("alice", "Aaa1");
+		StoreRemoteServices s = new StoreRemoteServices();
+		s.storeDocument("alice", "x", "MWAAHAHAAHAH".getBytes());
+		System.out.println("STTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTORE");
+		byte[] bdoc = s.loadDocument("alice", "x");
+		System.out.println("LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOAD");
+		System.out.println(new String(bdoc));
+		
 	}
 
 	public void createUser(String username, String name, String email)

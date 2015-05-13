@@ -16,6 +16,8 @@ import javax.xml.ws.handler.MessageContext.Scope;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
+import pt.ulisboa.tecnico.sdis.store.ws.util.MiniLogger;
+
 /**
  *  This SOAPHandler shows how to set/get values from headers in
  *  inbound/outbound SOAP messages.
@@ -49,6 +51,14 @@ public class ResponseHandler implements SOAPHandler<SOAPMessageContext> {
         return null;
     }
     
+    public void println(String s){
+		System.out.println(MiniLogger.decorate(ResponseHandler.class.getSimpleName(),s));
+	}
+	
+	public void printf(String s, Object... args){
+		System.out.printf(MiniLogger.decorate(ResponseHandler.class.getSimpleName(),s), args);
+	}
+    
     /*
      * Checks if the SOAPBody Element matches the given request name.
      */
@@ -66,6 +76,11 @@ public class ResponseHandler implements SOAPHandler<SOAPMessageContext> {
                 String propertyValue = (String) smc.get(RESPONSE_PROPERTY);
                 System.out.printf("%s received '%s'%n", CLASS_NAME, propertyValue);
 
+        		if(propertyValue==null){
+					println("Message didn't get request property");
+					return true;
+				}
+        		
                 // get SOAP envelope
                 SOAPMessage msg = smc.getMessage();
                 SOAPPart sp = msg.getSOAPPart();
