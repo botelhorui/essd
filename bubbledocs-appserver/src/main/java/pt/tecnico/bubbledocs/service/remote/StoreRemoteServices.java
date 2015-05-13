@@ -35,7 +35,7 @@ public class StoreRemoteServices {
 			String RT = props.getProperty("store.RT");
 			String WT = props.getProperty("store.WT");
 			System.out.printf("%s %s %s %s %s %s ",uddiUrl,storeName,storeClientId,N,RT,WT);
-			storeclient = new SDStoreClient("http://localhost:8081", "SD-Store",1 ,1,1,1);
+			storeclient = new SDStoreClient(uddiUrl, storeName,Integer.parseInt(storeClientId) ,Integer.parseInt(N),Integer.parseInt(RT),Integer.parseInt(WT));
 		} catch (SDStoreClientException | JAXRException e) {
 			throw new RemoteInvocationException(e);			
 		}
