@@ -39,7 +39,7 @@ public class SDStoreImpl implements SDStore {
 	
 	Map<String, UserRepo> userRepos = new HashMap<String, UserRepo>();
 	
-	private String _sStoreKey = "LgzxjQVHcp3FQdTyfh78LDI0/GXaWT4ioj4vPJ/om0M=";
+	private String _sStoreKey = "7o4+TVh/u+0je+qKK9UkPg==";
 	
 	@Resource
 	private WebServiceContext webServiceContext;

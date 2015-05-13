@@ -32,7 +32,7 @@ public class SDIdImpl implements SDId{
 
 	private ArrayList<UserAccount> _users = new ArrayList<UserAccount>();
 
-	private String _sStoreKey = "LgzxjQVHcp3FQdTyfh78LDI0/GXaWT4ioj4vPJ/om0M=";
+	private String _sStoreKey = "7o4+TVh/u+0je+qKK9UkPg==";
 
 	public SDIdImpl() throws AuthReqFailed_Exception{
 		populateDomain();
