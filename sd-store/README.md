@@ -15,6 +15,10 @@ Repositório
 
 ## Serviço SD-Store
 
+Novas instruções em: https://github.com/tecnico-softeng-distsys-2015/migration/
+
+_____
+
 ### Instruções de instalação 
 
 [0] Iniciar sistema operativo
