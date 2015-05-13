@@ -34,11 +34,11 @@ public class SDIdImpl implements SDId{
 
 	private String _sStoreKey = "LgzxjQVHcp3FQdTyfh78LDI0/GXaWT4ioj4vPJ/om0M=";
 
-	public SDIdImpl(){
+	public SDIdImpl() throws AuthReqFailed_Exception{
 		populateDomain();
 	}
 
-	private void populateDomain(){
+	private void populateDomain() throws AuthReqFailed_Exception{
 		UserAccount ua = new UserAccount("alice", "Aaa1", "alice@tecnico.pt");
 		_users.add(ua);
 
@@ -87,9 +87,13 @@ public class SDIdImpl implements SDId{
 			throw new InvalidEmail_Exception("The email '"+emailAddress+"' is invalid", new InvalidEmail());
 
 		//Create the user
-
-		UserAccount ua = new UserAccount(userId, emailAddress);
-		_users.add(ua);
+		UserAccount ua;
+		try{
+			ua = new UserAccount(userId, emailAddress);
+			_users.add(ua);
+		}catch(AuthReqFailed_Exception e){
+			throw new InvalidUser_Exception("Encryption Key for user could not be generated", new InvalidUser());
+		}
 
 		System.out.println("Generated password: " + ua.getPassword());
 	}
@@ -144,7 +148,7 @@ public class SDIdImpl implements SDId{
 		try{
 			res = ReservedXML.parse(reserved);
 		}catch(Exception e){
-			throw new AuthReqFailed_Exception(e.getMessage(), new AuthReqFailed());
+			throw new AuthReqFailed_Exception("Parsing ReservedXML wrong: " + e.getMessage(), new AuthReqFailed());
 		}
 		if(!res.getServiceName().equals("SD-ID"))
 			throw new AuthReqFailed_Exception("Wrong service-name!", new AuthReqFailed());
@@ -172,12 +176,12 @@ public class SDIdImpl implements SDId{
 			aes = new AESCipher();
 			clientKey = aes.createKeyFromPassword(stored_password);
 			sessionKey = aes.generateKey();
-			encryptionKey = aes.generateKey();
+			encryptionKey = ua.getEncryptionKey();
 			storeKey = DatatypeConverter.parseBase64Binary(_sStoreKey);
 		}catch(Exception e){
-			throw new AuthReqFailed_Exception(e.getMessage(), new AuthReqFailed());
+			throw new AuthReqFailed_Exception("Wrong clientKey or storeKey: " + e.getMessage(), new AuthReqFailed());
 		}
-		
+
 		//Generate and encrypt UserCredentials
 		UserCredentials uc = new UserCredentials(sessionKey, encryptionKey, nounce);
 		byte[] bUC = uc.encode();
@@ -185,15 +189,15 @@ public class SDIdImpl implements SDId{
 		try{
 			bEncUC = aes.encrypt(bUC, clientKey);
 		}catch(Exception e){
-			throw new AuthReqFailed_Exception(e.getMessage(), new AuthReqFailed());
+			throw new AuthReqFailed_Exception("Error: encrypting UserCredentials: " + e.getMessage(), new AuthReqFailed());
 		}
-		
+
 		//Generate and encrypt Kerberos Ticket
-		
+
 		//create an instance of SimpleDateFormat used for formatting 
 		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
-		
+
 		// Get the initial time stamp
 		Date initial = cal.getTime();
 		cal.setTime(new Date());
@@ -202,18 +206,18 @@ public class SDIdImpl implements SDId{
 		// Using DateFormat format method we can create a string representation of a date with the defined format
 		String sInitial = df.format(initial);
 		String sEnd = df.format(end);
-		
+
 		Ticket ticket = new Ticket(userId, "SD-STORE", sInitial, sEnd, sessionKey);
 		byte[] bTicket = ticket.encode();
 		byte[] bEncTicket;
 		try{
 			bEncTicket = aes.encrypt(bTicket, storeKey);
 		}catch(Exception e){
-			throw new AuthReqFailed_Exception(e.getMessage(), new AuthReqFailed());
+			throw new AuthReqFailed_Exception("Error: encrypting Ticket: " + e.getMessage(), new AuthReqFailed());
 		}
-		
+
 		//Generate RequestAuthenticationResponse and return it in byte[]
-		
+
 		RequestAuthenticationResponse rar = new RequestAuthenticationResponse(bEncTicket, bEncUC);
 
 		return rar.encode();

@@ -152,6 +152,7 @@ public class SDStoreClient implements SDStore {
 		
 		List<Response<LoadResponse>> loadResponses = new ArrayList<Response<LoadResponse>>();
 		Map<Response<LoadResponse>,BindingProvider> loadResponseEndpoints = new HashMap<Response<LoadResponse>, BindingProvider>();
+		Map<BindingProvider, String> bindingToTime = new HashMap<BindingProvider, String>();
 		AESCipher aes;
 		byte[] encryptedContents=null;
 		
@@ -175,6 +176,8 @@ public class SDStoreClient implements SDStore {
 			String address = (String)rc.get(BindingProvider.ENDPOINT_ADDRESS_PROPERTY);
 			printf("requesting load async to %s%n",address);
 			rc.put(VersionHandler.VERSION_QUERY_PROPERTY, VersionHandler.VERSION_QUERY_PROPERTY);
+			String reqTime = sendToHandler(docUserPair.getUserId(), bp);
+			bindingToTime.put(bp, reqTime);
 			Response<LoadResponse> r = p.loadAsync(docUserPair);			
 			loadResponses.add(r);
 			loadResponseEndpoints.put(r,bp);
@@ -214,6 +217,7 @@ public class SDStoreClient implements SDStore {
 					}else if(version.greaterThan(maxVersion)){
 						maxVersion=version;
 					}
+					receiveFromHandler(docUserPair.getUserId(), bp, bindingToTime, resp);
 					printf("Received StoreResponse from %s. version value is %s%n",address,version);
 					completed++;								
 				}
@@ -228,12 +232,15 @@ public class SDStoreClient implements SDStore {
 		maxVersion.setSeqn(maxVersion.getSeqn()+1);
 		List<Response<StoreResponse>> storeResponses = new ArrayList<Response<StoreResponse>>();
 		Map<Response<StoreResponse>,BindingProvider> storeResponsesBindingProviders = new HashMap<Response<StoreResponse>, BindingProvider>();
+		bindingToTime = new HashMap<BindingProvider, String>();
 
 		for(SDStore p: ports){
 			BindingProvider bp = (BindingProvider)p;
 			Map<String,Object> rc = bp.getRequestContext();
 			String address = (String) rc.get(BindingProvider.ENDPOINT_ADDRESS_PROPERTY);
 			printf("requesting storeAsync request to %s%n",address);
+			String reqTime = sendToHandler(docUserPair.getUserId(), bp);
+			bindingToTime.put(bp, reqTime);
 			rc.put(VersionHandler.VERSION_PROPERTY, maxVersion);
 			Response<StoreResponse> r = p.storeAsync(docUserPair, encryptedContents);			
 			storeResponses.add(r);
@@ -255,6 +262,7 @@ public class SDStoreClient implements SDStore {
 					BindingProvider bp = storeResponsesBindingProviders.get(r);
 					Map<String,Object> rc = bp.getRequestContext();
 					String address = (String)rc.get(BindingProvider.ENDPOINT_ADDRESS_PROPERTY);
+					receiveFromHandler(docUserPair.getUserId(), bp, bindingToTime, r.getContext());
 					printf("Received StoreResponse from %s%n",address);					
 					it.remove();
 					completed++;				
@@ -288,6 +296,7 @@ public class SDStoreClient implements SDStore {
 			throws DocDoesNotExist_Exception, UserDoesNotExist_Exception{		
 		List<Response<LoadResponse>> loadResponses = new ArrayList<Response<LoadResponse>>();
 		Map<Response<LoadResponse>,BindingProvider> loadResponsesBindingProviders = new HashMap<Response<LoadResponse>, BindingProvider>();
+		Map<BindingProvider, String> bindingToTime = new HashMap<BindingProvider, String>();
 		AESCipher aes;
 		byte[] decryptedContents=null;
 		
@@ -306,6 +315,8 @@ public class SDStoreClient implements SDStore {
 			if(rc.containsKey(VersionHandler.VERSION_QUERY_PROPERTY)){
 				rc.remove(VersionHandler.VERSION_QUERY_PROPERTY);
 			}
+			String reqTime = sendToHandler(docUserPair.getUserId(), bp);
+			bindingToTime.put(bp, reqTime);
 			printf("requesting load async to %s%n",address);			
 			Response<LoadResponse> r = p.loadAsync(docUserPair);
 			loadResponses.add(r);
@@ -355,6 +366,7 @@ public class SDStoreClient implements SDStore {
 						println("Caught exception when trying to get Response's future content%nCause:%n"+e.getCause());
 						throw new SDStoreClientException("Exception when getting LoadResponse contents"); 
 					}
+					receiveFromHandler(docUserPair.getUserId(), bp, bindingToTime, resp);
 					printf("Received LoadResponse from %s. version value is %s. contents is %s bytes%n",
 							address,version,temp == null?null:Integer.toString(temp.length));					
 					if(maxVersion==null){
@@ -364,6 +376,7 @@ public class SDStoreClient implements SDStore {
 						maxVersion=version;
 						data = temp;
 					}
+					
 					completed++;
 				}
 			}
@@ -382,6 +395,8 @@ public class SDStoreClient implements SDStore {
 			BindingProvider bp = (BindingProvider)p;
 			Map<String,Object> rc = bp.getRequestContext();
 			String address = (String)rc.get(BindingProvider.ENDPOINT_ADDRESS_PROPERTY);
+			String reqTime = sendToHandler(docUserPair.getUserId(), bp);
+			bindingToTime.put(bp, reqTime);
 			printf("requesting write async to %s%n",address);
 
 			rc.put(VersionHandler.VERSION_PROPERTY, maxVersion);
@@ -406,6 +421,7 @@ public class SDStoreClient implements SDStore {
 					BindingProvider bp = loadResponsesBindingProviders.get(r);
 					Map<String,Object> rc = bp.getRequestContext();
 					String address = (String)rc.get(BindingProvider.ENDPOINT_ADDRESS_PROPERTY);
+					receiveFromHandler(docUserPair.getUserId(), bp, bindingToTime, r.getContext());
 					printf("Received StoreResponse from %s%n",address);
 					it.remove();
 					completed++;
@@ -466,7 +482,7 @@ public class SDStoreClient implements SDStore {
 		
 	}
 	
-	private void receiveFromHandler(String userId, BindingProvider bindingProvider, String req_time){
+	private void receiveFromHandler(String userId, BindingProvider bindingProvider, Map<BindingProvider, String> bindingToTime, Map<String, Object> responseContext){
 		
 		AESCipher aes;
 		
@@ -474,7 +490,6 @@ public class SDStoreClient implements SDStore {
 		Credentials c = cm.getCredentials(userId);
 		byte[] sessionKey = c.getSessionKey();
 		
-		Map<String, Object> responseContext = bindingProvider.getResponseContext();
 		String sRep = (String) responseContext.get(RequestHandler.RESPONSE_PROPERTY);
 		byte[] eRep = DatatypeConverter.parseBase64Binary(sRep);
 		byte[] bRep = null;
@@ -489,7 +504,8 @@ public class SDStoreClient implements SDStore {
 		}
 		
 		String compareTime = rep.getRequestTime();
-		if(!(req_time.equals(compareTime))){
+		String reqTime = bindingToTime.get(bindingProvider);
+		if(!(reqTime.equals(compareTime))){
 			//TO DO -- Error. Should throw stuff.
 		}
 		

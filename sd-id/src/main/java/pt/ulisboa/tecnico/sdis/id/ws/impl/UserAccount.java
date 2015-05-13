@@ -1,6 +1,8 @@
 package pt.ulisboa.tecnico.sdis.id.ws.impl;
 
 import java.util.Random;
+import pt.ulisboa.tecnico.essd.crypto.AESCipher;
+import pt.ulisboa.tecnico.sdis.id.ws.*; // classes generated from WSDL
 
 public class UserAccount{
 	private final static int MIN = 1000000;
@@ -9,17 +11,36 @@ public class UserAccount{
 	private String _userId;
 	private String _password;
 	private String _email;
+	private byte[] _encryptionKey;
 	
-	public UserAccount(String userId, String email){
+	public UserAccount(String userId, String email) throws AuthReqFailed_Exception{
 		this._userId = userId;
 		this._email = email;
 		this._password = this.generatePassword();
+		byte[] encryptionKey;
+		AESCipher aes;
+		try{
+			aes = new AESCipher();
+			encryptionKey = aes.generateKey();
+		}catch(Exception e){
+			throw new AuthReqFailed_Exception("Could not generate encryptionKey for UserAccount : " + e.getMessage(), new AuthReqFailed());
+		}
+		this._encryptionKey = encryptionKey;
 	}
 	
-	public UserAccount(String userId, String password, String email){
+	public UserAccount(String userId, String password, String email) throws AuthReqFailed_Exception{
 		this._userId = userId;
 		this._email = email;
 		this._password = password;
+		byte[] encryptionKey;
+		AESCipher aes;
+		try{
+			aes = new AESCipher();
+			encryptionKey = aes.generateKey();
+		}catch(Exception e){
+			throw new AuthReqFailed_Exception("Could not generate encryptionKey for UserAccount : " + e.getMessage(), new AuthReqFailed());
+		}
+		this._encryptionKey = encryptionKey;
 	}
 	
 	//generates a new password and replace the current one with the new one
@@ -55,6 +76,10 @@ public class UserAccount{
 	
 	public String getPassword(){
 		return _password;
+	}
+	
+	public byte[] getEncryptionKey(){
+		return _encryptionKey;
 	}
 	
 	public void setPassword(String password){

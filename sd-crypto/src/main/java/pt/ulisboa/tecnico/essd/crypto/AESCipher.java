@@ -10,7 +10,7 @@ public class AESCipher {
 
 	private static final byte[] _salt = "xptoleao".getBytes();
 	private static final int _iterations = 65536;
-	private static final int _keyLength = 256;
+	private static final int _keyLength = 128;
 
 	private static Cipher _cipher;
 	private static byte[] _iv;

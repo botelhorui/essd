@@ -65,8 +65,7 @@ public class UDDINaming {
 
 		try {
 			InitialContext context = new InitialContext();
-			connFactory = (ConnectionFactory) context
-					.lookup("java:jboss/jaxr/ConnectionFactory");
+			connFactory = (ConnectionFactory) context.lookup("java:jboss/jaxr/ConnectionFactory");
 		} catch (NamingException e) {
 			// Could not find using JNDI
 			if (debugFlag) {

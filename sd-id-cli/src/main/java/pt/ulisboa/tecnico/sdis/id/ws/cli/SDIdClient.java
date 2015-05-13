@@ -80,7 +80,7 @@ public class SDIdClient implements SDId {
 			aes = new AESCipher();
 			clientKey = aes.createKeyFromPassword(pass);
 		}catch(Exception e){
-			throw new AuthReqFailed_Exception(e.getMessage(), new AuthReqFailed());
+			throw new AuthReqFailed_Exception("Create clientKey from password: " + e.getMessage(), new AuthReqFailed());
 		}
 		
 		//Generate nounce
@@ -110,7 +110,7 @@ public class SDIdClient implements SDId {
 			bUserCredentials = aes.decrypt(bEncUserCredentials, clientKey);
 			user = UserCredentials.parse(bUserCredentials);
 		}catch(Exception e){
-			throw new AuthReqFailed_Exception(e.getMessage(), new AuthReqFailed());
+			throw new AuthReqFailed_Exception("Parse ReqAuthResponse and decrypt/parse UserCred: " + e.getMessage(), new AuthReqFailed());
 		}
 		//Get Credentials
 		byte[] sessionKey = user.getSessionKey();
