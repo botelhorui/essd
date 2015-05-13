@@ -17,8 +17,9 @@ public class AESCipher {
 
 	public AESCipher() throws NoSuchAlgorithmException, InvalidParameterSpecException,
 	NoSuchPaddingException{
-		_cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-		_iv = _cipher.getParameters().getParameterSpec(IvParameterSpec.class).getIV();
+		//_cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+		_cipher = Cipher.getInstance("AES");
+		//_iv = _cipher.getParameters().getParameterSpec(IvParameterSpec.class).getIV();
 	}
 
 	public byte[] createKeyFromPassword(String password) throws NoSuchAlgorithmException,
@@ -38,7 +39,7 @@ public class AESCipher {
 		//Recria chave
 		SecretKey originalKey = new SecretKeySpec(key, 0, key.length, "AES");
 		//Inicia cifra em modo encrypt
-		_cipher.init(Cipher.ENCRYPT_MODE, originalKey, new IvParameterSpec(_iv));
+		_cipher.init(Cipher.ENCRYPT_MODE, originalKey);
 		//Cifra data
 		byte[] cipherBytes = _cipher.doFinal(toCipher);
 		//Retorna data cifrada
@@ -51,7 +52,7 @@ public class AESCipher {
 		//Recria chave
 		SecretKey originalKey = new SecretKeySpec(key, 0, key.length, "AES");
 		//Inicia cifra em modo decrypt
-		_cipher.init(Cipher.DECRYPT_MODE, originalKey, new IvParameterSpec(_iv));
+		_cipher.init(Cipher.DECRYPT_MODE, originalKey);
 		//Descifra data
 		byte[] clearBytes = _cipher.doFinal(toDecrypt);
 		//Retorna data nao cifrada
