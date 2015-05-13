@@ -2,6 +2,7 @@ package pt.ulisboa.tecnico.essd.xml;
 
 import static javax.xml.bind.DatatypeConverter.printBase64Binary;
 import static javax.xml.bind.DatatypeConverter.parseBase64Binary;
+import java.util.Arrays;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,9 +26,16 @@ public class RequestAuthenticationResponse {
 		this.encryptedUserCredentials=encryptedUserCredentials;
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws JDOMException, IOException {
 		RequestAuthenticationResponse rar = new RequestAuthenticationResponse("ola".getBytes(),"adeus".getBytes());
 		System.out.println(new String(rar.encode()));
+		RequestAuthenticationResponse rol = RequestAuthenticationResponse.parse(rar.encode());
+		if(Arrays.equals(rar.getEncryptedTicket(),rol.getEncryptedTicket())){
+			System.out.println("YAY!");
+		}
+		if(Arrays.equals(rar.getEncryptedUserCredentials(), rol.getEncryptedUserCredentials())){
+			System.out.println("WOOHOO!");
+		}
 	}
 	
 	public byte[] encode(){

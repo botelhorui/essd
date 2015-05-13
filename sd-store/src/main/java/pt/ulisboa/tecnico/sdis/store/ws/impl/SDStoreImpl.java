@@ -7,12 +7,20 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Calendar;
 
 import javax.annotation.Resource;
 import javax.jws.*;
 import javax.xml.bind.DatatypeConverter;
 import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.handler.MessageContext;
+import pt.ulisboa.tecnico.sdis.store.ws.handlers.ResponseHandler;
+
+import pt.ulisboa.tecnico.essd.xml.WebServiceRequest;
+import pt.ulisboa.tecnico.essd.xml.WebServiceResponse;
+import pt.ulisboa.tecnico.essd.xml.Ticket;
+import pt.ulisboa.tecnico.essd.xml.Authenticator;
+import pt.ulisboa.tecnico.essd.crypto.AESCipher;
 
 import pt.ulisboa.tecnico.sdis.store.ws.*; // classes generated from WSDL
 import pt.ulisboa.tecnico.sdis.store.ws.handlers.Tag;
@@ -149,4 +157,93 @@ public class SDStoreImpl implements SDStore {
 			throw new UserDoesNotExist_Exception("The user '"+docUserPair.getUserId()+"' does not exist", null);
 		}
 	}
+	
+	private byte[] ReceiveFromHandler(){
+		
+		MessageContext messageContext = webServiceContext.getMessageContext();
+		AESCipher aes = null;
+		byte[] storeKey = DatatypeConverter.parseBase64Binary(_sStoreKey);
+		
+		String propertyValue = (String) messageContext.get(ResponseHandler.REQUEST_PROPERTY);
+		byte[] bReq = DatatypeConverter.parseBase64Binary(propertyValue);
+		
+		WebServiceRequest req = null;
+		
+		try{
+			req = WebServiceRequest.parse(bReq);
+		} catch (Exception e) { 
+			//TO DO -- Should do something about this.
+		}
+		
+		byte[] eTicket = req.getEncryptedTicket();
+		
+		byte[] bTicket = null;
+		Ticket t = null;
+		
+		try{
+			aes = new AESCipher();
+			bTicket = aes.decrypt(eTicket, storeKey);
+			t = Ticket.parse(bTicket);
+		} catch (Exception e) {
+			//TO DO -- Something has to happen here.
+		}
+
+		if(!(t.getServicename().equals("SD-STORE"))){
+			//TO DO -- Error happens.
+		}
+		
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		
+		Date currentTime = cal.getTime();
+		
+		String sFinalTime = t.getEndTime();
+		Date finalTime = null;
+		try{
+			finalTime = df.parse(sFinalTime);
+		} catch (Exception e) {
+			//TO DO -- So, wrong time format. Should be an error, right?
+		}
+		
+		if(finalTime.compareTo(currentTime) < 0){
+			//TO DO -- This is wrong. We should do something.
+		}
+		
+		byte[] sessionKey = t.getSessionKey();
+		
+		byte[] eAuth = req.getEncryptedAuthenticator();
+		byte[] bAuth = null;
+		Authenticator auth = null;
+		
+		try{
+			bAuth = aes.decrypt(eAuth, sessionKey);
+			auth = Authenticator.parse(bAuth);
+		} catch (Exception e){
+			//TO DO -- Again, stuff should be done about this.
+		}
+		
+		String req_time = auth.getRequestTime();
+		
+		WebServiceResponse rep = new WebServiceResponse(req_time);
+		byte[] bRep = rep.encode();
+		byte[] eRep = null;
+		
+		try{
+			eRep = aes.encrypt(bRep, sessionKey);
+		} catch (Exception e) {
+			//TO DO -- Last one. Still no idea what error to launch.
+		}
+		
+		return eRep;
+	}
+	
+	private void sendToHandler(byte[] eRep){
+		
+		MessageContext messageContext = webServiceContext.getMessageContext();
+		String sRep = DatatypeConverter.printBase64Binary(eRep);
+		messageContext.put(ResponseHandler.RESPONSE_PROPERTY, sRep);
+		
+	}
+	
+	
 }

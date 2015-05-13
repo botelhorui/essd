@@ -1,8 +1,5 @@
 package pt.ulisboa.tecnico.essd.xml;
 
-import static javax.xml.bind.DatatypeConverter.parseBase64Binary;
-import static javax.xml.bind.DatatypeConverter.printBase64Binary;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,18 +11,16 @@ import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.XMLOutputter;
 
 public class WebServiceResponse {
-	private static String FIELD_1 = "encryptedRequestTime";
+	private static String FIELD_1 = "requestTime";
 
-	private byte[] encryptedRequestTime;
+	private String requestTime;
 
-	public WebServiceResponse(byte[] encryptedRequestTime) {
-		super();
-		this.encryptedRequestTime = encryptedRequestTime;
+	public WebServiceResponse(String requestTime) {
+		this.requestTime = requestTime;
 	}
 
 	public static void main(String[] args) throws JDOMException, IOException {
-		WebServiceResponse rar = new WebServiceResponse(
-				"lol".getBytes());
+		WebServiceResponse rar = new WebServiceResponse("08-08-2008 20:40:08");
 		byte[] b = rar.encode();
 		System.out.println(new String(rar.encode()));
 		rar = parse(b);
@@ -38,10 +33,9 @@ public class WebServiceResponse {
 		doc.setRootElement(root);
 		
 		Element f1 = new Element(FIELD_1);
-		f1.setText(printBase64Binary(encryptedRequestTime));
+		f1.setText(requestTime);
 		root.addContent(f1);
 		
-
 		XMLOutputter xml = new XMLOutputter();		
 		
 		return xml.outputString(doc).getBytes();
@@ -51,17 +45,18 @@ public class WebServiceResponse {
 		SAXBuilder builder = new SAXBuilder();
 		InputStream stream = new ByteArrayInputStream(bXML);
 		Document doc = builder.build(stream);
+		
 		Element root = doc.getRootElement();
 		return new WebServiceResponse(
-				parseBase64Binary(root.getChildText(FIELD_1)));
+				root.getChildText(FIELD_1));
 	}
 	
-	public byte[] getEncryptedRequestTime() {
-		return encryptedRequestTime;
+	public String getRequestTime() {
+		return requestTime;
 	}
 
-	public void setEncryptedRequestTime(byte[] encryptedRequestTime) {
-		this.encryptedRequestTime = encryptedRequestTime;
+	public void setRequestTime(String requestTime) {
+		this.requestTime = requestTime;
 	}
 
 }

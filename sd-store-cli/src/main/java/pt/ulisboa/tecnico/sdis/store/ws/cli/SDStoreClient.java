@@ -9,12 +9,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+
+import javax.xml.bind.DatatypeConverter;
 
 import javax.annotation.Resource;
 import javax.crypto.BadPaddingException;
@@ -25,12 +28,17 @@ import javax.xml.ws.*;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.soap.AddressingFeature.Responses;
 
+import pt.ulisboa.tecnico.essd.xml.Authenticator;
+import pt.ulisboa.tecnico.essd.xml.WebServiceRequest;
+import pt.ulisboa.tecnico.essd.xml.WebServiceResponse;
+
 import pt.ulisboa.tecnico.essd.crypto.AESCipher;
 import pt.ulisboa.tecnico.essd.crypto.Credentials;
 import pt.ulisboa.tecnico.essd.crypto.CredentialsManager;
 import example.ws.uddi.UDDINaming;
 import pt.ulisboa.tecnico.sdis.store.ws.*; // classes generated from WSDL
 import pt.ulisboa.tecnico.sdis.store.ws.handlers.VersionHandler;
+import pt.ulisboa.tecnico.sdis.store.ws.handlers.RequestHandler;
 import pt.ulisboa.tecnico.sdis.store.ws.handlers.Tag;
 
 
@@ -287,9 +295,7 @@ public class SDStoreClient implements SDStore {
 		Credentials userCred = credmng.getCredentials(docUserPair.getUserId());
 		byte[] userkey = userCred.getEncryptionKey();
 		
-		
-		
-		
+
 		/*
 		 * Get all the value from the maximum version from RT replicas
 		 */
@@ -421,6 +427,74 @@ public class SDStoreClient implements SDStore {
 		}
 		
 		return decryptedContents;
+	}
+	
+	private String sendToHandler(String userId, BindingProvider bindingProvider){
+		
+		AESCipher aes;
+
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		
+		// Get the initial time stamp
+		Date req_time = cal.getTime();
+		String sReq_time = df.format(req_time);
+		
+		Authenticator aut = new Authenticator(userId, sReq_time);
+		byte[] bAut = aut.encode();
+		
+		CredentialsManager cm = CredentialsManager.getInstance();
+		Credentials c = cm.getCredentials(userId);
+		byte[] session_key = c.getSessionKey();
+		byte[] eTicket = c.getTicketEncrypted();
+		byte[] eAut = null;
+		
+		try{
+			aes = new AESCipher();
+			eAut = aes.encrypt(bAut, session_key);
+		}	catch (Exception e)	{
+			//TO DO
+		}
+		
+		WebServiceRequest req = new WebServiceRequest(eAut, eTicket);
+		String messageToSend = DatatypeConverter.printBase64Binary(req.encode());
+		
+		Map<String, Object> requestContext = bindingProvider.getRequestContext();
+		requestContext.put(RequestHandler.REQUEST_PROPERTY, messageToSend);
+		
+		return sReq_time;
+		
+	}
+	
+	private void receiveFromHandler(String userId, BindingProvider bindingProvider, String req_time){
+		
+		AESCipher aes;
+		
+		CredentialsManager cm = CredentialsManager.getInstance();
+		Credentials c = cm.getCredentials(userId);
+		byte[] sessionKey = c.getSessionKey();
+		
+		Map<String, Object> responseContext = bindingProvider.getResponseContext();
+		String sRep = (String) responseContext.get(RequestHandler.RESPONSE_PROPERTY);
+		byte[] eRep = DatatypeConverter.parseBase64Binary(sRep);
+		byte[] bRep = null;
+		WebServiceResponse rep = null;
+		
+		try{
+			aes = new AESCipher();
+			bRep = aes.decrypt(bRep, sessionKey);
+			rep = WebServiceResponse.parse(bRep);
+		} catch (Exception e) {
+			//TO DO -- We should do something here, most likely.
+		}
+		
+		String compareTime = rep.getRequestTime();
+		if(!(req_time.equals(compareTime))){
+			//TO DO -- Error. Should throw stuff.
+		}
+		
+		return;
+		
 	}
 
 	@Override

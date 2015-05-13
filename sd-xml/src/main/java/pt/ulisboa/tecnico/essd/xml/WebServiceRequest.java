@@ -64,5 +64,21 @@ public class WebServiceRequest {
 				parseBase64Binary(root.getChildText(FIELD_1)),
 				parseBase64Binary(root.getChildText(FIELD_2)));
 	}
+	
+	public byte[] getEncryptedTicket(){
+		return encryptedTicket;
+	}
+	
+	public void setEncryptedTicket(byte[] encryptedTicket){
+		this.encryptedTicket = encryptedTicket;
+	}
+	
+	public byte[] getEncryptedAuthenticator(){
+		return encryptedAuthenticator;
+	}
+	
+	public void setEncryptedAuthenticator(byte[] encryptedAuthenticator){
+		this.encryptedAuthenticator = encryptedAuthenticator;
+	} 
 
 }
