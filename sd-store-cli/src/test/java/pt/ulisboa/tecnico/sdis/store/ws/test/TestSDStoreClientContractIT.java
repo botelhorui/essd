@@ -2,9 +2,11 @@ package pt.ulisboa.tecnico.sdis.store.ws.test;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.Collection;
 
 import mockit.Expectations;
 import mockit.Mocked;
@@ -14,6 +16,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 
 
 
@@ -47,11 +50,14 @@ public class TestSDStoreClientContractIT {
 	public void setUp() throws Exception {
 		
 		DocUserPair p = new DocUserPair();
+		
 		p.setDocumentId("reset");
 		p.setUserId("reset");
+		final ArrayList<String> list = new ArrayList<String>();
+		list.add("http://localhost:8080/store-ws/endpoint");
 		new Expectations(){{
 			new UDDINaming(anyString);
-			uddiNaming.lookup(anyString); result="http://localhost:8080/store-ws/endpoint";
+			uddiNaming.queryServiceBindings(anyString); result =list;
 		}};
 				
 		impl = new SDStoreClient("http://localhost:8081", "SD-Store",1,1,1,1);
