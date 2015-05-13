@@ -8,16 +8,20 @@ Pedro Miguel Caeiro 69775 pedro.miguel14@gmail.com
 
 Maria Costa e Silva 69682 maria.costa.e.silva@ist.utl.pt
 
-João Afonso Baptista 69364 joao.a.baptista@ist.utl.pt
+JoÃ£o Afonso Baptista 69364 joao.a.baptista@ist.utl.pt
 
-Repositório:
+RepositÃ³rio:
 [tecnico-softeng-distsys-2015/A_10_08_50-project](https://github.com/tecnico-softeng-distsys-2015/A_10_08_50-project/)
 
 -------------------------------------------------------------------------------
 
-## Serviço SD-ID
+## ServiÃ§o SD-ID
 
-### Instruções de instalação 
+### InstruÃ§Ãµes de instalaÃ§Ã£o 
+
+Novas instruÃ§Ãµes em: https://github.com/tecnico-softeng-distsys-2015/migration/
+
+_____
 
 
 [0] Iniciar sistema operativo
@@ -29,13 +33,13 @@ Windows
 JUDDI:
 > %CATALINA_HOME%\bin\startup
 
-[2] Criar pasta temporária
+[2] Criar pasta temporÃ¡ria
 
 > cd \
 
 > mkdir temp
 
-[3] Obter versão entregue
+[3] Obter versÃ£o entregue
 
 > cd \temp
 
@@ -62,10 +66,10 @@ JUDDI:
 
 -------------------------------------------------------------------------------
 
-### Instruções de teste: ###
+### InstruÃ§Ãµes de teste: ###
 
 
-[1] Executar **testes de implementação do servidor**
+[1] Executar **testes de implementaÃ§Ã£o do servidor**
 
 > cd \temp\A_10_08_50-project\sd-id
 
