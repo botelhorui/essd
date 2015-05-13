@@ -14,18 +14,6 @@ public class SDIdClientMain {
 		SDIdClient client = new SDIdClient(args[0],args[1]);
 
 		// Main: examples of SDId methods
-		
-		//createUser example
-		client.createUser("johnny", "joao@joao");
-		System.out.println("Created User 'johnny'!");
-        
-        //renewPassword example
-        client.renewPassword("johnny");
-        System.out.println("Renewed Password of User 'johnny'!");
-        
-        //removeUser example
-        client.removeUser("johnny");
-        System.out.println("Removed User 'johnny'!");
         
         //requestAuthentication example
         System.out.print("Request Authentication for 'alice'... ");
