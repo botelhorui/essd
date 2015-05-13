@@ -1,5 +1,9 @@
 package pt.ulisboa.tecnico.sdis.store.ws.cli;
 
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidParameterSpecException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,15 +17,22 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import javax.annotation.Resource;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.xml.registry.JAXRException;
 import javax.xml.ws.*;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.soap.AddressingFeature.Responses;
 
+import pt.ulisboa.tecnico.essd.crypto.AESCipher;
+import pt.ulisboa.tecnico.essd.crypto.Credentials;
+import pt.ulisboa.tecnico.essd.crypto.CredentialsManager;
 import example.ws.uddi.UDDINaming;
 import pt.ulisboa.tecnico.sdis.store.ws.*; // classes generated from WSDL
 import pt.ulisboa.tecnico.sdis.store.ws.handlers.VersionHandler;
 import pt.ulisboa.tecnico.sdis.store.ws.handlers.Tag;
+
 
 /**
  *  SDStore client.
@@ -41,6 +52,7 @@ public class SDStoreClient implements SDStore {
 	private List<SDStore> ports = new ArrayList<SDStore>();
 	private final int TIMEOUT = 5;
 	private int clientId;
+	private CredentialsManager credmng = CredentialsManager.getInstance();
 
 	public String decorate(String s){
 		DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
@@ -132,6 +144,22 @@ public class SDStoreClient implements SDStore {
 		
 		List<Response<LoadResponse>> loadResponses = new ArrayList<Response<LoadResponse>>();
 		Map<Response<LoadResponse>,BindingProvider> loadResponseEndpoints = new HashMap<Response<LoadResponse>, BindingProvider>();
+		AESCipher aes;
+		byte[] encryptedContents=null;
+		
+		Credentials userCred = credmng.getCredentials(docUserPair.getUserId());
+		byte[] userkey = userCred.getEncryptionKey();
+		
+		try {
+			aes = new AESCipher();
+			encryptedContents = aes.encrypt(contents, userkey);
+			
+		} catch (NoSuchAlgorithmException | InvalidParameterSpecException
+				| NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
+			throw new SDStoreClientException("SDStoreClient encryption failed");
+		}
+		
+		
 
 		for(SDStore p: ports){
 			BindingProvider bp = (BindingProvider)p;
@@ -199,7 +227,7 @@ public class SDStoreClient implements SDStore {
 			String address = (String) rc.get(BindingProvider.ENDPOINT_ADDRESS_PROPERTY);
 			printf("requesting storeAsync request to %s%n",address);
 			rc.put(VersionHandler.VERSION_PROPERTY, maxVersion);
-			Response<StoreResponse> r = p.storeAsync(docUserPair, contents);			
+			Response<StoreResponse> r = p.storeAsync(docUserPair, encryptedContents);			
 			storeResponses.add(r);
 			storeResponsesBindingProviders.put(r, (BindingProvider)p);
 		}
@@ -252,6 +280,16 @@ public class SDStoreClient implements SDStore {
 			throws DocDoesNotExist_Exception, UserDoesNotExist_Exception{		
 		List<Response<LoadResponse>> loadResponses = new ArrayList<Response<LoadResponse>>();
 		Map<Response<LoadResponse>,BindingProvider> loadResponsesBindingProviders = new HashMap<Response<LoadResponse>, BindingProvider>();
+		AESCipher aes;
+		byte[] decryptedContents=null;
+		
+		
+		Credentials userCred = credmng.getCredentials(docUserPair.getUserId());
+		byte[] userkey = userCred.getEncryptionKey();
+		
+		
+		
+		
 		/*
 		 * Get all the value from the maximum version from RT replicas
 		 */
@@ -374,7 +412,15 @@ public class SDStoreClient implements SDStore {
 
 		println("Write-back complete");	
 		
-		return data;
+		try {
+			aes = new AESCipher();
+			decryptedContents = aes.decrypt(data, userkey);
+			
+		} catch (InvalidAlgorithmParameterException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | NoSuchAlgorithmException | InvalidParameterSpecException | NoSuchPaddingException e) {
+			throw new SDStoreClientException("SDStoreClient encryption failed");
+		}
+		
+		return decryptedContents;
 	}
 
 	@Override

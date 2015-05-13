@@ -1,5 +1,7 @@
 package pt.tecnico.bubbledocs.service.remote;
 
+import javax.xml.registry.JAXRException;
+
 import pt.tecnico.bubbledocs.exception.CannotStoreDocumentException;
 import pt.tecnico.bubbledocs.exception.CannotLoadDocumentException;
 import pt.tecnico.bubbledocs.exception.RemoteInvocationException;
@@ -14,7 +16,11 @@ import pt.ulisboa.tecnico.sdis.store.ws.cli.SDStoreClientException;
 public class StoreRemoteServices {
 
 	SDStoreClient storeclient;
-
+	
+	public StoreRemoteServices() throws SDStoreClientException, JAXRException{
+		super();
+		storeclient = new SDStoreClient("http://localhost:8081", "SD-Store",2 ,3,2,2);
+	}
 
 	public void storeDocument(String username, String docName, byte[] document)
 			throws CannotStoreDocumentException, RemoteInvocationException {
