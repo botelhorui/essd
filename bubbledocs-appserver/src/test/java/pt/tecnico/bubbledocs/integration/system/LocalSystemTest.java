@@ -51,25 +51,17 @@ public class LocalSystemTest extends BubbleDocsTest {
 	
 	private static BubbleDocs bd;
 	
-	// executes before all tests
-	@BeforeClass
-	@Atomic
-	public static void setUpOnce() throws Exception {
-
-		bd = BubbleDocs.getInstance();
-
-	}
-	
 	// executes before each test
 	@Before 
+	@Atomic
 	public void setUp() throws Exception {
 
-		populate4Test();
+		
+			bd = BubbleDocs.getInstance();
+			populate4Test();
 		
 	}
 
-	
-	
 	// executes after each test
 	@After
 	
