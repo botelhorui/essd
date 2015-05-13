@@ -11,6 +11,9 @@
 			</handler-class>
 		</handler>
 		<handler>
+			<handler-class>pt.ulisboa.tecnico.sdis.store.ws.handlers.RequestHandler</handler-class>
+		</handler>
+		<handler>
 			<handler-class>pt.ulisboa.tecnico.sdis.store.ws.handlers.LoggingHandler</handler-class>
 		</handler>
 	</handler-chain>
