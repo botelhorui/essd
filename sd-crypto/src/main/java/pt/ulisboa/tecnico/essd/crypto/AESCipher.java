@@ -7,7 +7,7 @@ import javax.crypto.spec.*;
 
 
 public class AESCipher {
-	
+
 	private static final byte[] _salt = "xptoleao".getBytes();
 	private static final int _iterations = 65536;
 	private static final int _keyLength = 256;
@@ -23,7 +23,7 @@ public class AESCipher {
 
 	public byte[] createKeyFromPassword(String password) throws NoSuchAlgorithmException,
 	InvalidKeySpecException, InvalidKeyException {
-		
+
 		SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
 		KeySpec keySpec = new PBEKeySpec(password.toCharArray(), _salt, _iterations, _keyLength);
 
@@ -63,6 +63,12 @@ public class AESCipher {
 		keyGen.init(_keyLength);
 		SecretKey secretKey = keyGen.generateKey();
 		return secretKey.getEncoded();
+	}
+
+	public SecretKey recreateSecretKey(byte[] key){
+		//Recria chave
+		SecretKey originalKey = new SecretKeySpec(key, 0, key.length, "AES");
+		return originalKey;
 	}
 
 }
