@@ -34,7 +34,7 @@ public class AESCipher {
 	}
 
 	public byte[] encrypt(byte[] toCipher, byte[] key) throws InvalidKeyException,
-	IllegalBlockSizeException, BadPaddingException{
+	IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException{
 		//Recria chave
 		SecretKey originalKey = new SecretKeySpec(key, 0, key.length, "AES");
 		//Inicia cifra em modo encrypt
