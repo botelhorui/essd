@@ -73,7 +73,7 @@ public class SDIdClient implements SDId {
 			throws AuthReqFailed_Exception{
 
 		//Generate Client Key
-		String pass = DatatypeConverter.printBase64Binary(reserved);
+		String pass = new String(reserved);
 		byte[] clientKey;
 		AESCipher aes;
 		try{

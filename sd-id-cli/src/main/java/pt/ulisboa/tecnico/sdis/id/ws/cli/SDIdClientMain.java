@@ -2,6 +2,7 @@ package pt.ulisboa.tecnico.sdis.id.ws.cli;
 
 import pt.ulisboa.tecnico.sdis.id.ws.*; // classes generated from WSDL
 import java.util.Arrays;
+import javax.xml.bind.DatatypeConverter;
 
 public class SDIdClientMain {
 

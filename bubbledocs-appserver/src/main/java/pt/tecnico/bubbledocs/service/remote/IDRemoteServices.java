@@ -66,7 +66,7 @@ public class IDRemoteServices {
 	public void loginUser(String username, String password)
 			throws LoginBubbleDocsException, RemoteInvocationException {
 		try{
-			byte[] p = DatatypeConverter.parseBase64Binary(password);
+			byte[] p = password.getBytes();
 			idClient.requestAuthentication(username, p);
 		}catch(AuthReqFailed_Exception e){
 			throw new LoginBubbleDocsException();
