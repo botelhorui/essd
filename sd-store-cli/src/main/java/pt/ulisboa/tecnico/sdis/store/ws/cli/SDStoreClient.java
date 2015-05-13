@@ -493,7 +493,7 @@ public class SDStoreClient implements SDStore {
 		
 		try{
 			aes = new AESCipher();
-			bRep = aes.decrypt(bRep, sessionKey);
+			bRep = aes.decrypt(eRep, sessionKey);
 			rep = WebServiceResponse.parse(bRep);
 		} catch (Exception e) {
 			throw new SDStoreClientException("Failed to construct WebServiceResponse",e);
