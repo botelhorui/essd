@@ -47,6 +47,16 @@ public class BubbleDocs extends BubbleDocs_Base {
 		}		
 		return bd;
 	}
+	
+	public void cenas() {
+		
+		System.out.println("_____________________________________________________");
+		
+		System.out.println("____________________"+ hasUser("root") + "_____________________");
+		
+		System.out.println("_____________________________________________________");
+		
+	}
 
 	private User getUserRoot() {		
 		User root = null;

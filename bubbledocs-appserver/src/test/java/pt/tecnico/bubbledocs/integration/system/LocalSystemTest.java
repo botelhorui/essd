@@ -64,7 +64,8 @@ public class LocalSystemTest extends BubbleDocsTest {
 	@Before 
 	public void setUp() throws Exception {
 
-
+		populate4Test();
+		
 	}
 
 	
@@ -89,16 +90,18 @@ public class LocalSystemTest extends BubbleDocsTest {
 	// populates domain for tests
 	public void populate4Test() {
 
-		createUser(USERNAME,"Treeko Grass", EMAIL);
+		/*createUser(USERNAME,"Treeko Grass", EMAIL);
 		rootToken = addUserToSession(ROOT);
-		userToken = addUserToSession(USERNAME);
+		userToken = addUserToSession(USERNAME);*/
+		
+		bd.cenas();
 
 	}
 	@Test
 	public void success() {
 
 		
-		// Create User Integrator
+		/*// Create User Integrator
 		
 		CreateUserIntegrator createUserService = new CreateUserIntegrator( rootToken,  USERNAME, "Treeko Grass",  EMAIL );
 		// Expectations : Expected behaviour when class is called with specific arguments
@@ -155,7 +158,7 @@ public class LocalSystemTest extends BubbleDocsTest {
 		// Assign Reference Cell Integrator
 		
 		// TODO
-		
+	*/	
 	}
 
 }
