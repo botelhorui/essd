@@ -38,7 +38,7 @@ public class AESCipher {
 		//Recria chave
 		SecretKey originalKey = new SecretKeySpec(key, 0, key.length, "AES");
 		//Inicia cifra em modo encrypt
-		_cipher.init(Cipher.ENCRYPT_MODE, originalKey);
+		_cipher.init(Cipher.ENCRYPT_MODE, originalKey, new IvParameterSpec(_iv));
 		//Cifra data
 		byte[] cipherBytes = _cipher.doFinal(toCipher);
 		//Retorna data cifrada
