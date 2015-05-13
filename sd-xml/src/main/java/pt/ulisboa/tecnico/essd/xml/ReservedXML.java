@@ -52,7 +52,7 @@ public class ReservedXML {
 		_nounce = value;
 	}
 	
-	public void generateXML(){
+	private void generateXML(){
 		
 		Document doc = new Document();
 		Element reserved = new Element("reserved");
@@ -84,6 +84,7 @@ public class ReservedXML {
 	
 	
 	public byte[] encode(){
+		generateXML();
 		return xmlOutput.outputString(_xml).getBytes();
 	}
 	

@@ -18,7 +18,6 @@ public class TestReservedXML{
 		 */
 		
 		ReservedXML test = new ReservedXML("SD-Testing", 7);
-		test.generateXML();
 		ReservedXML test2 = null;
 		
 		try{

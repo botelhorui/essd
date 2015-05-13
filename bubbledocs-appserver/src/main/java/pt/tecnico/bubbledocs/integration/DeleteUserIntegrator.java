@@ -7,6 +7,7 @@ import pt.tecnico.bubbledocs.service.dto.UserDTO;
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.bubbledocs.service.DeleteUser;
 import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
+import pt.tecnico.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 
 
@@ -41,7 +42,7 @@ public class DeleteUserIntegrator extends BubbleDocsIntegrator {
 
 			idService.removeUser(toDeleteUsername);
 
-		} catch (Exception e) {
+		} catch (RemoteInvocationException e) {
 			CreateUser rollback = new CreateUser(rootToken, userInfo.getUsername(), userInfo.getName(), userInfo.getEmail());
 			rollback.execute();
 			

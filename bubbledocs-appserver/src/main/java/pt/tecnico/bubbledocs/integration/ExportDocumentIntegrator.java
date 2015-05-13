@@ -5,6 +5,7 @@ import org.jdom2.Document;
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.bubbledocs.service.ExportDocument;
+import pt.tecnico.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.bubbledocs.service.remote.StoreRemoteServices;
 import pt.tecnico.bubbledocs.service.GetUsername4TokenService;
 
@@ -46,7 +47,7 @@ public class ExportDocumentIntegrator extends BubbleDocsIntegrator {
 			
 			storeService.storeDocument(username, Integer.toString(docId), s);
 
-		} catch (Exception e) {
+		} catch (RemoteInvocationException e) {
 
 			throw new UnavailableServiceException();
 

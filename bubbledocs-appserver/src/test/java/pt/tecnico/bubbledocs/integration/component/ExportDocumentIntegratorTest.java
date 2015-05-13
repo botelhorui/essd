@@ -26,6 +26,7 @@ import pt.tecnico.bubbledocs.exception.SpreadSheetIdUnknown;
 import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.bubbledocs.exception.UserHasNotReadAccessException;
 import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
+import pt.tecnico.bubbledocs.exception.CannotStoreDocumentException;
 import pt.tecnico.bubbledocs.service.remote.StoreRemoteServices;
 import static org.junit.Assert.*;
 
@@ -138,6 +139,21 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest {
 		
 		ExportDocumentIntegrator serv = new ExportDocumentIntegrator(ruiToken, s1.getId());
 		serv.execute();		
+	}
+	
+	@Test(expected = CannotStoreDocumentException.class)
+	public void CannotStoreDocument(@Mocked final StoreRemoteServices service){
+		
+		ExportDocumentIntegrator serv = new ExportDocumentIntegrator(ruiToken, s1.getId());
+		
+		new Expectations(){{
+			byte[] document=null;
+			service.storeDocument(anyString, anyString, document); 
+			result = new CannotStoreDocumentException();
+		}};
+		
+		serv.execute();
+
 	}
 	
 }
