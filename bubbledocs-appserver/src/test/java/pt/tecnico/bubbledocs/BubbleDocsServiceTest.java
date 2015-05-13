@@ -6,14 +6,8 @@ import javax.transaction.SystemException;
 import org.junit.After;
 import org.junit.Before;
 
-import pt.tecnico.bubbledocs.service.LoginUser;
-
 import pt.ist.fenixframework.FenixFramework;
 import pt.ist.fenixframework.core.WriteOnReadError;
-import pt.tecnico.bubbledocs.domain.BubbleDocs;
-import pt.tecnico.bubbledocs.domain.SpreadSheet;
-import pt.tecnico.bubbledocs.domain.User;
-
 import pt.tecnico.bubbledocs.BubbleDocsTest;
 
 // add needed import declarations

@@ -1,23 +1,13 @@
 package pt.tecnico.bubbledocs.service;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-
 import org.jdom2.Document;
-
-import java.io.IOException;
 
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
-import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.bubbledocs.exception.SpreadSheetIdUnknown;
 import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
-import pt.tecnico.bubbledocs.exception.UserHasNotReadAccessException;
-import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
-import pt.tecnico.bubbledocs.service.remote.StoreRemoteServices;
 
 // add needed import declarations
 
@@ -45,7 +35,7 @@ public class ExportDocument extends AccessBubbleDocsService {
 		
 		validateUser(token);
 		checkReadPermission(token, s);
-		String username = bd.getUsernameFromToken(token);
+		//String username = bd.getUsernameFromToken(token);
 		
 		docXML = s.export();		
 		

@@ -1,20 +1,8 @@
 package pt.ulisboa.tecnico.sdis.id.ws.test;
 
-import mockit.Expectations;
-import mockit.Mocked;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import pt.ulisboa.tecnico.sdis.id.ws.*; // classes generated from WSDL
-import pt.ulisboa.tecnico.sdis.id.ws.SDId;
-import pt.ulisboa.tecnico.sdis.id.ws.cli.SDIdClient;
-import example.ws.uddi.UDDINaming;
-import javax.xml.ws.WebServiceException;
-import javax.xml.registry.JAXRException;
 
 public class TestCreateUserClient extends TestClient {
 
@@ -23,11 +11,8 @@ public class TestCreateUserClient extends TestClient {
 	private static final String NEW_USERNAME_1 = "francisco";
 	private static final String NEW_USERNAME_2 = "guilherme";
 	
-	private static final String INVALID_USERNAME = "";
 	private static final String NULL_USERNAME = null;
 
-	private static final String EMAIL = "alice@tecnico.pt";
-	
 	private static final String NEW_EMAIL_1 = "francisco@tecnico.pt";
 	private static final String NEW_EMAIL_2 = "guilherme@tecnico.pt";
 	private static final String NEW_EMAIL_3 = "helena@tecnico.pt";

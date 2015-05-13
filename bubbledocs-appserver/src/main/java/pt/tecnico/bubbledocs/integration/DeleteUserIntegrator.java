@@ -6,8 +6,6 @@ import pt.tecnico.bubbledocs.service.dto.UserDTO;
 
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.bubbledocs.service.DeleteUser;
-import pt.tecnico.bubbledocs.domain.BubbleDocs;
-import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 

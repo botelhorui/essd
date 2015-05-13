@@ -1,6 +1,5 @@
 package pt.tecnico.bubbledocs.service;
 
-import pt.ist.fenixframework.Atomic;
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
 

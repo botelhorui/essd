@@ -290,13 +290,7 @@ public class BubbleDocs extends BubbleDocs_Base {
 
 	}
 
-	public Document buildJDOMDocumentFromByteArray(byte[] bXML) throws JDOMException, IOException{
-		SAXBuilder builder = new SAXBuilder();
-		InputStream stream = new ByteArrayInputStream(bXML);
-		Document JDOMdoc = builder.build(stream);
-
-		return JDOMdoc;
-	}
+	
 
 	public void delete() {		
 

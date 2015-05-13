@@ -1,20 +1,8 @@
 package pt.ulisboa.tecnico.sdis.id.ws.test;
 
-import mockit.Expectations;
-import mockit.Mocked;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import pt.ulisboa.tecnico.sdis.id.ws.*; // classes generated from WSDL
-import pt.ulisboa.tecnico.sdis.id.ws.SDId;
-import pt.ulisboa.tecnico.sdis.id.ws.cli.SDIdClient;
-import example.ws.uddi.UDDINaming;
-import javax.xml.ws.WebServiceException;
-import javax.xml.registry.JAXRException;
 
 public class TestRemoveUserClient extends TestClient {
 

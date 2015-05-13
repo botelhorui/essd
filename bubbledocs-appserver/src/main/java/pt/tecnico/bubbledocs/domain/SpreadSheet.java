@@ -6,11 +6,7 @@ import org.jdom2.output.XMLOutputter;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.StringTokenizer;
 
 import pt.tecnico.bubbledocs.domain.User;
@@ -42,7 +38,7 @@ public class SpreadSheet extends SpreadSheet_Base{
 		//Create all the spread's empty cells
 		for(int i=1; i <= lines ;i++){
     		for(int j=1; j <= columns ;j++){
-    			Cell c = new Cell(this, i, j);
+				new Cell(this, i, j);
     		}
     	}
 

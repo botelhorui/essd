@@ -3,20 +3,7 @@ package pt.tecnico.bubbledocs.service;
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.Cell;
-import pt.tecnico.bubbledocs.domain.User;
-import pt.tecnico.bubbledocs.domain.Content;
-import pt.tecnico.bubbledocs.domain.LiteralContent;
-
-import java.util.StringTokenizer;
-
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
-import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
-import pt.tecnico.bubbledocs.exception.SpreadSheetIdUnknown;
-import pt.tecnico.bubbledocs.exception.UserHasNotWriteAccessException;
-import pt.tecnico.bubbledocs.exception.PositionOutOfBoundsException;
-import pt.tecnico.bubbledocs.exception.InvalidLiteralValueException;
-
-import java.lang.NumberFormatException;
 
 // add needed import declarations
 

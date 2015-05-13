@@ -1,12 +1,9 @@
 package pt.tecnico.bubbledocs.service;
 
 import pt.tecnico.bubbledocs.domain.BubbleDocs;
-import pt.tecnico.bubbledocs.domain.Session;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.bubbledocs.exception.LoginBubbleDocsException;
-import pt.tecnico.bubbledocs.exception.RemoteInvocationException;
-import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.bubbledocs.exception.InvalidUsernameException;
 
 // add needed import declarations
@@ -15,11 +12,11 @@ public class LoginUser extends BubbleDocsService {
 
 	private String token;
 	private String username;
-	private String password;
+	//private String password;
 
 	public LoginUser(String username, String password) {
 		this.username=username;
-		this.password=password;
+		//this.password=password;
 	}
 
 	@Override

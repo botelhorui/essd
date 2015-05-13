@@ -2,11 +2,8 @@ package pt.tecnico.bubbledocs.domain;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
-import pt.tecnico.bubbledocs.exception.DuplicateUsernameException;
 import pt.tecnico.bubbledocs.exception.UserHasNotWriteAccessException;
 import pt.tecnico.bubbledocs.exception.UserIsNotOwnerException;
 

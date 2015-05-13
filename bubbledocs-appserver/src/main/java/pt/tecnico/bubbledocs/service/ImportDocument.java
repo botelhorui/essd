@@ -7,9 +7,12 @@ import pt.tecnico.bubbledocs.exception.ImportDocumentException;
 
 import org.jdom2.Document;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 
 
 public class ImportDocument extends AccessBubbleDocsService {
@@ -23,6 +26,14 @@ public class ImportDocument extends AccessBubbleDocsService {
 		this._bXML = bXML;
 	}
 	
+	public Document buildJDOMDocumentFromByteArray(byte[] bXML) throws JDOMException, IOException{
+		SAXBuilder builder = new SAXBuilder();
+		InputStream stream = new ByteArrayInputStream(bXML);
+		Document JDOMdoc = builder.build(stream);
+
+		return JDOMdoc;
+	}
+	
 	@Override
 	protected void dispatch() throws BubbleDocsException{
 		BubbleDocs bd = BubbleDocs.getInstance();
@@ -30,7 +41,7 @@ public class ImportDocument extends AccessBubbleDocsService {
 		
 		validateUser(this._token);
 		try{
-			JDOMdoc = bd.buildJDOMDocumentFromByteArray(_bXML);
+			JDOMdoc = buildJDOMDocumentFromByteArray(_bXML);
 		}catch(JDOMException e){
 			throw new ImportDocumentException();
 		}catch(IOException e){

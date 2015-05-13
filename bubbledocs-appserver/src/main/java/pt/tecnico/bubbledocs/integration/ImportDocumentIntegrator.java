@@ -7,8 +7,6 @@ import pt.tecnico.bubbledocs.service.GetUsername4TokenService;
 import pt.tecnico.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exception.UnavailableServiceException;
 
-import pt.tecnico.bubbledocs.domain.BubbleDocs;
-
 //Tirar servicos remotos do dominio
 //Possivelmente passar a validacao do user para o getUsername4Token()
 //tirar cenas do construtor e passar para dispatch

@@ -4,8 +4,6 @@ import pt.tecnico.bubbledocs.domain.BubbleDocs;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
-import pt.tecnico.bubbledocs.exception.PositionOutOfBoundsException;
-import pt.tecnico.bubbledocs.exception.UserNotInSessionException;
 
 // add needed import declarations
 
