@@ -176,7 +176,7 @@ public class SDStoreImpl implements SDStore {
 		try{
 			req = WebServiceRequest.parse(bReq);
 		} catch (Exception e) { 
-			//TO DO -- Should do something about this.
+			throw new SDStoreException("Error: parsing WebServiceRequest!", e);
 		}
 		
 		byte[] eTicket = req.getEncryptedTicket();
@@ -189,11 +189,11 @@ public class SDStoreImpl implements SDStore {
 			bTicket = aes.decrypt(eTicket, storeKey);
 			t = Ticket.parse(bTicket);
 		} catch (Exception e) {
-			//TO DO -- Something has to happen here.
+			throw new SDStoreException("Error: decrypting or parsing Ticket!", e);
 		}
 
 		if(!(t.getServicename().equals("SD-STORE"))){
-			//TO DO -- Error happens.
+			throw new SDStoreException("Error: Invalid Service Name!");
 		}
 		
 		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
@@ -206,11 +206,11 @@ public class SDStoreImpl implements SDStore {
 		try{
 			finalTime = df.parse(sFinalTime);
 		} catch (Exception e) {
-			//TO DO -- So, wrong time format. Should be an error, right?
+			throw new SDStoreException("Error: parsing Final Timestamp!", e);
 		}
 		
 		if(finalTime.compareTo(currentTime) < 0){
-			//TO DO -- This is wrong. We should do something.
+			throw new SDStoreException("Error: Ticket Expired!");
 		}
 		
 		byte[] sessionKey = t.getSessionKey();
@@ -223,7 +223,7 @@ public class SDStoreImpl implements SDStore {
 			bAuth = aes.decrypt(eAuth, sessionKey);
 			auth = Authenticator.parse(bAuth);
 		} catch (Exception e){
-			//TO DO -- Again, stuff should be done about this.
+			throw new SDStoreException("Error: decrypting or parsing Authenticator!", e);
 		}
 		
 		String req_time = auth.getRequestTime();
@@ -231,7 +231,7 @@ public class SDStoreImpl implements SDStore {
 		try{
 			reqTime = df.parse(req_time);
 		} catch (Exception e) {
-			//TO DO -- Something will go here. Surely!
+			throw new SDStoreException("Error: parsing Request Timestamp!", e);
 		}
 		Calendar cal2 = Calendar.getInstance();
 		cal2.setTime(reqTime);
@@ -239,7 +239,7 @@ public class SDStoreImpl implements SDStore {
 		Date compareTime = cal2.getTime();
 		
 		if(compareTime.compareTo(currentTime) < 0){
-			//TO DO -- Request time is old. We should do something.
+			throw new SDStoreException("Error: Request as too far away in the past!");
 		}
 		
 		WebServiceResponse rep = new WebServiceResponse(req_time);
@@ -249,7 +249,7 @@ public class SDStoreImpl implements SDStore {
 		try{
 			eRep = aes.encrypt(bRep, sessionKey);
 		} catch (Exception e) {
-			//TO DO -- Last one. Still no idea what error to launch.
+			throw new SDStoreException("Error: encrypting WebServiceReply!", e);
 		}
 		
 		return eRep;
