@@ -17,9 +17,14 @@ public class StoreRemoteServices {
 
 	SDStoreClient storeclient;
 	
-	public StoreRemoteServices() throws SDStoreClientException, JAXRException{
+	public StoreRemoteServices() throws SDStoreClientException{
 		super();
-		storeclient = new SDStoreClient("http://localhost:8081", "SD-Store",2 ,3,2,2);
+		try {
+			storeclient = new SDStoreClient("http://localhost:8081", "SD-Store",2 ,3,2,2);
+		} catch (JAXRException e) {
+			throw new SDStoreClientException();
+			
+		}
 	}
 
 	public void storeDocument(String username, String docName, byte[] document)
