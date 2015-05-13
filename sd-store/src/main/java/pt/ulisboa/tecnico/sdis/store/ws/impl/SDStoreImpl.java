@@ -129,11 +129,13 @@ public class SDStoreImpl implements SDStore {
 			UserDoesNotExist_Exception {		
 		println("Storing doc:"+docUserPair.getUserId()+","+docUserPair.getDocumentId());
 		println("Contents:"+new String(contents));
+		byte[] eRep = receiveFromHandler();
 		if(userRepos.containsKey(docUserPair.getUserId())){			
 			userRepos.get(docUserPair.getUserId()).storeDoc(docUserPair.getDocumentId(), contents);
 		} else {			
 			throw new UserDoesNotExist_Exception("The user '"+docUserPair.getUserId()+"' does not exist", new UserDoesNotExist());
 		}		
+		sendToHandler(eRep);
 	}
 	
 	
@@ -142,12 +144,14 @@ public class SDStoreImpl implements SDStore {
 	public byte[] load(DocUserPair docUserPair)
 			throws DocDoesNotExist_Exception, UserDoesNotExist_Exception {		
 		println("Loading docs");
+		byte[] eRep = receiveFromHandler();
 		if(userRepos.containsKey(docUserPair.getUserId())){
 			UserRepo r = userRepos.get(docUserPair.getUserId());
 			MessageContext messageContext = webServiceContext.getMessageContext();			
 			Tag version = r.getDocVersion(docUserPair.getDocumentId());
 			messageContext.put(VersionHandler.VERSION_PROPERTY, version);
 			String version_query = (String)messageContext.get(VersionHandler.VERSION_QUERY_PROPERTY);
+			sendToHandler(eRep);
 			if(version_query==null){
 				return r.loadDoc(docUserPair.getDocumentId());
 			}else{
@@ -158,7 +162,7 @@ public class SDStoreImpl implements SDStore {
 		}
 	}
 	
-	private byte[] ReceiveFromHandler(){
+	private byte[] receiveFromHandler(){
 		
 		MessageContext messageContext = webServiceContext.getMessageContext();
 		AESCipher aes = null;
