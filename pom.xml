@@ -28,6 +28,11 @@
 
 		<id.name>SD-ID</id.name>
 		<store.name>SD-STORE</store.name>
+		<store.clientId>1</store.clientId>
+		<store.N>1</store.N>
+		<store.RT>1</store.RT>
+		<store.WT>1</store.WT>
+
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

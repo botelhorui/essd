@@ -17,8 +17,6 @@
         <main.exec.classname>pt.ulisboa.tecnico.sdis.id.ws.cli.SDIdClientMain</main.exec.classname>
         <wsdl.directory>${basedir}/../sd-id/src/main/resources</wsdl.directory>
         <wsdl.filename>SD-ID.1_1.wsdl</wsdl.filename>
-
-        <ws.name>${id.name}</ws.name>
     </properties>
 
     <dependencies>
@@ -69,7 +67,7 @@
                 <configuration>
                     <arguments>
                         <argument>${uddi.url}</argument>
-                        <argument>${ws.name}</argument>
+                        <argument>${id.name}</argument>
                     </arguments>
                 </configuration>
             </plugin>

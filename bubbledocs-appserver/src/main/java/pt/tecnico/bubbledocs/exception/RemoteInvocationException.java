@@ -4,10 +4,13 @@ import pt.ulisboa.tecnico.sdis.store.ws.cli.SDStoreClientException;
 
 public class RemoteInvocationException extends BubbleDocsException {
 
+	public RemoteInvocationException(String cause){
+		super(cause);
+	}
 	public RemoteInvocationException(){
 		
 	}
-	public RemoteInvocationException(SDStoreClientException e) {
+	public RemoteInvocationException(Throwable e) {
 		initCause(e);		
 	}
 

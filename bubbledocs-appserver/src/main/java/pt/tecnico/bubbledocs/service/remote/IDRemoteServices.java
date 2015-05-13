@@ -1,5 +1,8 @@
 package pt.tecnico.bubbledocs.service.remote;
 
+import java.io.IOException;
+import java.util.Properties;
+
 import pt.tecnico.bubbledocs.exception.DuplicateEmailException;
 import pt.tecnico.bubbledocs.exception.DuplicateUsernameException;
 import pt.tecnico.bubbledocs.exception.InvalidEmailException;
@@ -8,21 +11,38 @@ import pt.tecnico.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.bubbledocs.exception.RemoteInvocationException;
 import pt.ulisboa.tecnico.sdis.id.ws.*;
 import pt.ulisboa.tecnico.sdis.id.ws.cli.*;
+
 import javax.xml.registry.JAXRException;
 import javax.xml.bind.DatatypeConverter;
 
 public class IDRemoteServices {
+	private static final String PROP_FILE = "remote-services.properties";
 
 	private SDIdClient idClient; 
 
 	public IDRemoteServices() throws RemoteInvocationException{
-		try{
-			idClient = new SDIdClient("http://localhost:8081", "SD-ID");
-		}catch(SDIdClientException e){
-			throw new RemoteInvocationException();
-		}catch(JAXRException e){
-			throw new RemoteInvocationException();
+		Properties props = new Properties();
+		try {
+			props.load(IDRemoteServices.class.getClassLoader().getResourceAsStream(PROP_FILE));
+		} catch (IOException e1) {
+			throw new RemoteInvocationException(e1);
 		}
+		
+		try{
+			String uddiUrl = props.getProperty("uddi.url");
+			String idName = props.getProperty("id.name");
+			System.out.printf("uddi.url:%s id.name:%s%n",uddiUrl,idName);
+			//idClient = new SDIdClient("http://localhost:8081", "SD-ID");
+			idClient = new SDIdClient(uddiUrl,idName);
+		}catch(SDIdClientException e){
+			throw new RemoteInvocationException(e);
+		}catch(JAXRException e){
+			throw new RemoteInvocationException(e);
+		}
+	}
+	
+	public static void main(String[] args) {
+		new IDRemoteServices();
 	}
 
 	public void createUser(String username, String name, String email)
