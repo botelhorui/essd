@@ -1,8 +1,11 @@
 # Bubble Docs
 
-This is the main README file for the Bubble Docs project.
+The instructions for installing and running the combined ES+SD project can be found in the migration guide:
 
-The initial version of the repository contains the following structure:
+https://github.com/tecnico-softeng-distsys-2015/migration/
+
+
+The initial version of the repository contained the following structure:
 
     .
     |__ .gitignore
@@ -24,5 +27,3 @@ The initial version of the repository contains the following structure:
     |   \__ README.md
     \__ sd-store
         \__ README.md
-
-Rui: SD não tem pastas definidas :\

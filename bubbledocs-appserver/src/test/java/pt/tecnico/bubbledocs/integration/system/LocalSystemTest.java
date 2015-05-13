@@ -46,15 +46,15 @@ public class LocalSystemTest extends BubbleDocsTest {
 	private String rootToken;
 
 	private static BubbleDocs bd;
-
 	// executes before each test
 	@Before 
 	@Atomic
 	public void setUp() throws Exception {
+
 		populate4Test();
 		bd = BubbleDocs.getInstance();
-	}
 
+	}
 
 
 	// executes after each test

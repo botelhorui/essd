@@ -7,6 +7,7 @@ import java.security.spec.InvalidParameterSpecException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Calendar;
@@ -22,17 +23,20 @@ import javax.annotation.Resource;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 import javax.xml.registry.JAXRException;
 import javax.xml.ws.*;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.soap.AddressingFeature.Responses;
 
 import pt.ulisboa.tecnico.essd.xml.Authenticator;
+import pt.ulisboa.tecnico.essd.xml.DocumentWithMac;
 import pt.ulisboa.tecnico.essd.xml.WebServiceRequest;
 import pt.ulisboa.tecnico.essd.xml.WebServiceResponse;
 import pt.ulisboa.tecnico.essd.crypto.AESCipher;
 import pt.ulisboa.tecnico.essd.crypto.Credentials;
 import pt.ulisboa.tecnico.essd.crypto.CredentialsManager;
+import pt.ulisboa.tecnico.essd.crypto.MACCipher;
 import example.ws.uddi.UDDINaming;
 import pt.ulisboa.tecnico.sdis.store.ws.*; // classes generated from WSDL
 import pt.ulisboa.tecnico.sdis.store.ws.handlers.VersionHandler;
@@ -121,6 +125,9 @@ public class SDStoreClient implements SDStore {
 		}
 		printf("Result %d endpoint addresses%n",ports.size());
 	}
+	
+	
+	
 
 	// SDStore webservice
 	@Override
@@ -152,14 +159,24 @@ public class SDStoreClient implements SDStore {
 		Map<Response<LoadResponse>,BindingProvider> loadResponseEndpoints = new HashMap<Response<LoadResponse>, BindingProvider>();
 		Map<BindingProvider, String> bindingToTime = new HashMap<BindingProvider, String>();
 		AESCipher aes;
-		byte[] encryptedContents=null;
+		MACCipher mac;
+		
+		byte[] encryptedContents=null, digest = null, encryptedDigest = null, message = null;
+		
 		
 		Credentials userCred = credmng.getCredentials(docUserPair.getUserId());
 		byte[] userkey = userCred.getEncryptionKey();
 		
+		
 		try {
+			
 			aes = new AESCipher();
+			mac = new MACCipher();
+			SecretKey encKey = aes.recreateSecretKey(userkey);
+			digest = mac.makeMAC(contents, encKey);
 			encryptedContents = aes.encrypt(contents, userkey);
+			encryptedDigest = aes.encrypt(digest, userkey);
+			message = new DocumentWithMac(encryptedContents, encryptedDigest).encode();
 			
 		} catch (Exception e) {
 			throw new SDStoreClientException("SDStoreClient encryption failed");
@@ -238,7 +255,7 @@ public class SDStoreClient implements SDStore {
 			String reqTime = sendToHandler(docUserPair.getUserId(), bp);
 			bindingToTime.put(bp, reqTime);
 			rc.put(VersionHandler.VERSION_PROPERTY, maxVersion);
-			Response<StoreResponse> r = p.storeAsync(docUserPair, encryptedContents);			
+			Response<StoreResponse> r = p.storeAsync(docUserPair, message);			
 			storeResponses.add(r);
 			storeResponsesBindingProviders.put(r, (BindingProvider)p);
 		}
@@ -295,7 +312,9 @@ public class SDStoreClient implements SDStore {
 		Map<Response<LoadResponse>,BindingProvider> loadResponsesBindingProviders = new HashMap<Response<LoadResponse>, BindingProvider>();
 		Map<BindingProvider, String> bindingToTime = new HashMap<BindingProvider, String>();
 		AESCipher aes;
-		byte[] decryptedContents=null;
+		MACCipher mac;
+		
+		byte[] encryptedContents=null, digest = null, encryptedDigest = null, message = null, decryptedContents=null;
 		
 		
 		Credentials userCred = credmng.getCredentials(docUserPair.getUserId());
@@ -429,13 +448,24 @@ public class SDStoreClient implements SDStore {
 
 		println("Write-back complete");	
 		
+		
+		
+		
 		try {
-			aes = new AESCipher();
-			decryptedContents = aes.decrypt(data, userkey);
 			
-		} catch (InvalidAlgorithmParameterException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | NoSuchAlgorithmException | InvalidParameterSpecException | NoSuchPaddingException e) {
-			throw new SDStoreClientException("SDStoreClient encryption failed");
+			aes = new AESCipher();
+			mac = new MACCipher();
+			DocumentWithMac doc = DocumentWithMac.parse(data);
+			encryptedContents = doc.get_document();
+			digest = doc.get_digest();
+			decryptedContents = aes.decrypt(encryptedContents, userkey);
+			SecretKey encKey = aes.recreateSecretKey(userkey);
+			if (!mac.verifyMAC(digest, decryptedContents, encKey))throw new SDStoreClientException("Contents failed mac verification");
+			
+		} catch (Exception e) {
+			throw new SDStoreClientException("SDStoreClient decryption failed");
 		}
+		
 		
 		return decryptedContents;
 	}
