@@ -21,7 +21,7 @@ public class AESCipher {
 		_iv = _cipher.getParameters().getParameterSpec(IvParameterSpec.class).getIV();
 	}
 
-	byte[] createKeyFromPassword(String password) throws NoSuchAlgorithmException,
+	public byte[] createKeyFromPassword(String password) throws NoSuchAlgorithmException,
 	InvalidKeySpecException, InvalidKeyException {
 		
 		SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
@@ -33,7 +33,7 @@ public class AESCipher {
 		return secret.getEncoded();
 	}
 
-	byte[] encrypt(byte[] toCipher, byte[] key) throws InvalidKeyException,
+	public byte[] encrypt(byte[] toCipher, byte[] key) throws InvalidKeyException,
 	IllegalBlockSizeException, BadPaddingException{
 		//Recria chave
 		SecretKey originalKey = new SecretKeySpec(key, 0, key.length, "AES");
@@ -45,7 +45,7 @@ public class AESCipher {
 		return cipherBytes;
 	}
 
-	byte[] decrypt(byte[] toDecrypt, byte[] key) throws InvalidKeyException,
+	public byte[] decrypt(byte[] toDecrypt, byte[] key) throws InvalidKeyException,
 	IllegalBlockSizeException, InvalidAlgorithmParameterException,
 	BadPaddingException{
 		//Recria chave
@@ -58,7 +58,7 @@ public class AESCipher {
 		return clearBytes;
 	}
 
-	byte[] generateKey() throws NoSuchAlgorithmException{
+	public byte[] generateKey() throws NoSuchAlgorithmException{
 		KeyGenerator keyGen = KeyGenerator.getInstance("AES");
 		keyGen.init(_keyLength);
 		SecretKey secretKey = keyGen.generateKey();

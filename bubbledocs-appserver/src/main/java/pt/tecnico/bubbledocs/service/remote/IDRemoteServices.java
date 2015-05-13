@@ -9,6 +9,7 @@ import pt.tecnico.bubbledocs.exception.RemoteInvocationException;
 import pt.ulisboa.tecnico.sdis.id.ws.*;
 import pt.ulisboa.tecnico.sdis.id.ws.cli.*;
 import javax.xml.registry.JAXRException;
+import javax.xml.bind.DatatypeConverter;
 
 public class IDRemoteServices {
 
@@ -45,7 +46,8 @@ public class IDRemoteServices {
 	public void loginUser(String username, String password)
 			throws LoginBubbleDocsException, RemoteInvocationException {
 		try{
-			idClient.requestAuthentication(username, password.getBytes());
+			byte[] p = DatatypeConverter.parseBase64Binary(password);
+			idClient.requestAuthentication(username, p);
 		}catch(AuthReqFailed_Exception e){
 			throw new LoginBubbleDocsException();
 		}
