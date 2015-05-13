@@ -40,7 +40,7 @@ public class UDDINaming {
 	private boolean autoConnectFlag;
 
 	/** option to print JNDI and JAX-R debug messages */
-	private boolean debugFlag = true;
+	private boolean debugFlag = false;
 
 
 
