@@ -17,6 +17,10 @@ Repositório
 
 ### Instruções de instalação 
 
+Novas instruções em: https://github.com/tecnico-softeng-distsys-2015/migration/
+
+_____
+
 [0] Iniciar sistema operativo
 
 Windows
