@@ -13,6 +13,10 @@ import pt.ulisboa.tecnico.essd.xml.RequestAuthenticationResponse;
 import javax.jws.*;
 import javax.xml.bind.DatatypeConverter;
 import pt.ulisboa.tecnico.sdis.id.ws.*; // classes generated from WSDL
+import java.util.Date;
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.text.SimpleDateFormat;
 
 
 @WebService(
@@ -174,17 +178,45 @@ public class SDIdImpl implements SDId{
 			throw new AuthReqFailed_Exception(e.getMessage(), new AuthReqFailed());
 		}
 		
-		//Generate UserCredentials
+		//Generate and encrypt UserCredentials
 		UserCredentials uc = new UserCredentials(sessionKey, encryptionKey, nounce);
+		byte[] bUC = uc.encode();
+		byte[] bEncUC;
+		try{
+			bEncUC = aes.encrypt(bUC, clientKey);
+		}catch(Exception e){
+			throw new AuthReqFailed_Exception(e.getMessage(), new AuthReqFailed());
+		}
+		
+		//Generate and encrypt Kerberos Ticket
+		
+		//create an instance of SimpleDateFormat used for formatting 
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		
+		// Get the initial time stamp
+		Date initial = cal.getTime();
+		cal.setTime(new Date());
+		cal.add(Calendar.HOUR_OF_DAY, 2);
+		Date end = cal.getTime();
+		// Using DateFormat format method we can create a string representation of a date with the defined format
+		String sInitial = df.format(initial);
+		String sEnd = df.format(end);
+		
+		Ticket ticket = new Ticket(userId, "SD-STORE", sInitial, sEnd, sessionKey);
+		byte[] bTicket = ticket.encode();
+		byte[] bEncTicket;
+		try{
+			bEncTicket = aes.encrypt(bTicket, storeKey);
+		}catch(Exception e){
+			throw new AuthReqFailed_Exception(e.getMessage(), new AuthReqFailed());
+		}
+		
+		//Generate RequestAuthenticationResponse and return it in byte[]
+		
+		RequestAuthenticationResponse rar = new RequestAuthenticationResponse(bEncTicket, bEncUC);
 
-		//byte[] sp = stored_password.getBytes();
-		//if(Arrays.equals(sp, reserved) == false)
-		//throw new AuthReqFailed_Exception("Authentication failed: received password doesn't match stored password", new AuthReqFailed());
-
-		byte[] bytes = new byte[1];
-		Arrays.fill( bytes, (byte) 1 );
-
-		return bytes;
+		return rar.encode();
 
 	}
 }

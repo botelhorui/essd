@@ -4,6 +4,7 @@ import javax.xml.bind.DatatypeConverter;
 import javax.xml.registry.JAXRException;
 import javax.xml.ws.*;
 import pt.ulisboa.tecnico.essd.crypto.AESCipher;
+import pt.ulisboa.tecnico.essd.crypto.CredentialsManager;
 import pt.ulisboa.tecnico.essd.xml.ReservedXML;
 import pt.ulisboa.tecnico.essd.xml.RequestAuthenticationResponse;
 import pt.ulisboa.tecnico.essd.xml.UserCredentials;
@@ -118,8 +119,10 @@ public class SDIdClient implements SDId {
 		//Verify Nounce
 		if(nounce != server_nounce)
 			throw new AuthReqFailed_Exception("Nounces are differente!", new AuthReqFailed());
+		
 		//Save Credentials
-
+		CredentialsManager cm = CredentialsManager.getInstance();
+		cm.addCredentials(userId, bEncTicket, sessionKey, encryptionKey);
 		
 		byte[] bytes = new byte[1];
 		Arrays.fill( bytes, (byte) 1 );
