@@ -3,69 +3,47 @@ package pt.ulisboa.tecnico.essd.crypto;
 public class Credentials {
 	
 	private String username;
-	private byte[] ticketKerberos, clientKey, encryptionKey;
+	private byte[] ticketEncrypted;
+	private byte[] sessionKey;
+	private byte[] encryptionKey;
 	
-	
-	
-	public Credentials(String username, byte[] ticketKerberos,
-			byte[] clientKey, byte[] encryptionKey) {
-		super();
+	public Credentials(String username, byte[] ticketEncrypted, byte[] sessionKey, byte[] encryptionKey) {
 		this.username = username;
-		this.ticketKerberos = ticketKerberos;
-		this.clientKey = clientKey;
+		this.ticketEncrypted = ticketEncrypted;
+		this.sessionKey = sessionKey;
 		this.encryptionKey = encryptionKey;
 	}
-
-
 
 	public String getUsername() {
 		return username;
 	}
 
-
-
 	public void setUsername(String username) {
 		this.username = username;
 	}
 
-
-
-	public byte[] getTicketKerberos() {
-		return ticketKerberos;
+	public byte[] getTicketEncrypted() {
+		return ticketEncrypted;
 	}
 
-
-
-	public void setTicketKerberos(byte[] ticketKerberos) {
-		this.ticketKerberos = ticketKerberos;
+	public void setTicketEncrypted(byte[] ticketEncrypted) {
+		this.ticketEncrypted = ticketEncrypted;
 	}
 
-
-
-	public byte[] getClientKey() {
-		return clientKey;
+	public byte[] getSessionKey() {
+		return sessionKey;
 	}
 
-
-
-	public void setClientKey(byte[] clientKey) {
-		this.clientKey = clientKey;
+	public void setSessionKey(byte[] sessionKey) {
+		this.sessionKey = sessionKey;
 	}
-
-
 
 	public byte[] getEncryptionKey() {
 		return encryptionKey;
 	}
 
-
-
 	public void setEncryptionKey(byte[] encryptionKey) {
 		this.encryptionKey = encryptionKey;
 	}
-	
-	
-	
-	
 
 }
