@@ -20,6 +20,10 @@ public class StoreRemoteServices {
 	private static final String PROP_FILE = "remote-services.properties";
 	SDStoreClient storeclient;
 	
+	public static void main(String[] args) {
+		System.out.println("ola");
+	}
+	
 	public StoreRemoteServices() throws RemoteInvocationException{
 		Properties props = new Properties();
 		try {
@@ -40,9 +44,7 @@ public class StoreRemoteServices {
 		}
 	}
 
-	public static void main(String[] args) {
-		new StoreRemoteServices();
-	}
+
 	public void storeDocument(String username, String docName, byte[] document)
 			throws CannotStoreDocumentException, RemoteInvocationException {
 

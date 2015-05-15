@@ -1,10 +1,6 @@
 <handler-chains xmlns="http://java.sun.com/xml/ns/javaee">
 	<handler-chain>
-		<handler>
-			<handler-class>
-				pt.ulisboa.tecnico.sdis.store.ws.handlers.MessageContextHandler
-			</handler-class>
-		</handler>
+
 		<handler>
 			<handler-class>
 				pt.ulisboa.tecnico.sdis.store.ws.handlers.VersionHandler

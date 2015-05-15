@@ -10,9 +10,12 @@ import pt.ulisboa.tecnico.essd.xml.UserCredentials;
 import pt.ulisboa.tecnico.essd.xml.Ticket;
 import pt.ulisboa.tecnico.essd.xml.ReservedXML;
 import pt.ulisboa.tecnico.essd.xml.RequestAuthenticationResponse;
+
 import javax.jws.*;
 import javax.xml.bind.DatatypeConverter;
+
 import pt.ulisboa.tecnico.sdis.id.ws.*; // classes generated from WSDL
+
 import java.util.Date;
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -34,6 +37,20 @@ public class SDIdImpl implements SDId{
 
 	private String _sStoreKey = "7o4+TVh/u+0je+qKK9UkPg==";
 
+	public String decorate(String s){
+		DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
+		Date date = new Date();
+		return String.format("[%s][SDIdImpl]", format.format(date))+s;
+	}
+	
+	public void println(String s){
+		System.out.println(decorate(s));
+	}
+	
+	public void printf(String s, Object... args){
+		System.out.printf(decorate(s), args);
+	}
+	
 	public SDIdImpl() throws AuthReqFailed_Exception{
 		populateDomain();
 	}
@@ -144,9 +161,10 @@ public class SDIdImpl implements SDId{
 	public byte[] requestAuthentication(String userId, byte[] reserved)
 			throws AuthReqFailed_Exception{
 		//Process ReservedXML and verify service-name
-		ReservedXML res;
+		ReservedXML res;		
 		try{
 			res = ReservedXML.parse(reserved);
+			printf("ReservedXML:%n%s%n",new String(res.encode()));
 		}catch(Exception e){
 			throw new AuthReqFailed_Exception("Parsing ReservedXML wrong: " + e.getMessage(), new AuthReqFailed());
 		}
@@ -184,6 +202,7 @@ public class SDIdImpl implements SDId{
 
 		//Generate and encrypt UserCredentials
 		UserCredentials uc = new UserCredentials(sessionKey, encryptionKey, nounce);
+		printf("UserCredentials:%n%s%n",new String(uc.encode()));
 		byte[] bUC = uc.encode();
 		byte[] bEncUC;
 		try{
@@ -208,6 +227,7 @@ public class SDIdImpl implements SDId{
 		String sEnd = df.format(end);
 
 		Ticket ticket = new Ticket(userId, "SD-STORE", sInitial, sEnd, sessionKey);
+		printf("UserCredentials:%n%s%n",new String(ticket.encode()));
 		byte[] bTicket = ticket.encode();
 		byte[] bEncTicket;
 		try{
@@ -219,7 +239,7 @@ public class SDIdImpl implements SDId{
 		//Generate RequestAuthenticationResponse and return it in byte[]
 
 		RequestAuthenticationResponse rar = new RequestAuthenticationResponse(bEncTicket, bEncUC);
-
+		printf("UserCredentials:%n%s%n",new String(rar.encode()));
 		return rar.encode();
 
 	}

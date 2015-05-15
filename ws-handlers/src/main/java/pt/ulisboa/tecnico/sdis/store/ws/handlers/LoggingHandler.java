@@ -63,12 +63,13 @@ public class LoggingHandler implements SOAPHandler<SOAPMessageContext> {
     private void logToSystemOut(SOAPMessageContext smc) {
         Boolean outbound = (Boolean) smc
                 .get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
-
+        String out = "";
         if (outbound) {
-            println("Outbound SOAP message:");
+            out += "Outbound SOAP message:";
         } else {
-            println("Inbound SOAP message:");
+            out += "Inbound SOAP message:";
         }
+        out+="\n";
         
         try {
 			Transformer transformer = TransformerFactory.newInstance().newTransformer();
@@ -78,11 +79,12 @@ public class LoggingHandler implements SOAPHandler<SOAPMessageContext> {
 			DOMSource source = new DOMSource(smc.getMessage().getSOAPPart());
 			transformer.transform(source, result);
 			String xmlString = result.getWriter().toString();
-			printf("\n"+xmlString);			
+			out += xmlString;			
 		} catch (TransformerFactoryConfigurationError|TransformerException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+        println(out);
         /*
         SOAPMessage message = smc.getMessage();
         try {

@@ -31,128 +31,128 @@ import pt.ulisboa.tecnico.sdis.store.ws.util.MiniLogger;
  */
 public class ResponseHandler implements SOAPHandler<SOAPMessageContext> {
 
-    public static final String REQUEST_PROPERTY = "my.request.property";
-    public static final String RESPONSE_PROPERTY = "my.response.property";
-    
-    public static final String REQUEST_HEADER = "WebRequest";
-    public static final String REQUEST_NS = "urn:question";
-    public static final String REQUEST_PREFIX = "q";
-    
-    public static final String RESPONSE_HEADER = "WebResponse";
-    public static final String RESPONSE_NS = "urn:answer";
-    public static final String RESPONSE_PREFIX = "a";
-    
-    public static final String CLASS_NAME = ResponseHandler.class.getSimpleName();
+	public static final String REQUEST_PROPERTY = "my.request.property";
+	public static final String RESPONSE_PROPERTY = "my.response.property";
 
-    //
-    // Handler interface methods
-    //
-    public Set<QName> getHeaders() {
-        return null;
-    }
-    
-    public void println(String s){
+	public static final String REQUEST_HEADER = "WebRequest";
+	public static final String REQUEST_NS = "urn:question";
+	public static final String REQUEST_PREFIX = "q";
+
+	public static final String RESPONSE_HEADER = "WebResponse";
+	public static final String RESPONSE_NS = "urn:answer";
+	public static final String RESPONSE_PREFIX = "a";
+
+	public static final String CLASS_NAME = ResponseHandler.class.getSimpleName();
+
+	//
+	// Handler interface methods
+	//
+	public Set<QName> getHeaders() {
+		return null;
+	}
+
+	public void println(String s){
 		System.out.println(MiniLogger.decorate(ResponseHandler.class.getSimpleName(),s));
 	}
-	
+
 	public void printf(String s, Object... args){
 		System.out.printf(MiniLogger.decorate(ResponseHandler.class.getSimpleName(),s), args);
 	}
-    
-    /*
-     * Checks if the SOAPBody Element matches the given request name.
-     */
 
-    public boolean handleMessage(SOAPMessageContext smc) {
-        System.out.println("ResponseHandler: Handling message.");
+	/*
+	 * Checks if the SOAPBody Element matches the given request name.
+	 */
 
-        Boolean outboundElement = (Boolean) smc
-                .get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
+	public boolean handleMessage(SOAPMessageContext smc) {
+		println("ResponseHandler: Handling message.");
 
-        try {
-            if (outboundElement.booleanValue()) {
-                System.out.println("Writing header in outbound SOAP message...");
-                
-                String propertyValue = (String) smc.get(RESPONSE_PROPERTY);
-                System.out.printf("%s received '%s'%n", CLASS_NAME, propertyValue);
+		Boolean outboundElement = (Boolean) smc
+				.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
 
-        		if(propertyValue==null){
+		try {
+			if (outboundElement.booleanValue()) {
+				println("Writing header in outbound SOAP message...");
+
+				String propertyValue = (String) smc.get(RESPONSE_PROPERTY);
+				printf("%s received '%s'%n", CLASS_NAME, propertyValue);
+
+				if(propertyValue==null){
 					println("Message didn't get request property");
 					return true;
 				}
-        		
-                // get SOAP envelope
-                SOAPMessage msg = smc.getMessage();
-                SOAPPart sp = msg.getSOAPPart();
-                SOAPEnvelope se = sp.getEnvelope();
 
-                // add header
-                SOAPHeader sh = se.getHeader();
-                if (sh == null)
-                    sh = se.addHeader();
+				// get SOAP envelope
+				SOAPMessage msg = smc.getMessage();
+				SOAPPart sp = msg.getSOAPPart();
+				SOAPEnvelope se = sp.getEnvelope();
 
-                // add header element (name, namespace prefix, namespace)
-                Name name = se.createName(RESPONSE_HEADER, RESPONSE_PREFIX, RESPONSE_NS);
-                SOAPHeaderElement element = sh.addHeaderElement(name);
+				// add header
+				SOAPHeader sh = se.getHeader();
+				if (sh == null)
+					sh = se.addHeader();
 
-                // add header element value
-              
-                element.addTextNode(propertyValue);
-                
-                System.out.printf("%s put token '%s' on request message header%n", CLASS_NAME, propertyValue);
+				// add header element (name, namespace prefix, namespace)
+				Name name = se.createName(RESPONSE_HEADER, RESPONSE_PREFIX, RESPONSE_NS);
+				SOAPHeaderElement element = sh.addHeaderElement(name);
 
-            } else {
-                System.out.println("Reading header in inbound SOAP message...");
-                              
-                // get SOAP envelope header
-                SOAPMessage msg = smc.getMessage();
-                SOAPPart sp = msg.getSOAPPart();
-                SOAPEnvelope se = sp.getEnvelope();
-                SOAPHeader sh = se.getHeader();
+				// add header element value
 
-                // check header
-                if (sh == null) {
-                    System.out.println("Header not found.");
-                    return true;
-                }
+				element.addTextNode(propertyValue);
 
-                // get first header element
-                Name name = se.createName(REQUEST_HEADER, REQUEST_PREFIX, REQUEST_NS);
-                Iterator it = sh.getChildElements(name);
-                // check header element
-                if (!it.hasNext()) {
-                    System.out.println("Header " + REQUEST_HEADER + " element not found.");
-                    return true;
-                }
-                SOAPElement element = (SOAPElement) it.next();
+				printf("%s put token '%s' on request message header%n", CLASS_NAME, propertyValue);
 
-                // get header element value
-                String valueString = element.getValue();
+			} else {
+				println("Reading header in inbound SOAP message...");
 
-                // print received header
-                System.out.println("Header value is " + valueString);
+				// get SOAP envelope header
+				SOAPMessage msg = smc.getMessage();
+				SOAPPart sp = msg.getSOAPPart();
+				SOAPEnvelope se = sp.getEnvelope();
+				SOAPHeader sh = se.getHeader();
 
-                // put header in a property context
-                smc.put(REQUEST_PROPERTY, valueString);
-                // set property scope to application client/server class can access it
-                smc.setScope(REQUEST_PROPERTY, Scope.APPLICATION);
-			
-            }
-        } catch (Exception e) {
-            System.out.print("Caught exception in handleMessage: ");
-            System.out.println(e);
-            System.out.println("Continue normal processing...");
-        }
+				// check header
+				if (sh == null) {
+					println("Header not found.");
+					return true;
+				}
 
-        return true;
-    }
+				// get first header element
+				Name name = se.createName(REQUEST_HEADER, REQUEST_PREFIX, REQUEST_NS);
+				Iterator it = sh.getChildElements(name);
+				// check header element
+				if (!it.hasNext()) {
+					System.out.println("Header " + REQUEST_HEADER + " element not found.");
+					return true;
+				}
+				SOAPElement element = (SOAPElement) it.next();
 
-    public boolean handleFault(SOAPMessageContext smc) {
-        System.out.println("Ignoring fault message...");
-        return true;
-    }
+				// get header element value
+				String valueString = element.getValue();
 
-    public void close(MessageContext messageContext) {
-    }
+				// print received header
+				System.out.println("Header value is " + valueString);
+
+				// put header in a property context
+				smc.put(REQUEST_PROPERTY, valueString);
+				// set property scope to application client/server class can access it
+				smc.setScope(REQUEST_PROPERTY, Scope.APPLICATION);
+
+			}
+		} catch (Exception e) {
+			println("Caught exception in handleMessage: ");
+			println(e.toString());
+			println("Continue normal processing...");
+		}
+
+		return true;
+	}
+
+	public boolean handleFault(SOAPMessageContext smc) {
+		println("Ignoring fault message...");
+		return true;
+	}
+
+	public void close(MessageContext messageContext) {
+	}
 
 }

@@ -1,5 +1,7 @@
 package pt.tecnico.bubbledocs.integration.system;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 import org.junit.After;
 import org.junit.Before;
@@ -9,11 +11,14 @@ import org.junit.BeforeClass;
 import mockit.Expectations;
 import mockit.Mocked;
 import mockit.Verifications;
+import pt.tecnico.bubbledocs.integration.AssignBinaryFunctionIntegrator;
+import pt.tecnico.bubbledocs.integration.AssignLiteralCellIntegrator;
 import pt.tecnico.bubbledocs.integration.CreateUserIntegrator;
 import pt.tecnico.bubbledocs.integration.ImportDocumentIntegrator;
 import pt.tecnico.bubbledocs.integration.LoginUserIntegrator;
 import pt.tecnico.bubbledocs.integration.CreateSpreadsheetIntegrator;
 import pt.tecnico.bubbledocs.integration.ExportDocumentIntegrator;
+import pt.tecnico.bubbledocs.service.AssignLiteralCell;
 import pt.tecnico.bubbledocs.service.CreateUser;
 import pt.tecnico.bubbledocs.service.GetSpreadSheetContent;
 import pt.tecnico.bubbledocs.service.LoginUser;
@@ -50,10 +55,8 @@ public class LocalSystemTest extends BubbleDocsTest {
 	@Before 
 	@Atomic
 	public void setUp() throws Exception {
-
-		populate4Test();
 		bd = BubbleDocs.getInstance();
-
+		populate4Test();
 	}
 
 
@@ -84,6 +87,8 @@ public class LocalSystemTest extends BubbleDocsTest {
 		}};
 		createUser.execute();
 		
+		
+		
 		LoginUserIntegrator userLogin = new LoginUserIntegrator(USERNAME, PASSWORD);
 		new Expectations() {{		
 			id.loginUser(USERNAME,PASSWORD);
@@ -91,57 +96,40 @@ public class LocalSystemTest extends BubbleDocsTest {
 		userLogin.execute();
 		userToken = userLogin.getUserToken();
 		
+		
+		
 		CreateSpreadsheetIntegrator createSheet = new CreateSpreadsheetIntegrator(userToken,DOC_NAME , 5, 5);
 		createSheet.execute();
 		final int sheetId = createSheet.getSheetId();
 		
+		GetSpreadSheetContent gsc = new GetSpreadSheetContent(userToken, sheetId);
+		gsc.execute();
+		gsc.printMatrix();
+		
+
+		AssignLiteralCellIntegrator alci = new AssignLiteralCellIntegrator(userToken, sheetId, "1;1", "1");
+		alci.execute();
+		
+		gsc = new GetSpreadSheetContent(userToken, sheetId);
+		gsc.execute();
+		gsc.printMatrix();		
+		
+	
 		new Expectations() {{		
 			store.storeDocument(anyString, anyString, (byte[])any);
-		}};		
-		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(userToken,createSheet.getSheetId());
-		exportDocument.execute();
-		final byte[] docBytes = exportDocument.getBytes();
+		}};			
+		final ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(userToken,createSheet.getSheetId());
+		exportDocument.execute();		
+		System.out.println("Exported :"+new String(exportDocument.getBytes()));
 		
 		new Expectations() {{		
-			store.loadDocument(USERNAME, Integer.toString(sheetId));
-			result = docBytes;
-		}};
+			store.loadDocument(anyString, anyString); result = exportDocument.getBytes();
+		}};		
 		ImportDocumentIntegrator importDocument = new ImportDocumentIntegrator(userToken, createSheet.getSheetId());
 		importDocument.execute();
 		
-		//GetSpreadSheetContent getSheet = new GetSpreadSheetContent(userToken, );
-		//
-		
-		//
-		
-						
-		/*
-
-		// ExportDocumentIntegrator
-
-		ExportDocumentIntegrator exportService = new ExportDocumentIntegrator(userToken, spreadsheet.getId());
-		exportService.execute();
-
-
-		// ImportDocumentIntegrator
-
-		// TODO
-
-
-		// Assign Binary Function Integrator
-
-		// TODO
-
-
-		// Assign Literal Cell Integrator
-
-		// TODO
-
-
-		// Assign Reference Cell Integrator
-
-		// TODO
-		 */	
+		gsc = new GetSpreadSheetContent(userToken, importDocument.get_docId());
+		gsc.execute();
+		gsc.printMatrix();
 	}
-
 }

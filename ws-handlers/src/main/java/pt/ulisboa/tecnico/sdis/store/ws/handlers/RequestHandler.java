@@ -64,7 +64,7 @@ public class RequestHandler implements SOAPHandler<SOAPMessageContext> {
      */
 
     public boolean handleMessage(SOAPMessageContext smc) {
-        System.out.println("RequestHandler: Handling message.");
+        println("RequestHandler: Handling message.");
 
         Boolean outboundElement = (Boolean) smc
                 .get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);

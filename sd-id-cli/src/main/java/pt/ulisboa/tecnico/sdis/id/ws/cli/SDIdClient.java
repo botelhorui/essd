@@ -3,14 +3,20 @@ package pt.ulisboa.tecnico.sdis.id.ws.cli;
 import javax.xml.bind.DatatypeConverter;
 import javax.xml.registry.JAXRException;
 import javax.xml.ws.*;
+
 import pt.ulisboa.tecnico.essd.crypto.AESCipher;
 import pt.ulisboa.tecnico.essd.crypto.CredentialsManager;
 import pt.ulisboa.tecnico.essd.xml.ReservedXML;
 import pt.ulisboa.tecnico.essd.xml.RequestAuthenticationResponse;
 import pt.ulisboa.tecnico.essd.xml.UserCredentials;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.Random;
 import java.util.Arrays;
+
 import example.ws.uddi.UDDINaming;
 import pt.ulisboa.tecnico.sdis.id.ws.*; // classes generated from WSDL
 
@@ -30,6 +36,20 @@ public class SDIdClient implements SDId {
 	/** WS port (interface) */
 	SDId port = null;
 
+	public String decorate(String s){
+		DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
+		Date date = new Date();
+		return String.format("[%s][SDIdClient]", format.format(date))+s;
+	}
+	
+	public void println(String s){
+		System.out.println(decorate(s));
+	}
+	
+	public void printf(String s, Object... args){
+		System.out.printf(decorate(s), args);
+	}
+	
 	/** constructor with provided web service URL 
 	 * @throws JAXRException */
 	public SDIdClient(String uddiURL, String wsName) throws SDIdClientException, JAXRException{
@@ -38,12 +58,14 @@ public class SDIdClient implements SDId {
 
 		if (endpointAddress == null) {
 			throw new SDIdClientException("Couldn't find "+wsName+" Web Service at UDDI.");
+		}else{
+			println("Found endpoint url: "+endpointAddress);
 		}
 
 		service = new SDId_Service();
 		port = service.getSDIdImplPort();
 
-		System.out.println("Setting endpoint address ...");
+		println("Setting endpoint address ...");
 		System.out.println(endpointAddress);
 		BindingProvider bindingProvider = (BindingProvider) port;
 		Map<String, Object> requestContext = bindingProvider.getRequestContext();
@@ -74,6 +96,7 @@ public class SDIdClient implements SDId {
 
 		//Generate Client Key
 		String pass = new String(reserved);
+		printf("requestAuthentication(%s,%s)%n",userId,pass);
 		byte[] clientKey;
 		AESCipher aes;
 		try{
@@ -93,6 +116,7 @@ public class SDIdClient implements SDId {
 		
 		//Generate Reserved
 		ReservedXML res = new ReservedXML("SD-ID", nounce);
+		printf("ReservedXML:%n%s%n",new String(res.encode()));
 		byte[] bRes = res.encode();
 		
 		//Receive Response
@@ -105,10 +129,12 @@ public class SDIdClient implements SDId {
 		UserCredentials user;
 		try{
 			response = RequestAuthenticationResponse.parse(bResponse);
+			printf("RequestAuthenticationResponse:%n%s%n",new String(response.encode()));
 			bEncTicket = response.getEncryptedTicket();
 			bEncUserCredentials = response.getEncryptedUserCredentials();
 			bUserCredentials = aes.decrypt(bEncUserCredentials, clientKey);
 			user = UserCredentials.parse(bUserCredentials);
+			printf("UserCredentials:%n%s%n",new String(user.encode()));
 		}catch(Exception e){
 			throw new AuthReqFailed_Exception("Parse ReqAuthResponse and decrypt/parse UserCred: " + e.getMessage(), new AuthReqFailed());
 		}

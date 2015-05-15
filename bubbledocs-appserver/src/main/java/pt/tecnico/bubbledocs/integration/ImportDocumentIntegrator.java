@@ -32,6 +32,7 @@ public class ImportDocumentIntegrator extends BubbleDocsIntegrator {
 	@Override
 	protected void dispatch() throws BubbleDocsException {
 		usernameService = new GetUsername4TokenService(_token);
+		usernameService.execute();
 		storeService = new StoreRemoteServices();
 		
 		//Gets username and validates user

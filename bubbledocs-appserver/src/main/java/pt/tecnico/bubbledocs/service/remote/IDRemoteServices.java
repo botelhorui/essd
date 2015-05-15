@@ -50,8 +50,7 @@ public class IDRemoteServices {
 		System.out.println("STTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTORE");
 		byte[] bdoc = s.loadDocument("alice", "x");
 		System.out.println("LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOAD");
-		System.out.println(new String(bdoc));
-		
+		System.out.println("LOAD DOC="+new String(bdoc));		
 	}
 
 	public void createUser(String username, String name, String email)

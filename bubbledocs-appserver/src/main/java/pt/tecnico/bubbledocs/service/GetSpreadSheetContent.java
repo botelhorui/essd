@@ -68,5 +68,26 @@ public class GetSpreadSheetContent extends AccessBubbleDocsService {
 		}
 	
 	}
+	
+	public void printMatrix(){
+		String out=String.format("Printing matrix for spreasheet id:%d%n",_spreadId);
+		String line="";
+		line+=" |";
+		for(int i=1;i<_result.length;i++){
+			line+=String.format("%d |",i);
+		}
+		line+="\n";
+		out+=line;
+		line="";
+		for(int i=1; i<_result.length; i++){
+			line=String.format("%d|",i);
+			for(int j=1; j<_result[0].length; j++){
+				line += _result[i][j] + " |";
+			}
+			out+=line+"\n";
+			line="";
+		}
+		System.out.println(out);
+	}
 
 }

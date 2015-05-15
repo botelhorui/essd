@@ -1,5 +1,7 @@
 package pt.tecnico.bubbledocs.integration;
 
+import java.util.Arrays;
+
 import org.jdom2.Document;
 
 import pt.tecnico.bubbledocs.exception.BubbleDocsException;
@@ -34,7 +36,7 @@ public class ExportDocumentIntegrator extends BubbleDocsIntegrator {
 		storeService = new StoreRemoteServices();
 
 		byte[] s = service.getSpreadsheetBytesById(docId);
-		docBytes=s;
+		docBytes=Arrays.copyOf(s, s.length);
 		
 		// ???
 		// not sure if this is still supposed to be used in the remote call

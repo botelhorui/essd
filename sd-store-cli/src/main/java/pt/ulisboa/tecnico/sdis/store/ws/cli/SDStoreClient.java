@@ -161,7 +161,7 @@ public class SDStoreClient implements SDStore {
 		AESCipher aes;
 		MACCipher mac;
 		
-		byte[] encryptedContents=null, digest = null, encryptedDigest = null, message = null;
+		byte[] encryptedContents=null, hmac = null, encryptedDigest = null, message = null;
 		
 		
 		Credentials userCred = credmng.getCredentials(docUserPair.getUserId());
@@ -173,10 +173,10 @@ public class SDStoreClient implements SDStore {
 			aes = new AESCipher();
 			mac = new MACCipher();
 			SecretKey encKey = aes.recreateSecretKey(userkey);
-			digest = mac.makeMAC(contents, encKey);
 			encryptedContents = aes.encrypt(contents, userkey);
-			encryptedDigest = aes.encrypt(digest, userkey);
-			message = new DocumentWithMac(encryptedContents, encryptedDigest).encode();
+			hmac = mac.makeMAC(encryptedContents, encKey);			
+			//encryptedDigest = aes.encrypt(digest, userkey);
+			message = new DocumentWithMac(encryptedContents, hmac).encode();
 			
 		} catch (Exception e) {
 			throw new SDStoreClientException("SDStoreClient encryption failed");
@@ -314,7 +314,7 @@ public class SDStoreClient implements SDStore {
 		AESCipher aes;
 		MACCipher mac;
 		
-		byte[] encryptedContents=null, digest = null, encryptedDigest = null, message = null, decryptedContents=null;
+		byte[] encryptedContents=null, hmac = null, encryptedDigest = null, message = null, decryptedContents=null;
 		
 		
 		Credentials userCred = credmng.getCredentials(docUserPair.getUserId());
@@ -379,7 +379,7 @@ public class SDStoreClient implements SDStore {
 						temp = r.get().getContents();						
 					} catch (InterruptedException | ExecutionException e) {	
 						println("Caught exception when trying to get Response's future content%nCause:%n"+e.getCause());
-						throw new SDStoreClientException("Exception when getting LoadResponse contents"); 
+						throw new SDStoreClientException("Exception when getting LoadResponse contents",e); 
 					}
 					receiveFromHandler(docUserPair.getUserId(), bp, bindingToTime, resp);
 					printf("Received LoadResponse from %s. version value is %s. contents is %s bytes%n",
@@ -421,6 +421,7 @@ public class SDStoreClient implements SDStore {
 		}				
 
 		start = System.nanoTime();
+		completed=0;
 		while(true){
 			elapsed = start - System.nanoTime();
 			seconds = (double)elapsed/1e9f;
@@ -429,14 +430,12 @@ public class SDStoreClient implements SDStore {
 			}
 			for(Iterator<Response<StoreResponse>> it = storeResponses.iterator();it.hasNext();){
 				Response<StoreResponse> r = it.next();				
-				if(r.isDone()){
-					
-										
-					BindingProvider bp = loadResponsesBindingProviders.get(r);
+				if(r.isDone()){										
+					BindingProvider bp = storeResponsesBindingProviders.get(r);
 					Map<String,Object> rc = bp.getRequestContext();
 					String address = (String)rc.get(BindingProvider.ENDPOINT_ADDRESS_PROPERTY);
-					receiveFromHandler(docUserPair.getUserId(), bp, bindingToTime, r.getContext());
 					printf("Received StoreResponse from %s%n",address);
+					receiveFromHandler(docUserPair.getUserId(), bp, bindingToTime, r.getContext());					
 					it.remove();
 					completed++;
 				}
@@ -457,13 +456,14 @@ public class SDStoreClient implements SDStore {
 			mac = new MACCipher();
 			DocumentWithMac doc = DocumentWithMac.parse(data);
 			encryptedContents = doc.get_document();
-			digest = doc.get_digest();
-			decryptedContents = aes.decrypt(encryptedContents, userkey);
+			hmac = doc.get_digest();			
 			SecretKey encKey = aes.recreateSecretKey(userkey);
-			if (!mac.verifyMAC(digest, decryptedContents, encKey))throw new SDStoreClientException("Contents failed mac verification");
+			if (!mac.verifyMAC(hmac, encryptedContents, encKey))
+				throw new SDStoreClientException("Contents failed mac verification");
+			decryptedContents = aes.decrypt(encryptedContents, userkey);
 			
 		} catch (Exception e) {
-			throw new SDStoreClientException("SDStoreClient decryption failed");
+			throw new SDStoreClientException("SDStoreClient decryption failed",e);
 		}
 		
 		
@@ -527,6 +527,7 @@ public class SDStoreClient implements SDStore {
 			aes = new AESCipher();
 			bRep = aes.decrypt(eRep, sessionKey);
 			rep = WebServiceResponse.parse(bRep);
+			printf("WebServiceResponse:%s%n",new String(rep.encode()));
 		} catch (Exception e) {
 			throw new SDStoreClientException("Failed to construct WebServiceResponse",e);
 		}
@@ -536,9 +537,8 @@ public class SDStoreClient implements SDStore {
 		if(!(reqTime.equals(compareTime))){
 			throw new SDStoreClientException("Received from server wrong nounce sent (requestTime)");
 		}
-		
-		return;
-		
+		printf("WebServiceResponse successfully authenticated%n");
+		return;		
 	}
 
 	@Override
